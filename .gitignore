@@ -1,0 +1,27 @@
+# Compiler files
+cache/
+node_modules/
+dist/
+out/
+
+# Dotenv files
+**/.env*
+!**/.env*.sample
+
+# Secrets
+**/.secret*
+
+# IDE files
+**/.idea
+**/*.iml
+
+# yarn files
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# macOS files
+**/.DS_Store

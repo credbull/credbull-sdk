@@ -1,0 +1,35 @@
+{
+  "name": "@credbull-sdk/credbull",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "clean": "tsc --build --clean && rm -rf playwright-report test-results",
+    "dev": "ts-node",
+    "build": "tsc --build",
+    "test": "playwright test",
+    "format": "prettier . --write",
+    "lint": "eslint --fix --ignore-path .gitignore",
+    "report": "playwright show-report",
+    "watch": "tsc --build --watch"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "ethers": "^6.13.4",
+    "thirdweb": "^5.78.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.1",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.0",
+    "@types/node": "^22.10.2",
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "js-toml": "^1.0.1",
+    "prettier": "^3.4.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}

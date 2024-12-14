@@ -1,0 +1,10 @@
+{
+  "name": "credbull-sdk",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "description": "Credbull SDK. DeFi protocol integration.",
+  "workspaces": [
+    "packages/*"
+  ]
+}
