@@ -1,25 +1,15 @@
-import dotenv from 'dotenv';
 import { toBigInt } from 'ethers';
-import path from 'path';
-import { createThirdwebClient, getContract } from 'thirdweb';
+import { getContract } from 'thirdweb';
 import { arbitrumSepolia } from 'thirdweb/chains';
 import { totalSupply } from 'thirdweb/extensions/erc1155';
 
-// see: https://portal.thirdweb.com/typescript/v5/getting-started
-dotenv.config({
-  encoding: 'utf-8',
-  path: [
-    path.resolve(__dirname, '../../.env'), // sdk
-  ],
-  override: true,
-});
+import { loadConfig } from '../utils/config';
+import { initializeThirdwebClient } from '../utils/thirdweb-client';
+
+loadConfig();
 
 const main = async () => {
-  const client = createThirdwebClient({
-    secretKey: process.env.THIRDWEB_SECRET_KEY as string,
-  });
-
-  console.log('Initialized ThirdWeb Client: ', client.clientId);
+  const client = initializeThirdwebClient();
 
   const liquidStoneContract = getContract({
     client,
