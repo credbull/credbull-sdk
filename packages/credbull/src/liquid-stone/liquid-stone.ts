@@ -3,7 +3,12 @@ import { totalSupply } from 'thirdweb/extensions/erc1155';
 
 import { liquidStoneContract } from '../utils/thirdweb-client';
 
-async function liquidStoneSupply(liquidStoneTokenId: bigint) {
+import { totalAssets } from './read/totalAssets';
+
+// TODO - connect to Plume mainnet (custom RPC)
+// TODO - script out runbook deposits vs. redemptions
+
+export async function getTotalSupply(liquidStoneTokenId: bigint) {
   const supply = await totalSupply({
     contract: liquidStoneContract,
     id: liquidStoneTokenId,
@@ -14,10 +19,21 @@ async function liquidStoneSupply(liquidStoneTokenId: bigint) {
   return supply;
 }
 
+export async function getTotalAssets(ownerAddress: string) {
+  const assets = await totalAssets({
+    contract: liquidStoneContract,
+    owner: ownerAddress,
+  });
+
+  console.log(`Total assets for owner [${ownerAddress}]: `, assets);
+
+  return assets;
+}
+
 async function main() {
   console.log('Starting script...');
 
-  await liquidStoneSupply(toBigInt(38));
+  await getTotalSupply(toBigInt(38));
 
   console.log('Script completed successfully.');
 }
