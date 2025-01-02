@@ -9,6 +9,7 @@
     "test": "playwright test",
     "format": "prettier . --write",
     "check-format": "prettier --check './**/*.{js,ts,json,css,md}'",
+    "gen-extension": "thirdweb generate 421614/0x111b6a3dbace7f0b32baad47027907765e88abd2",
     "lint": "eslint --fix --ignore-path .gitignore",
     "report": "playwright show-report",
     "watch": "tsc --build --watch"

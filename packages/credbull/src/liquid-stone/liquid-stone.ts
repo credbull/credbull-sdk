@@ -5,9 +5,6 @@ import { liquidStoneContract } from '../utils/thirdweb-client';
 
 import { totalAssets } from './read/totalAssets';
 
-// TODO - connect to Plume mainnet (custom RPC)
-// TODO - script out runbook deposits vs. redemptions
-
 export async function getTotalSupply(liquidStoneTokenId: bigint) {
   const supply = await totalSupply({
     contract: liquidStoneContract,
