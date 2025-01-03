@@ -20,14 +20,13 @@ test.describe('Test LiquidStone Deposit & Redeem', () => {
     privateKey: deployerPrivateKey,
   });
 
-  test('Test Approve Allowance', async () => {
+  test('Test Deposit', async () => {
+    // first, approve the deposit
     const approveTxnReceipt = await approveAsset(owner, depositAmount);
     console.log(`Approve Txn Hash: ${approveTxnReceipt.transactionHash}`);
     expect(approveTxnReceipt.status).toBe('success');
-  });
 
-  // owner: Account, depositAmount: number, receiver: Address
-  test('Test deposit', async () => {
+    // now, deposit
     const depositTxnReceipt = await deposit(owner, depositAmount, userAddress);
     console.log(`Deposit Txn Hash: ${depositTxnReceipt.transactionHash}`);
     expect(depositTxnReceipt.status).toBe('success');

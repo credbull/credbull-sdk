@@ -1,4 +1,4 @@
-import { getContract, sendTransaction, waitForReceipt } from 'thirdweb';
+import { getContract, sendAndConfirmTransaction, sendTransaction, waitForReceipt } from 'thirdweb';
 import { approve as approveExt } from 'thirdweb/extensions/erc20';
 import { totalSupply as totalSupplyByIdExt } from 'thirdweb/extensions/erc1155';
 import { Account } from 'thirdweb/wallets';
@@ -16,8 +16,7 @@ import { chain, client, liquidStoneContract } from '../utils/thirdweb-client';
 import { totalAssetsByOwner as extTotalAssetsByOwner } from './extensions/read/totalAssetsByOwner';
 
 // ============================== Write ==============================
-// TODO - should we move write operations into a class that has an associated account?
-// otherwise, need to pass account/wallet into every function
+// TODO - move write operations into a class that has an associated account?  if not, need to pass account/wallet into every function
 
 // Approve asset allowance to the LiquidStone contract, e.g. for a deposit call
 // deposit amount is human-readable, for example depositAmount of 10 USDC or 10_000_000 USDC with decimals.
@@ -37,14 +36,12 @@ export async function approveAsset(owner: Account, depositAmount: number) {
       amount: depositAmount,
     });
 
-    // TODO - sendTransaction or sendAndConfirmTransaction?  sendAndConfirm wait's for mining
-    // https://portal.thirdweb.com/typescript/v5/transactions/send
-    const approveTxnResult = await sendTransaction({
+    // sendAndConfirm waits for block to be mined.  ensures approve is done before deposit.
+    // see: https://portal.thirdweb.com/typescript/v5/transactions/send
+    return sendAndConfirmTransaction({
       account: owner,
       transaction: approveTxn,
     });
-
-    return waitForReceipt(approveTxnResult);
   } catch (error) {
     console.error('Error LiquidStone approveAsset:', error);
     throw error;
@@ -122,20 +119,20 @@ export async function totalAssets() {
   });
 }
 
-// async function main() {
-//   console.log('Starting script...');
-//
-//   const assets = await totalAssets();
-//   const supply = await totalSupply();
-//
-//   console.log(`Total Assets: ${assets.toLocaleString()}`);
-//   console.log(`Total Supply: ${supply.toLocaleString()}`);
-//
-//   console.log('Script completed successfully.');
-// }
-//
-// // Entry point: handle errors globally
-// main().catch((err) => {
-//   console.error('Error in script:', err);
-//   process.exit(1);
-// });
+async function main() {
+  console.log('Starting script...');
+
+  const assets = await totalAssets();
+  const supply = await totalSupply();
+
+  console.log(`Total Assets: ${assets.toLocaleString()}`);
+  console.log(`Total Supply: ${supply.toLocaleString()}`);
+
+  console.log('Script completed successfully.');
+}
+
+// Entry point: handle errors globally
+main().catch((err) => {
+  console.error('Error in script:', err);
+  process.exit(1);
+});
