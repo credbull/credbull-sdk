@@ -8,11 +8,10 @@ import { getTotalAssets, getTotalSupply } from './liquid-stone';
 
 const aliceAddress: string = '0x40524fB22EbF46ac8593F9945b936e3aD1dC33ba'; // credbull-devops wallet
 
-// TODO: connect to Plume mainnet (custom RPC)
+// TODO: connect to Plume testnet (custom RPC)
 // TODO: script out runbook deposits vs. redemptions
 // TODO: move this to an integration test suite
-
-test.describe('Test Liquid Stone Product', () => {
+test.describe('Test LiquidStone View functions', () => {
   test('Test total supply', async () => {
     const depositId = toBigInt(38);
     const supply = await getTotalSupply(depositId);

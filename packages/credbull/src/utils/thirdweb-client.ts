@@ -14,8 +14,8 @@ function thirdWebClient(): ThirdwebClient {
   return client;
 }
 
-const chain = arbitrumSepolia;
-const client = thirdWebClient();
+export const chain = arbitrumSepolia;
+export const client = thirdWebClient();
 
 export const liquidStoneContract = getContract({
   client: client,
