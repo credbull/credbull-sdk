@@ -37,7 +37,7 @@ const FN_OUTPUTS = [
  * });
  * ```
  */
-export async function totalAssets(options: BaseTransactionOptions<TotalAssetsParams>) {
+export async function totalAssetsByOwner(options: BaseTransactionOptions<TotalAssetsParams>) {
   return readContract({
     contract: options.contract,
     method: [FN_SELECTOR, FN_INPUTS, FN_OUTPUTS] as const,

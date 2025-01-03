@@ -1,7 +1,11 @@
+# thirdweb cli outputs
+/thirdweb/
+
+# typescript incremental build files
+**/*.tsbuildinfo
+
+# test related
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
-
-# NOTE (JL,2024-05-28): TSC Project Reference artifact.
-**/*.tsbuildinfo
