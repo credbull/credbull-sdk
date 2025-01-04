@@ -24,17 +24,7 @@ export async function approveAsset(owner: Account, depositAmount: number) {
   try {
     const assetAddress = await asset();
 
-    const assetContract = getContract({
-      client: client,
-      address: assetAddress,
-      chain: chain,
-    });
-
-    const approveTxn = approveExt({
-      contract: assetContract,
-      spender: liquidStoneContract.address,
-      amount: depositAmount,
-    });
+    const approveTxn = await approveAssetTxn(assetAddress, liquidStoneContract.address, depositAmount);
 
     // sendAndConfirm waits for block to be mined.  ensures approve is done before deposit.
     // see: https://portal.thirdweb.com/typescript/v5/transactions/send
@@ -46,6 +36,22 @@ export async function approveAsset(owner: Account, depositAmount: number) {
     console.error('Error LiquidStone approveAsset:', error);
     throw error;
   }
+}
+
+// Approve asset allowance to the LiquidStone contract, e.g. for a deposit call
+// deposit amount is human-readable, for example depositAmount of 10 USDC or 10_000_000 USDC with decimals.
+export async function approveAssetTxn(assetAddress: Address, spender: Address, depositAmount: number) {
+  const assetContract = getContract({
+    client: client,
+    address: assetAddress,
+    chain: chain,
+  });
+
+  return approveExt({
+    contract: assetContract,
+    spender: spender,
+    amount: depositAmount,
+  });
 }
 
 // deposit into LiquidStone.  requires approval on underlying asset prior to deposit (see #approve)
