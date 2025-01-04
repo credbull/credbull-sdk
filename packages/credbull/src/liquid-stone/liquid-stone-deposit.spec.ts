@@ -1,11 +1,12 @@
 import { expect, test } from '@playwright/test';
 import { Account, privateKeyToAccount } from 'thirdweb/wallets';
 
+import { approve } from '../erc20/erc20';
 import { Address } from '../utils/address';
 import { loadConfig } from '../utils/config';
 import { client } from '../utils/thirdweb-client';
 
-import { approveAsset, deposit } from './liquid-stone';
+import { asset, deposit, liquidStoneContract } from './liquid-stone';
 
 loadConfig();
 
@@ -21,8 +22,10 @@ test.describe('Test LiquidStone Deposit & Redeem', () => {
   });
 
   test('Test Deposit', async () => {
+    const liquidStoneAsset = await asset();
+
     // first, approve the deposit
-    const approveTxnReceipt = await approveAsset(owner, depositAmount);
+    const approveTxnReceipt = await approve(liquidStoneAsset, liquidStoneContract.address, owner, depositAmount);
     console.log(`Approve Txn Hash: ${approveTxnReceipt.transactionHash}`);
     expect(approveTxnReceipt.status).toBe('success');
 

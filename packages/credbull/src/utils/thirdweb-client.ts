@@ -1,8 +1,10 @@
-import { createThirdwebClient, getContract } from 'thirdweb';
+import { createThirdwebClient } from 'thirdweb';
 import { ThirdwebClient } from 'thirdweb/src/client/client';
 
-import { chain } from './address';
+import { chain } from './chain';
 import { loadConfig } from './config';
+
+export { chain } from './chain';
 
 loadConfig();
 
@@ -15,9 +17,3 @@ function thirdWebClient(): ThirdwebClient {
 }
 
 export const client = thirdWebClient();
-
-export const liquidStoneContract = getContract({
-  client: client,
-  address: process.env.CREDBULL_LIQUIDSTONE_ADDRESS as string,
-  chain: chain,
-});

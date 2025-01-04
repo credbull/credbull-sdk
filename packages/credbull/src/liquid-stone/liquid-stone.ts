@@ -1,5 +1,4 @@
-import { getContract, sendAndConfirmTransaction, sendTransaction, waitForReceipt } from 'thirdweb';
-import { approve as approveExt } from 'thirdweb/extensions/erc20';
+import { getContract, sendTransaction, waitForReceipt } from 'thirdweb';
 import { totalSupply as totalSupplyByIdExt } from 'thirdweb/extensions/erc1155';
 import { Account } from 'thirdweb/wallets';
 
@@ -11,48 +10,18 @@ import {
   totalSupply as totalSupplyExt,
 } from '../thirdweb-codegen/extensions/credbull-v1.3/yield/liquid-continuous-multi-token-vault';
 import { Address } from '../utils/address';
-import { chain, client, liquidStoneContract } from '../utils/thirdweb-client';
+import { chain, client } from '../utils/thirdweb-client';
 
 import { totalAssetsByOwner as extTotalAssetsByOwner } from './extensions/read/totalAssetsByOwner';
 
+export const liquidStoneContract = getContract({
+  client: client,
+  address: process.env.CREDBULL_LIQUIDSTONE_ADDRESS as string,
+  chain: chain,
+});
+
 // ============================== Write ==============================
 // TODO - move write operations into a class that has an associated account?  if not, need to pass account/wallet into every function
-
-// Approve asset allowance to the LiquidStone contract, e.g. for a deposit call
-// deposit amount is human-readable, for example depositAmount of 10 USDC or 10_000_000 USDC with decimals.
-export async function approveAsset(owner: Account, depositAmount: number) {
-  try {
-    const assetAddress = await asset();
-
-    const approveTxn = await approveAssetTxn(assetAddress, liquidStoneContract.address, depositAmount);
-
-    // sendAndConfirm waits for block to be mined.  ensures approve is done before deposit.
-    // see: https://portal.thirdweb.com/typescript/v5/transactions/send
-    return sendAndConfirmTransaction({
-      account: owner,
-      transaction: approveTxn,
-    });
-  } catch (error) {
-    console.error('Error LiquidStone approveAsset:', error);
-    throw error;
-  }
-}
-
-// Approve asset allowance to the LiquidStone contract, e.g. for a deposit call
-// deposit amount is human-readable, for example depositAmount of 10 USDC or 10_000_000 USDC with decimals.
-export async function approveAssetTxn(assetAddress: Address, spender: Address, depositAmount: number) {
-  const assetContract = getContract({
-    client: client,
-    address: assetAddress,
-    chain: chain,
-  });
-
-  return approveExt({
-    contract: assetContract,
-    spender: spender,
-    amount: depositAmount,
-  });
-}
 
 // deposit into LiquidStone.  requires approval on underlying asset prior to deposit (see #approve)
 export async function deposit(owner: Account, depositAmount: number, receiver: Address) {
