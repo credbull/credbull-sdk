@@ -12,10 +12,10 @@
     "baseUrl": ".", // Set the base directory for resolving paths
     "paths": {
       "@src/*": ["src/*"], // Alias for src/
-      "@utils/*": ["src/utils/*"], // Optional: More specific alias for utils
+      "@utils/*": ["src/utils/*"] // Optional: More specific alias for utils
     },
     "moduleResolution": "node"
   },
-  "include": ["src", "tests", "*.ts"],
-  "exclude": ["node_modules", "dist", "test"]
+  "include": ["src/**/*", "tests/**/*", "*.ts"],
+  "exclude": ["node_modules", "dist"]
 }

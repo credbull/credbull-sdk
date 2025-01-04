@@ -1,7 +1,6 @@
 import { createThirdwebClient } from 'thirdweb';
 import { ThirdwebClient } from 'thirdweb/src/client/client';
 
-import { chain } from './chain';
 import { loadConfig } from './config';
 
 export { chain } from './chain';

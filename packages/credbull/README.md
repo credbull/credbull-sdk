@@ -12,7 +12,8 @@ yarn dev src/liquid-stone/main.ts
 
 `yarn test`
 
-### Generate ThirdWeb Extensions 
+### Generate ThirdWeb Extensions
+
 Generates typescript for a deployed contract, see: https://portal.thirdweb.com/typescript/v5/extensions/generate
 
 ```bash

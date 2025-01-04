@@ -1,36 +1,18 @@
-import { SafeClient, SafeClientResult, createSafeClient } from '@safe-global/sdk-starter-kit';
-import { Address, TransactionHash } from '@utils/address';
+import { SafeClient, createSafeClient } from '@safe-global/sdk-starter-kit';
+import { Address } from '@utils/address';
 import { loadConfig } from '@utils/config';
-import { baseSepolia } from 'thirdweb/chains';
+import { Eip1193Provider } from 'ethers';
 
 loadConfig();
 
-export const chain = baseSepolia;
-
-export async function connectSafe(safeAddress: Address, signerPrivateKey: string): Promise<SafeClient> {
+export async function connectSafe(
+  provider: string | Eip1193Provider,
+  safeAddress: Address,
+  signerPrivateKey: string,
+): Promise<SafeClient> {
   return await createSafeClient({
-    provider: chain.rpc,
+    provider: provider,
     signer: signerPrivateKey,
     safeAddress: safeAddress,
   });
-}
-
-export async function confirmSafeTxn(safeClient: SafeClient, safeTxHash: TransactionHash) {
-  const pendingTransactions = await safeClient.getPendingTransactions();
-
-  for (const transaction of pendingTransactions.results) {
-    // do nothing if not the right txn
-    if (transaction.safeTxHash !== safeTxHash) {
-      console.log(`Transaction ${transaction.safeTxHash} != ${safeTxHash} .  Skipping.`);
-    } else {
-      console.log(`Transaction ${safeTxHash} found, confirming!`);
-      return safeClient.confirm({ safeTxHash });
-    }
-  }
-}
-
-export function log(depositTxnResult: SafeClientResult | undefined) {
-  console.log(`Transaction status: ${depositTxnResult?.status}`);
-  console.log(`Transaction safeTxHash: ${depositTxnResult?.transactions?.safeTxHash}`);
-  console.log(`Transaction ethereumTxHash: ${depositTxnResult?.transactions?.ethereumTxHash}`);
 }
