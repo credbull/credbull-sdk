@@ -15,11 +15,15 @@
     "watch": "tsc --build --watch"
   },
   "dependencies": {
+    "@safe-global/api-kit": "^2.5.6",
+    "@safe-global/protocol-kit": "^5.1.1",
+    "@safe-global/safe-core-sdk-types": "^5.1.0",
+    "@safe-global/sdk-starter-kit": "^1.1.1",
     "dotenv": "^16.4.7",
     "ethers": "^6.13.4",
-    "thirdweb": "^5.78.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "thirdweb": "^5.78.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {

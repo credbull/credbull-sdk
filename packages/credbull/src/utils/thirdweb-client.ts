@@ -1,7 +1,7 @@
 import { createThirdwebClient, getContract } from 'thirdweb';
-import { arbitrumSepolia } from 'thirdweb/chains';
 import { ThirdwebClient } from 'thirdweb/src/client/client';
 
+import { chain } from './address';
 import { loadConfig } from './config';
 
 loadConfig();
@@ -14,7 +14,6 @@ function thirdWebClient(): ThirdwebClient {
   return client;
 }
 
-export const chain = arbitrumSepolia;
 export const client = thirdWebClient();
 
 export const liquidStoneContract = getContract({
