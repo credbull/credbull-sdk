@@ -1,9 +1,8 @@
+import { Address } from '@utils/address';
+import { chain, client } from '@utils/thirdweb-client';
 import { getContract, sendAndConfirmTransaction } from 'thirdweb';
 import { approve as approveExt } from 'thirdweb/extensions/erc20';
 import { Account } from 'thirdweb/wallets';
-
-import { Address } from '../utils/address';
-import { chain, client } from '../utils/thirdweb-client';
 
 // get the approve Txn.  use directly by thirdweb or encode into Hex to use by (Gnosis) Safe.
 export async function approveTxn(erc20Address: Address, spender: Address, depositAmount: number) {

@@ -1,12 +1,11 @@
 import { expect, test } from '@playwright/test';
 import { SafeClient, SafeClientResult } from '@safe-global/sdk-starter-kit';
 import { SafeClientTxStatus } from '@safe-global/sdk-starter-kit/dist/src/constants';
+import { approveTxn } from '@src/erc20/erc20';
+import { connectSafe, log } from '@src/safe/safe-client';
+import { Address } from '@utils/address';
+import { loadConfig } from '@utils/config';
 import { encode } from 'thirdweb';
-
-import { approveTxn } from '../erc20/erc20';
-import { Address } from '../utils/address';
-import { loadConfig } from '../utils/config';
-import { connectSafe, log } from '../utils/safe-client';
 
 loadConfig();
 

@@ -1,18 +1,17 @@
-import { getContract, sendTransaction, waitForReceipt } from 'thirdweb';
-import { totalSupply as totalSupplyByIdExt } from 'thirdweb/extensions/erc1155';
-import { Account } from 'thirdweb/wallets';
-
 import {
   asset as assetExt,
   deposit as depositExt,
   scale as scaleExt,
   totalAssets as totalAssetsExt,
   totalSupply as totalSupplyExt,
-} from '../thirdweb-codegen/extensions/credbull-v1.3/yield/liquid-continuous-multi-token-vault';
-import { Address } from '../utils/address';
-import { chain, client } from '../utils/thirdweb-client';
+} from '@src/liquid-stone/extensions/v1.3/liquid-stone-generated';
+import { Address } from '@utils/address';
+import { chain, client } from '@utils/thirdweb-client';
+import { getContract, sendTransaction, waitForReceipt } from 'thirdweb';
+import { totalSupply as totalSupplyByIdExt } from 'thirdweb/extensions/erc1155';
+import { Account } from 'thirdweb/wallets';
 
-import { totalAssetsByOwner as extTotalAssetsByOwner } from './extensions/read/totalAssetsByOwner';
+import { totalAssetsByOwner as extTotalAssetsByOwner } from './extensions/v1.3/totalAssetsByOwner';
 
 export const liquidStoneContract = getContract({
   client: client,

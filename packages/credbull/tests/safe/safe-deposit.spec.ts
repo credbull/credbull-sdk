@@ -1,12 +1,10 @@
 import { expect, test } from '@playwright/test';
 import { SafeClient, SafeClientResult } from '@safe-global/sdk-starter-kit';
 import { SafeClientTxStatus } from '@safe-global/sdk-starter-kit/dist/src/constants';
-
-import { Address } from '../utils/address';
-import { loadConfig } from '../utils/config';
-import { confirmSafeTxn, connectSafe, log } from '../utils/safe-client';
-
-import { safeDeposit } from './safe-deposit';
+import { confirmSafeTxn, connectSafe, log } from '@src/safe/safe-client';
+import { safeDeposit } from '@src/safe/safe-deposit';
+import { Address } from '@utils/address';
+import { loadConfig } from '@utils/config';
 
 loadConfig();
 

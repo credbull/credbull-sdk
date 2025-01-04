@@ -1,8 +1,7 @@
 import { SafeClient, SafeClientResult, createSafeClient } from '@safe-global/sdk-starter-kit';
+import { Address, TransactionHash } from '@utils/address';
+import { loadConfig } from '@utils/config';
 import { baseSepolia } from 'thirdweb/chains';
-
-import { Address, TransactionHash } from './address';
-import { loadConfig } from './config';
 
 loadConfig();
 

@@ -1,9 +1,14 @@
 import { expect, test } from '@playwright/test';
+import {
+  asset,
+  scale,
+  scaleUp,
+  totalAssets,
+  totalAssetsByOwner,
+  totalSupplyById,
+} from '@src/liquid-stone/liquid-stone';
+import { Address } from '@utils/address';
 import { toBigInt } from 'ethers';
-
-import { Address } from '../utils/address';
-
-import {asset, scale, scaleUp, totalAssets, totalAssetsByOwner, totalSupplyById} from './liquid-stone';
 
 const userAddress: Address = process.env.USER_ADDRESS as string;
 const usdcAddress: Address = process.env.USDC_ADDRESS as string;

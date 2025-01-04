@@ -1,12 +1,10 @@
 import { expect, test } from '@playwright/test';
+import { approve } from '@src/erc20/erc20';
+import { asset, deposit, liquidStoneContract } from '@src/liquid-stone/liquid-stone';
+import { Address } from '@utils/address';
+import { loadConfig } from '@utils/config';
+import { client } from '@utils/thirdweb-client';
 import { Account, privateKeyToAccount } from 'thirdweb/wallets';
-
-import { approve } from '../erc20/erc20';
-import { Address } from '../utils/address';
-import { loadConfig } from '../utils/config';
-import { client } from '../utils/thirdweb-client';
-
-import { asset, deposit, liquidStoneContract } from './liquid-stone';
 
 loadConfig();
 
