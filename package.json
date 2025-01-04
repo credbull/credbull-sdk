@@ -6,5 +6,23 @@
   "description": "Credbull SDK. DeFi protocol integration.",
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "prepare": "husky",
+    "test": "yarn workspace @credbull-sdk/credbull test",
+    "format": "yarn workspace @credbull-sdk/credbull format",
+    "lint": "yarn workspace @credbull-sdk/credbull lint"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.3.0",
+    "prettier": "^3.4.2"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "yarn workspace @credbull-sdk/credbull lint",
+      "yarn workspace @credbull-sdk/credbull format --check"
+    ],
+    "*.css": ["yarn workspace @credbull-sdk/credbull format --check"]
+  }
 }
