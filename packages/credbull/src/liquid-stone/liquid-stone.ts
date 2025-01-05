@@ -6,18 +6,16 @@ import {
   totalSupply as totalSupplyExt,
 } from '@src/liquid-stone/extensions/v1.3/liquid-stone-generated';
 import { Address } from '@utils/address';
-import { chain, client } from '@utils/thirdweb-client';
-import { getContract, sendTransaction, waitForReceipt } from 'thirdweb';
+import { CredbullClient } from '@utils/credbull-client';
+import { sendTransaction, waitForReceipt } from 'thirdweb';
 import { totalSupply as totalSupplyByIdExt } from 'thirdweb/extensions/erc1155';
 import { Account } from 'thirdweb/wallets';
 
 import { totalAssetsByOwner as extTotalAssetsByOwner } from './extensions/v1.3/totalAssetsByOwner';
 
-export const liquidStoneContract = getContract({
-  client: client,
-  address: process.env.CREDBULL_LIQUIDSTONE_ADDRESS as string,
-  chain: chain,
-});
+export const credbullClient = new CredbullClient(undefined);
+
+export const liquidStoneContract = credbullClient.getContract(process.env.CREDBULL_LIQUIDSTONE_ADDRESS as string);
 
 // ============================== Write ==============================
 // TODO - move write operations into a class that has an associated account?  if not, need to pass account/wallet into every function

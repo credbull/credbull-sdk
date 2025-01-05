@@ -1,10 +1,8 @@
 import { expect, test } from '@playwright/test';
 import { approve } from '@src/erc20/erc20';
-import { asset, deposit, liquidStoneContract } from '@src/liquid-stone/liquid-stone';
+import { asset, credbullClient, deposit, liquidStoneContract } from '@src/liquid-stone/liquid-stone';
 import { Address } from '@utils/address';
 import { loadConfig } from '@utils/config';
-import { client } from '@utils/thirdweb-client';
-import { Account, privateKeyToAccount } from 'thirdweb/wallets';
 
 loadConfig();
 
@@ -14,10 +12,7 @@ const deployerPrivateKey = process.env.DEPLOYER_PRIVATE_KEY as string;
 // Write & Simulate Operations, see https://portal.thirdweb.com/typescript/v5/transactions/send
 test.describe('Test LiquidStone Deposit & Redeem', () => {
   const depositAmount: number = 0.000001;
-  const owner: Account = privateKeyToAccount({
-    client,
-    privateKey: deployerPrivateKey,
-  });
+  const owner = credbullClient.createAccount(deployerPrivateKey);
 
   test('Test Deposit', async () => {
     const liquidStoneAsset = await asset();

@@ -1,16 +1,14 @@
 import { Address } from '@utils/address';
-import { chain, client } from '@utils/thirdweb-client';
-import { getContract, sendAndConfirmTransaction } from 'thirdweb';
+import { CredbullClient } from '@utils/credbull-client';
+import { sendAndConfirmTransaction } from 'thirdweb';
 import { approve as approveExt } from 'thirdweb/extensions/erc20';
 import { Account } from 'thirdweb/wallets';
 
+const credbullClient = new CredbullClient(undefined);
+
 // get the approve Txn.  use directly by thirdweb or encode into Hex to use by (Gnosis) Safe.
 export async function approveTxn(erc20Address: Address, spender: Address, depositAmount: number) {
-  const assetContract = getContract({
-    client: client,
-    address: erc20Address,
-    chain: chain,
-  });
+  const assetContract = credbullClient.getContract(erc20Address);
 
   return approveExt({
     contract: assetContract,
