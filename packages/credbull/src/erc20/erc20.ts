@@ -1,5 +1,5 @@
-import { Address } from '@utils/address';
-import { CredbullClient } from '@utils/credbull-client';
+import { CredbullClient } from '@src/credbull-client';
+import { Address } from '@utils/rpc-types';
 import { sendAndConfirmTransaction } from 'thirdweb';
 import { approve as approveExt } from 'thirdweb/extensions/erc20';
 import { Account } from 'thirdweb/wallets';

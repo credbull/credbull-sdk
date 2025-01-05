@@ -1,3 +1,4 @@
+import { CredbullClient } from '@src/credbull-client';
 import {
   asset as assetExt,
   deposit as depositExt,
@@ -5,8 +6,7 @@ import {
   totalAssets as totalAssetsExt,
   totalSupply as totalSupplyExt,
 } from '@src/liquid-stone/extensions/v1.3/liquid-stone-generated';
-import { Address } from '@utils/address';
-import { CredbullClient } from '@utils/credbull-client';
+import { Address } from '@utils/rpc-types';
 import { sendTransaction, waitForReceipt } from 'thirdweb';
 import { totalSupply as totalSupplyByIdExt } from 'thirdweb/extensions/erc1155';
 import { Account } from 'thirdweb/wallets';

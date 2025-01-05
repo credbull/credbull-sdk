@@ -7,7 +7,7 @@ import {
   totalAssetsByOwner,
   totalSupplyById,
 } from '@src/liquid-stone/liquid-stone';
-import { Address } from '@utils/address';
+import { Address } from '@utils/rpc-types';
 import { toBigInt } from 'ethers';
 
 const userAddress: Address = process.env.USER_ADDRESS as string;

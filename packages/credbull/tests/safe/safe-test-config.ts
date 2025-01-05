@@ -1,4 +1,4 @@
-import { Address } from '@utils/address';
+import { Address } from '@utils/rpc-types';
 import { ChainOptions, baseSepolia } from 'thirdweb/chains';
 
 interface SafeTestConfig {

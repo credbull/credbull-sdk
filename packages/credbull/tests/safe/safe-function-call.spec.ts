@@ -4,8 +4,8 @@ import { SafeClientTxStatus } from '@safe-global/sdk-starter-kit/dist/src/consta
 import { approveTxn } from '@src/erc20/erc20';
 import { connectSafe } from '@src/safe/safe-client';
 import { logTxnResult, sendTxn } from '@src/safe/safe-txn';
-import { Address } from '@utils/address';
 import { loadConfig } from '@utils/config';
+import { Address } from '@utils/rpc-types';
 import { encode } from 'thirdweb';
 import { Hex } from 'thirdweb/src/utils/encoding/hex';
 

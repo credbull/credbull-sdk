@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
 import { approve } from '@src/erc20/erc20';
 import { asset, credbullClient, deposit, liquidStoneContract } from '@src/liquid-stone/liquid-stone';
-import { Address } from '@utils/address';
 import { loadConfig } from '@utils/config';
+import { Address } from '@utils/rpc-types';
 
 loadConfig();
 
