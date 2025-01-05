@@ -1,13 +1,12 @@
 import { expect, test } from '@playwright/test';
-import { SafeClient, SafeClientResult } from '@safe-global/sdk-starter-kit';
+import { SafeClientResult } from '@safe-global/sdk-starter-kit';
 import { SafeClientTxStatus } from '@safe-global/sdk-starter-kit/dist/src/constants';
-import { connectSafe } from '@src/safe/safe-client';
-import { confirmTxn, deposit, logTxnResult } from '@src/safe/safe-txn';
+import { CredbullSafeClient } from '@src/safe/credbull-safe-client';
 import { loadConfig } from '@utils/config';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Suppress error about file not being under rootDir
-import { baseSepoliaConfig } from './safe-test-config';
+import { safeClientMultiSig, safeClientSingleSigner } from './safe-test-config';
 
 loadConfig();
 
@@ -20,27 +19,17 @@ test.describe('Test Safe Deposit', () => {
 
   test('Test Deposit - Multi-sig (2 of N)', async () => {
     // first signer - proposes
-    const safeClientSigner1: SafeClient = await connectSafe(
-      baseSepoliaConfig.chain.rpc,
-      baseSepoliaConfig.safeWithMultiSig,
-      deployerPrivateKey,
-    );
-    const safeClientAddress = await safeClientSigner1.getAddress();
-    const depositTxnResult: SafeClientResult = await deposit(safeClientSigner1, safeClientAddress, depositAmountInWei);
+    const safeClientSigner1: CredbullSafeClient = safeClientMultiSig(deployerPrivateKey);
 
-    logTxnResult(depositTxnResult);
+    const toAddress = safeClientSigner1.safeAddress;
+    const depositTxnResult: SafeClientResult = await safeClientSigner1.deposit(toAddress, depositAmountInWei);
     expect(depositTxnResult.status).toBe(SafeClientTxStatus.PENDING_SIGNATURES);
     const depositSafeTxnHash = depositTxnResult.transactions?.safeTxHash;
     expect(depositSafeTxnHash).toBeDefined();
 
     // second signer - confirms
-    const safeClientSigner2: SafeClient = await connectSafe(
-      baseSepoliaConfig.chain.rpc,
-      baseSepoliaConfig.safeWithMultiSig,
-      deployerAltPrivateKey,
-    );
-    const confirmTxnResult = await confirmTxn(safeClientSigner2, depositSafeTxnHash!);
-    logTxnResult(confirmTxnResult);
+    const safeClientSigner2: CredbullSafeClient = safeClientMultiSig(deployerAltPrivateKey);
+    const confirmTxnResult = await safeClientSigner2.confirmTxn(depositSafeTxnHash!);
 
     expect(confirmTxnResult?.status).toBe(SafeClientTxStatus.EXECUTED);
   });
@@ -49,16 +38,11 @@ test.describe('Test Safe Deposit', () => {
   //  ContractFunctionExecutionError: The contract function "execTransaction" reverted with the following reason:
   //     replacement transaction underpriced
   test.skip('Test Deposit - Single signer', async () => {
-    const safeClient: SafeClient = await connectSafe(
-      baseSepoliaConfig.chain.rpc,
-      baseSepoliaConfig.safeWithSingleSigner,
-      deployerPrivateKey,
-    );
+    const safeClient: CredbullSafeClient = safeClientSingleSigner(deployerPrivateKey);
 
-    const safeClientAddress = await safeClient.getAddress();
-    const depositTxnResult: SafeClientResult = await deposit(safeClient, safeClientAddress, depositAmountInWei);
+    const toAddress = safeClient.safeAddress;
+    const depositTxnResult: SafeClientResult = await safeClient.deposit(toAddress, depositAmountInWei);
 
-    logTxnResult(depositTxnResult);
     expect(depositTxnResult.status).toBe(SafeClientTxStatus.EXECUTED);
   });
 });

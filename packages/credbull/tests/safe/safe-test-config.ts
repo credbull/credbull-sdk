@@ -1,3 +1,4 @@
+import { CredbullSafeClient } from '@src/safe/credbull-safe-client';
 import { Address } from '@utils/rpc-types';
 import { ChainOptions, baseSepolia } from 'thirdweb/chains';
 
@@ -18,3 +19,11 @@ export const baseSepoliaConfig: SafeTestConfig = {
   safeWithSingleSigner: '0x40AD1Ae6EdBb0F6DD8837b2d52680A2046A0628b',
   safeWithMultiSig: '0xE8aD45571A667E7cF7E976842BDabE0Eb87D8F68',
 };
+
+export function safeClientSingleSigner(signerPrivateKey: string): CredbullSafeClient {
+  return new CredbullSafeClient(baseSepolia, baseSepoliaConfig.safeWithSingleSigner, signerPrivateKey);
+}
+
+export function safeClientMultiSig(signerPrivateKey: string): CredbullSafeClient {
+  return new CredbullSafeClient(baseSepolia, baseSepoliaConfig.safeWithMultiSig, signerPrivateKey);
+}
