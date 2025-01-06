@@ -7,8 +7,6 @@ import {
   totalSupply as totalSupplyExt,
 } from '@src/liquid-stone/extensions/v1.3/liquid-stone-generated';
 import { Address } from '@utils/rpc-types';
-import * as console from 'node:console';
-import * as process from 'node:process';
 import { sendTransaction, waitForReceipt } from 'thirdweb';
 import { totalSupply as totalSupplyByIdExt } from 'thirdweb/extensions/erc1155';
 import { Account } from 'thirdweb/wallets';
@@ -25,7 +23,7 @@ export class LiquidStone {
       throw Error('CredbullClient undefined!');
     }
     this._credbullClient = credbullClient;
-    this._address = process.env.CREDBULL_LIQUIDSTONE_ADDRESS as string; // TODO - add this to chain-config ?!?
+    this._address = credbullClient.chainConfig.liquidStone;
     this._liquidStoneContract = this._credbullClient.getContract(this._address);
   }
 

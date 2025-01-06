@@ -1,19 +1,20 @@
 import { expect, test } from '@playwright/test';
 import { CredbullClient } from '@src/credbull-client';
 import { LiquidStone } from '@src/liquid-stone/liquid-stone';
-import { testnetConfig } from '@utils/chain-config';
+import { ChainConfig, testnetConfig } from '@utils/chain-config';
 import { Address } from '@utils/rpc-types';
 import { toBigInt } from 'ethers';
 
 const userAddress: Address = process.env.USER_ADDRESS as string;
-const usdcAddress: Address = process.env.USDC_ADDRESS as string;
+
+const chainConfig: ChainConfig = testnetConfig;
 
 // TODO: connect to Plume testnet (custom RPC)
 // TODO: script out runbook deposits vs. redemptions
 // TODO: move this to an integration test suite
 test.describe('Test LiquidStone View functions', () => {
   const minExpectedAmount: number = 1;
-  const liquidStone: LiquidStone = new LiquidStone(new CredbullClient(testnetConfig));
+  const liquidStone: LiquidStone = new LiquidStone(new CredbullClient(chainConfig));
 
   test('Test total supply is >= 1', async () => {
     const depositId = toBigInt(38);
@@ -31,7 +32,7 @@ test.describe('Test LiquidStone View functions', () => {
 
   test('Test underlying asset is USDC', async () => {
     const liquidStoneAsset = await liquidStone.asset();
-    expect(liquidStoneAsset).toBe(usdcAddress);
+    expect(liquidStoneAsset).toBe(chainConfig.usdc);
   });
 
   test('Test scale is 10^6', async () => {
