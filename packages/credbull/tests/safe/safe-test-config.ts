@@ -1,29 +1,23 @@
 import { CredbullSafeClient } from '@src/safe/credbull-safe-client';
+import { ChainConfig, baseSepoliaConfig } from '@utils/chain-config';
 import { Address } from '@utils/rpc-types';
-import { ChainOptions, baseSepolia } from 'thirdweb/chains';
 
 interface SafeTestConfig {
-  chainName: string;
-  chain: Readonly<ChainOptions & { rpc: string }>;
-  usdc: Address;
-
+  chainConfig: ChainConfig;
   safeWithSingleSigner: Address;
   safeWithMultiSig: Address;
 }
 
-export const baseSepoliaConfig: SafeTestConfig = {
-  chainName: 'baseSepolia',
-  chain: baseSepolia,
-  usdc: '0x036CbD53842c5426634e7929541eC2318f3dCF7e', //https://base-sepolia.blockscout.com/address/0x036CbD53842c5426634e7929541eC2318f3dCF7e
-
+export const safeTestConfig: SafeTestConfig = {
+  chainConfig: baseSepoliaConfig,
   safeWithSingleSigner: '0x40AD1Ae6EdBb0F6DD8837b2d52680A2046A0628b',
   safeWithMultiSig: '0xE8aD45571A667E7cF7E976842BDabE0Eb87D8F68',
 };
 
 export function safeClientSingleSigner(signerPrivateKey: string): CredbullSafeClient {
-  return new CredbullSafeClient(baseSepolia, baseSepoliaConfig.safeWithSingleSigner, signerPrivateKey);
+  return new CredbullSafeClient(safeTestConfig.chainConfig, safeTestConfig.safeWithSingleSigner, signerPrivateKey);
 }
 
 export function safeClientMultiSig(signerPrivateKey: string): CredbullSafeClient {
-  return new CredbullSafeClient(baseSepolia, baseSepoliaConfig.safeWithMultiSig, signerPrivateKey);
+  return new CredbullSafeClient(safeTestConfig.chainConfig, safeTestConfig.safeWithMultiSig, signerPrivateKey);
 }

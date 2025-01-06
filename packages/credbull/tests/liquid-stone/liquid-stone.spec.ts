@@ -1,12 +1,7 @@
 import { expect, test } from '@playwright/test';
-import {
-  asset,
-  scale,
-  scaleUp,
-  totalAssets,
-  totalAssetsByOwner,
-  totalSupplyById,
-} from '@src/liquid-stone/liquid-stone';
+import { CredbullClient } from '@src/credbull-client';
+import { LiquidStone } from '@src/liquid-stone/liquid-stone';
+import { testnetConfig } from '@utils/chain-config';
 import { Address } from '@utils/rpc-types';
 import { toBigInt } from 'ethers';
 
@@ -18,33 +13,34 @@ const usdcAddress: Address = process.env.USDC_ADDRESS as string;
 // TODO: move this to an integration test suite
 test.describe('Test LiquidStone View functions', () => {
   const minExpectedAmount: number = 1;
+  const liquidStone: LiquidStone = new LiquidStone(new CredbullClient(testnetConfig));
 
   test('Test total supply is >= 1', async () => {
     const depositId = toBigInt(38);
-    const supply = await totalSupplyById(depositId);
+    const supply = await liquidStone.totalSupplyById(depositId);
     expect(supply).toBeGreaterThanOrEqual(minExpectedAmount);
   });
 
   test('Test total assets is >= 1', async () => {
-    const assets = await totalAssets();
+    const assets = await liquidStone.totalAssets();
     expect(assets).toBeGreaterThanOrEqual(minExpectedAmount);
 
-    const assetsByOwner = await totalAssetsByOwner(userAddress);
+    const assetsByOwner = await liquidStone.totalAssetsByOwner(userAddress);
     expect(assetsByOwner).toBeGreaterThanOrEqual(minExpectedAmount);
   });
 
   test('Test underlying asset is USDC', async () => {
-    const liquidStoneAsset = await asset();
+    const liquidStoneAsset = await liquidStone.asset();
     expect(liquidStoneAsset).toBe(usdcAddress);
   });
 
   test('Test scale is 10^6', async () => {
     const expectedScale = toBigInt(1_000_000);
 
-    const liquidStoneScale: bigint = await scale();
+    const liquidStoneScale: bigint = await liquidStone.scale();
     expect(liquidStoneScale).toBe(expectedScale);
 
     const amount = 25;
-    expect(await scaleUp(amount)).toBe(toBigInt(25) * expectedScale);
+    expect(await liquidStone.scaleUp(amount)).toBe(toBigInt(25) * expectedScale);
   });
 });

@@ -1,7 +1,7 @@
+import { ChainConfig } from '@utils/chain-config';
 import { loadConfig } from '@utils/config';
 import { Address } from '@utils/rpc-types';
 import { createThirdwebClient, getContract } from 'thirdweb';
-import { ChainOptions, arbitrumSepolia } from 'thirdweb/chains';
 import { ThirdwebClient } from 'thirdweb/src/client/client';
 import { privateKeyToAccount } from 'thirdweb/wallets';
 import { Account } from 'thirdweb/wallets';
@@ -9,19 +9,20 @@ import { Account } from 'thirdweb/wallets';
 loadConfig();
 
 export class CredbullClient {
-  private _chain: Readonly<ChainOptions & { rpc: string }>;
+  private _chainConfig: ChainConfig;
   private _thirdWebClient;
 
-  constructor(chain: Readonly<ChainOptions & { rpc: string }> | undefined) {
-    if (!chain) {
-      chain = arbitrumSepolia;
+  constructor(chainConfig: ChainConfig) {
+    if (!chainConfig) {
+      throw Error('Chain config undefined!');
     }
-    this._chain = chain;
+
+    this._chainConfig = chainConfig;
     this._thirdWebClient = this.createThirdWebClient();
   }
 
-  get chain(): Readonly<ChainOptions & { rpc: string }> {
-    return this._chain;
+  get chainConfig(): ChainConfig {
+    return this._chainConfig;
   }
 
   get thirdWebClient() {
@@ -32,7 +33,7 @@ export class CredbullClient {
     return getContract({
       client: this._thirdWebClient,
       address: contractAddress,
-      chain: this._chain,
+      chain: this._chainConfig.chain,
     });
   }
 

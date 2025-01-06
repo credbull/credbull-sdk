@@ -7,104 +7,103 @@ import {
   totalSupply as totalSupplyExt,
 } from '@src/liquid-stone/extensions/v1.3/liquid-stone-generated';
 import { Address } from '@utils/rpc-types';
+import * as console from 'node:console';
+import * as process from 'node:process';
 import { sendTransaction, waitForReceipt } from 'thirdweb';
 import { totalSupply as totalSupplyByIdExt } from 'thirdweb/extensions/erc1155';
 import { Account } from 'thirdweb/wallets';
 
 import { totalAssetsByOwner as extTotalAssetsByOwner } from './extensions/v1.3/totalAssetsByOwner';
 
-export const credbullClient = new CredbullClient(undefined);
+export class LiquidStone {
+  private _credbullClient: CredbullClient;
+  private _liquidStoneContract;
+  private _address: Address;
 
-export const liquidStoneContract = credbullClient.getContract(process.env.CREDBULL_LIQUIDSTONE_ADDRESS as string);
+  constructor(credbullClient: CredbullClient) {
+    if (!credbullClient) {
+      throw Error('CredbullClient undefined!');
+    }
+    this._credbullClient = credbullClient;
+    this._address = process.env.CREDBULL_LIQUIDSTONE_ADDRESS as string; // TODO - add this to chain-config ?!?
+    this._liquidStoneContract = this._credbullClient.getContract(this._address);
+  }
 
-// ============================== Write ==============================
-// TODO - move write operations into a class that has an associated account?  if not, need to pass account/wallet into every function
+  // ============================== Write ==============================
+  // TODO - move write operations into a class that has an associated account?  if not, need to pass account/wallet into every function
 
-// deposit into LiquidStone.  requires approval on underlying asset prior to deposit (see #approve)
-export async function deposit(owner: Account, depositAmount: number, receiver: Address) {
-  // scale the deposit to include decimals.  e.g. turn 10 USDC into 10_000_000 USDC with decimals
-  const amountScaled = await scaleUp(depositAmount);
+  // deposit into LiquidStone.  requires approval on underlying asset prior to deposit (see #approve)
+  async deposit(owner: Account, depositAmount: number, receiver: Address) {
+    // scale the deposit to include decimals.  e.g. turn 10 USDC into 10_000_000 USDC with decimals
+    const amountScaled = await this.scaleUp(depositAmount);
 
-  const depositTxn = depositExt({
-    contract: liquidStoneContract,
-    assets: amountScaled,
-    receiver: receiver,
-    controller: owner.address,
-  });
-
-  try {
-    const depositTxnResult = await sendTransaction({
-      account: owner, // the account initiating the transaction
-      transaction: depositTxn,
+    const depositTxn = depositExt({
+      contract: this._liquidStoneContract,
+      assets: amountScaled,
+      receiver: receiver,
+      controller: owner.address,
     });
 
-    return waitForReceipt(depositTxnResult);
-  } catch (error) {
-    console.error('Error sending deposit transaction:', error);
-    throw error;
+    try {
+      const depositTxnResult = await sendTransaction({
+        account: owner, // the account initiating the transaction
+        transaction: depositTxn,
+      });
+
+      return waitForReceipt(depositTxnResult);
+    } catch (error) {
+      console.error('Error sending deposit transaction:', error);
+      throw error;
+    }
+  }
+
+  // ============================== View / Read-only ==============================
+
+  get address(): Address {
+    return this._address;
+  }
+
+  asset() {
+    return assetExt({
+      contract: this._liquidStoneContract,
+    });
+  }
+
+  scale() {
+    return scaleExt({
+      contract: this._liquidStoneContract,
+    });
+  }
+
+  async scaleUp(amount: number) {
+    const scaleAmount = await this.scale();
+    const scaledAmount = Math.round(amount * Number(scaleAmount)); // Scale up
+    return BigInt(scaledAmount); // Convert the result to BigInt
+  }
+
+  totalSupplyById(liquidStoneTokenId: bigint) {
+    return totalSupplyByIdExt({
+      contract: this._liquidStoneContract,
+      id: liquidStoneTokenId,
+    });
+  }
+
+  totalSupply() {
+    return totalSupplyExt({
+      contract: this._liquidStoneContract,
+    });
+  }
+
+  totalAssetsByOwner(ownerAddress: string) {
+    return extTotalAssetsByOwner({
+      contract: this._liquidStoneContract,
+      owner: ownerAddress,
+    });
+  }
+
+  totalAssets() {
+    return totalAssetsExt({
+      contract: this._liquidStoneContract,
+    });
   }
 }
-
-// ============================== View / Read-only ==============================
-
-export async function asset() {
-  return assetExt({
-    contract: liquidStoneContract,
-  });
-}
-
-export async function scale() {
-  return scaleExt({
-    contract: liquidStoneContract,
-  });
-}
-
-export async function scaleUp(amount: number) {
-  const scaleAmount = await scale();
-  const scaledAmount = Math.round(amount * Number(scaleAmount)); // Scale up
-  return BigInt(scaledAmount); // Convert the result to BigInt
-}
-
-export async function totalSupplyById(liquidStoneTokenId: bigint) {
-  return totalSupplyByIdExt({
-    contract: liquidStoneContract,
-    id: liquidStoneTokenId,
-  });
-}
-
-export async function totalSupply() {
-  return totalSupplyExt({
-    contract: liquidStoneContract,
-  });
-}
-
-export async function totalAssetsByOwner(ownerAddress: string) {
-  return extTotalAssetsByOwner({
-    contract: liquidStoneContract,
-    owner: ownerAddress,
-  });
-}
-
-export async function totalAssets() {
-  return totalAssetsExt({
-    contract: liquidStoneContract,
-  });
-}
-
-async function main() {
-  console.log('Starting script...');
-
-  const assets = await totalAssets();
-  const supply = await totalSupply();
-
-  console.log(`Total Assets: ${assets.toLocaleString()}`);
-  console.log(`Total Supply: ${supply.toLocaleString()}`);
-
-  console.log('Script completed successfully.');
-}
-
-// Entry point: handle errors globally
-main().catch((err) => {
-  console.error('Error in script:', err);
-  process.exit(1);
-});

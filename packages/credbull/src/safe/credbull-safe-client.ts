@@ -1,32 +1,28 @@
 import { SafeClient, SafeClientResult, createSafeClient } from '@safe-global/sdk-starter-kit';
+import { ChainConfig } from '@utils/chain-config';
 import { loadConfig } from '@utils/config';
 import { Address, TransactionHash } from '@utils/rpc-types';
-import { ChainOptions, baseSepolia } from 'thirdweb/chains';
 import { Hex } from 'thirdweb/src/utils/encoding/hex';
 
 loadConfig();
 
 export class CredbullSafeClient {
-  private _chain: Readonly<ChainOptions & { rpc: string }>;
+  private _chainConfig: ChainConfig;
   private _safeAddress: Address;
   private _safeClient: Promise<SafeClient>;
 
-  constructor(
-    chain: Readonly<ChainOptions & { rpc: string }> | undefined,
-    safeAddress: Address,
-    signerPrivateKey: string,
-  ) {
-    if (!chain) {
-      chain = baseSepolia; // NB - notice default to BaseSepolia ! Safe Wallet UI not deployed on Arb Sepolia.
+  constructor(chainConfig: ChainConfig, safeAddress: Address, signerPrivateKey: string) {
+    if (!chainConfig) {
+      throw Error('Chain config undefined!');
     }
-    this._chain = chain;
+    this._chainConfig = chainConfig;
     this._safeAddress = safeAddress;
     this._safeClient = this.createSafeClient(signerPrivateKey);
   }
 
   createSafeClient(signerPrivateKey: string): Promise<SafeClient> {
     return createSafeClient({
-      provider: this._chain.rpc,
+      provider: this._chainConfig.chain.rpc,
       signer: signerPrivateKey,
       safeAddress: this._safeAddress,
     });
