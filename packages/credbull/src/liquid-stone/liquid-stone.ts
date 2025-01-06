@@ -1,4 +1,5 @@
 import { CredbullClient } from '@src/credbull-client';
+import { CredbullContract } from '@src/credbull-contract';
 import {
   asset as assetExt,
   deposit as depositExt,
@@ -13,18 +14,9 @@ import { Account } from 'thirdweb/wallets';
 
 import { totalAssetsByOwner as extTotalAssetsByOwner } from './extensions/v1.3/totalAssetsByOwner';
 
-export class LiquidStone {
-  private _credbullClient: CredbullClient;
-  private _liquidStoneContract;
-  private _address: Address;
-
+export class LiquidStone extends CredbullContract {
   constructor(credbullClient: CredbullClient) {
-    if (!credbullClient) {
-      throw Error('CredbullClient undefined!');
-    }
-    this._credbullClient = credbullClient;
-    this._address = credbullClient.chainConfig.liquidStone;
-    this._liquidStoneContract = this._credbullClient.getContract(this._address);
+    super(credbullClient, credbullClient.chainConfig.liquidStone);
   }
 
   // ============================== Write ==============================
@@ -36,7 +28,7 @@ export class LiquidStone {
     const amountScaled = await this.scaleUp(depositAmount);
 
     const depositTxn = depositExt({
-      contract: this._liquidStoneContract,
+      contract: this._contract,
       assets: amountScaled,
       receiver: receiver,
       controller: owner.address,
@@ -63,13 +55,13 @@ export class LiquidStone {
 
   asset() {
     return assetExt({
-      contract: this._liquidStoneContract,
+      contract: this._contract,
     });
   }
 
   scale() {
     return scaleExt({
-      contract: this._liquidStoneContract,
+      contract: this._contract,
     });
   }
 
@@ -81,27 +73,27 @@ export class LiquidStone {
 
   totalSupplyById(liquidStoneTokenId: bigint) {
     return totalSupplyByIdExt({
-      contract: this._liquidStoneContract,
+      contract: this._contract,
       id: liquidStoneTokenId,
     });
   }
 
   totalSupply() {
     return totalSupplyExt({
-      contract: this._liquidStoneContract,
+      contract: this._contract,
     });
   }
 
   totalAssetsByOwner(ownerAddress: string) {
     return extTotalAssetsByOwner({
-      contract: this._liquidStoneContract,
+      contract: this._contract,
       owner: ownerAddress,
     });
   }
 
   totalAssets() {
     return totalAssetsExt({
-      contract: this._liquidStoneContract,
+      contract: this._contract,
     });
   }
 }

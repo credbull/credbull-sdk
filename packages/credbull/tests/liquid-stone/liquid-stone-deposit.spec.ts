@@ -16,15 +16,14 @@ test.describe('Test LiquidStone Deposit & Redeem', () => {
   const depositAmount: number = 0.000001;
   const credbullClient = new CredbullClient(testnetConfig);
   const liquidStone: LiquidStone = new LiquidStone(credbullClient);
-  const erc20: ERC20 = new ERC20(credbullClient);
 
   const owner = credbullClient.createAccount(deployerPrivateKey);
 
   test('Test Deposit', async () => {
-    const liquidStoneAsset = await liquidStone.asset();
+    const erc20: ERC20 = new ERC20(credbullClient, await liquidStone.asset());
 
     // first, approve the deposit
-    const approveTxnReceipt = await erc20.approve(liquidStoneAsset, liquidStone.address, owner, depositAmount);
+    const approveTxnReceipt = await erc20.approve(liquidStone.address, owner, depositAmount);
     console.log(`Approve Txn Hash: ${approveTxnReceipt.transactionHash}`);
     expect(approveTxnReceipt.status).toBe('success');
 
