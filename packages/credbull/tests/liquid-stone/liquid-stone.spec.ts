@@ -9,15 +9,12 @@ const userAddress: Address = process.env.USER_ADDRESS as string;
 
 const chainConfig: ChainConfig = testnetConfig;
 
-// TODO: connect to Plume testnet (custom RPC)
-// TODO: script out runbook deposits vs. redemptions
-// TODO: move this to an integration test suite
 test.describe('Test LiquidStone View functions', () => {
   const minExpectedAmount: number = 1;
   const liquidStone: LiquidStone = new LiquidStone(new CredbullClient(chainConfig));
 
   test('Test total supply is >= 1', async () => {
-    const depositId = toBigInt(38);
+    const depositId = toBigInt(0);
     const supply = await liquidStone.totalSupplyById(depositId);
     expect(supply).toBeGreaterThanOrEqual(minExpectedAmount);
   });

@@ -58,4 +58,3 @@ export const plumeMainetConfig: ChainConfig = {
 };
 
 export const testnetConfig: ChainConfig = arbitrumSepoliaConfig;
-//export const testnetConfig: ChainConfig = plumeTestnetConfig;
