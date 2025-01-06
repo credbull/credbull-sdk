@@ -13,29 +13,25 @@ const fundChainConfig: FundConfig = polygonFundConfig;
 
 // Write & Simulate Operations, see https://portal.thirdweb.com/typescript/v5/transactions/send
 test.describe('Test LiquidStone Deposit & Redeem', () => {
-  const credbullClient = new CredbullClient(fundChainConfig);
-  const liquidStoneFund: ERC20 = new ERC20(credbullClient, fundChainConfig.liquidStoneFund);
+  const liquidStoneFund: ERC20 = new ERC20(new CredbullClient(fundChainConfig), fundChainConfig.liquidStoneFund);
 
   test('Test Name', async () => {
     const vaultName = await name({
       contract: liquidStoneFund.contract,
     });
 
-    console.log(`vaultName: ${vaultName}`);
-    expect(vaultName).toBeDefined();
+    expect(vaultName).toContain('BlackOpal');
   });
 
-  test('Test Total Supply - Generated', async () => {
+  test('Test Total Supply', async () => {
     const supply = await totalSupply({
       contract: liquidStoneFund.contract,
     });
-    console.log(`totalSupply: ${supply}`);
     expect(supply).toBeGreaterThanOrEqual(1);
   });
 
   test('Test Total Supply - ERC20', async () => {
     const supply = await liquidStoneFund.totalSupply();
-    console.log(`totalSupply: ${supply}`);
     expect(supply).toBeGreaterThanOrEqual(1);
   });
 

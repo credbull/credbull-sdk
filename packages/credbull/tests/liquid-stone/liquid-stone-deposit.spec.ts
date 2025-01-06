@@ -5,6 +5,7 @@ import { LiquidStone } from '@src/liquid-stone/liquid-stone';
 import { testnetConfig } from '@utils/chain-config';
 import { loadConfig } from '@utils/config';
 import { Address } from '@utils/rpc-types';
+import { simulateTransaction } from 'thirdweb';
 
 loadConfig();
 
@@ -18,6 +19,19 @@ test.describe('Test LiquidStone Deposit & Redeem', () => {
   const liquidStone: LiquidStone = new LiquidStone(credbullClient);
 
   const owner = credbullClient.createAccount(deployerPrivateKey);
+
+  test('Test Simulate Approval', async () => {
+    const erc20: ERC20 = new ERC20(credbullClient, testnetConfig.usdc);
+
+    const approveTxn = erc20.approveTxn(liquidStone.address, depositAmount);
+    const result = await simulateTransaction({
+      transaction: approveTxn,
+      account: owner,
+    });
+
+    // first, approve the deposit
+    console.log(`Result : ${result}`);
+  });
 
   test('Test Deposit', async () => {
     const erc20: ERC20 = new ERC20(credbullClient, await liquidStone.asset());

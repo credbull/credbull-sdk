@@ -39,6 +39,6 @@ test.describe('Test LiquidStone View functions', () => {
     expect(liquidStoneScale).toBe(expectedScale);
 
     const amount = 25;
-    expect(await liquidStone.scaleUp(amount)).toBe(toBigInt(25) * expectedScale);
+    expect(await liquidStone.scaleUp(amount)).toBe(toBigInt(amount) * expectedScale);
   });
 });
