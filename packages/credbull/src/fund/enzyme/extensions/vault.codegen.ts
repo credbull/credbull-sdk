@@ -7,6 +7,18 @@ import {
 } from 'thirdweb';
 
 /**
+ * ===========================================================================================================
+ * ========================================= Generated DO NOT MODIFY =========================================
+ * ===========================================================================================================
+ *
+ * Contract: Enzyme's VaultLib
+ * see: https://github.com/enzymefinance/sdk/blob/main/packages/environment/src/deployments/polygon.ts#L237C20-L237C62
+ *
+ * More details: https://portal.thirdweb.com/typescript/v5/extensions/generate
+ *
+ */
+
+/**
  * Contract events
  */
 
@@ -16,7 +28,7 @@ import {
  * @example
  * ```
  * import { getContractEvents } from "thirdweb";
- * import { accessorSetEvent } from "TODO";
+ * import { accessorSetEvent } from "VaultLib";
  *
  * const events = await getContractEvents({
  * contract,
@@ -47,7 +59,7 @@ export type ApprovalEventFilters = Partial<{
  * @example
  * ```
  * import { getContractEvents } from "thirdweb";
- * import { approvalEvent } from "TODO";
+ * import { approvalEvent } from "VaultLib";
  *
  * const events = await getContractEvents({
  * contract,
@@ -73,7 +85,7 @@ export function approvalEvent(filters: ApprovalEventFilters = {}) {
  * @example
  * ```
  * import { getContractEvents } from "thirdweb";
- * import { assetManagerAddedEvent } from "TODO";
+ * import { assetManagerAddedEvent } from "VaultLib";
  *
  * const events = await getContractEvents({
  * contract,
@@ -95,7 +107,7 @@ export function assetManagerAddedEvent() {
  * @example
  * ```
  * import { getContractEvents } from "thirdweb";
- * import { assetManagerRemovedEvent } from "TODO";
+ * import { assetManagerRemovedEvent } from "VaultLib";
  *
  * const events = await getContractEvents({
  * contract,
@@ -126,7 +138,7 @@ export type AssetWithdrawnEventFilters = Partial<{
  * @example
  * ```
  * import { getContractEvents } from "thirdweb";
- * import { assetWithdrawnEvent } from "TODO";
+ * import { assetWithdrawnEvent } from "VaultLib";
  *
  * const events = await getContractEvents({
  * contract,
@@ -160,7 +172,7 @@ export type EthReceivedEventFilters = Partial<{
  * @example
  * ```
  * import { getContractEvents } from "thirdweb";
- * import { ethReceivedEvent } from "TODO";
+ * import { ethReceivedEvent } from "VaultLib";
  *
  * const events = await getContractEvents({
  * contract,
@@ -198,7 +210,7 @@ export type ExternalPositionAddedEventFilters = Partial<{
  * @example
  * ```
  * import { getContractEvents } from "thirdweb";
- * import { externalPositionAddedEvent } from "TODO";
+ * import { externalPositionAddedEvent } from "VaultLib";
  *
  * const events = await getContractEvents({
  * contract,
@@ -236,7 +248,7 @@ export type ExternalPositionRemovedEventFilters = Partial<{
  * @example
  * ```
  * import { getContractEvents } from "thirdweb";
- * import { externalPositionRemovedEvent } from "TODO";
+ * import { externalPositionRemovedEvent } from "VaultLib";
  *
  * const events = await getContractEvents({
  * contract,
@@ -261,7 +273,7 @@ export function externalPositionRemovedEvent(filters: ExternalPositionRemovedEve
  * @example
  * ```
  * import { getContractEvents } from "thirdweb";
- * import { freelyTransferableSharesSetEvent } from "TODO";
+ * import { freelyTransferableSharesSetEvent } from "VaultLib";
  *
  * const events = await getContractEvents({
  * contract,
@@ -283,7 +295,7 @@ export function freelyTransferableSharesSetEvent() {
  * @example
  * ```
  * import { getContractEvents } from "thirdweb";
- * import { migratorSetEvent } from "TODO";
+ * import { migratorSetEvent } from "VaultLib";
  *
  * const events = await getContractEvents({
  * contract,
@@ -305,7 +317,7 @@ export function migratorSetEvent() {
  * @example
  * ```
  * import { getContractEvents } from "thirdweb";
- * import { nameSetEvent } from "TODO";
+ * import { nameSetEvent } from "VaultLib";
  *
  * const events = await getContractEvents({
  * contract,
@@ -340,7 +352,7 @@ export type NominatedOwnerRemovedEventFilters = Partial<{
  * @example
  * ```
  * import { getContractEvents } from "thirdweb";
- * import { nominatedOwnerRemovedEvent } from "TODO";
+ * import { nominatedOwnerRemovedEvent } from "VaultLib";
  *
  * const events = await getContractEvents({
  * contract,
@@ -378,7 +390,7 @@ export type NominatedOwnerSetEventFilters = Partial<{
  * @example
  * ```
  * import { getContractEvents } from "thirdweb";
- * import { nominatedOwnerSetEvent } from "TODO";
+ * import { nominatedOwnerSetEvent } from "VaultLib";
  *
  * const events = await getContractEvents({
  * contract,
@@ -403,7 +415,7 @@ export function nominatedOwnerSetEvent(filters: NominatedOwnerSetEventFilters = 
  * @example
  * ```
  * import { getContractEvents } from "thirdweb";
- * import { ownerSetEvent } from "TODO";
+ * import { ownerSetEvent } from "VaultLib";
  *
  * const events = await getContractEvents({
  * contract,
@@ -444,7 +456,7 @@ export type OwnershipTransferredEventFilters = Partial<{
  * @example
  * ```
  * import { getContractEvents } from "thirdweb";
- * import { ownershipTransferredEvent } from "TODO";
+ * import { ownershipTransferredEvent } from "VaultLib";
  *
  * const events = await getContractEvents({
  * contract,
@@ -470,7 +482,7 @@ export function ownershipTransferredEvent(filters: OwnershipTransferredEventFilt
  * @example
  * ```
  * import { getContractEvents } from "thirdweb";
- * import { protocolFeePaidInSharesEvent } from "TODO";
+ * import { protocolFeePaidInSharesEvent } from "VaultLib";
  *
  * const events = await getContractEvents({
  * contract,
@@ -492,7 +504,7 @@ export function protocolFeePaidInSharesEvent() {
  * @example
  * ```
  * import { getContractEvents } from "thirdweb";
- * import { protocolFeeSharesBoughtBackEvent } from "TODO";
+ * import { protocolFeeSharesBoughtBackEvent } from "VaultLib";
  *
  * const events = await getContractEvents({
  * contract,
@@ -514,7 +526,7 @@ export function protocolFeeSharesBoughtBackEvent() {
  * @example
  * ```
  * import { getContractEvents } from "thirdweb";
- * import { symbolSetEvent } from "TODO";
+ * import { symbolSetEvent } from "VaultLib";
  *
  * const events = await getContractEvents({
  * contract,
@@ -536,7 +548,7 @@ export function symbolSetEvent() {
  * @example
  * ```
  * import { getContractEvents } from "thirdweb";
- * import { trackedAssetAddedEvent } from "TODO";
+ * import { trackedAssetAddedEvent } from "VaultLib";
  *
  * const events = await getContractEvents({
  * contract,
@@ -558,7 +570,7 @@ export function trackedAssetAddedEvent() {
  * @example
  * ```
  * import { getContractEvents } from "thirdweb";
- * import { trackedAssetRemovedEvent } from "TODO";
+ * import { trackedAssetRemovedEvent } from "VaultLib";
  *
  * const events = await getContractEvents({
  * contract,
@@ -589,7 +601,7 @@ export type TransferEventFilters = Partial<{
  * @example
  * ```
  * import { getContractEvents } from "thirdweb";
- * import { transferEvent } from "TODO";
+ * import { transferEvent } from "VaultLib";
  *
  * const events = await getContractEvents({
  * contract,
@@ -615,7 +627,7 @@ export function transferEvent(filters: TransferEventFilters = {}) {
  * @example
  * ```
  * import { getContractEvents } from "thirdweb";
- * import { vaultLibSetEvent } from "TODO";
+ * import { vaultLibSetEvent } from "VaultLib";
  *
  * const events = await getContractEvents({
  * contract,
@@ -649,7 +661,7 @@ export type AllowanceParams = {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { allowance } from "TODO";
+ * import { allowance } from "VaultLib";
  *
  * const result = await allowance({
  *  owner: ...,
@@ -700,7 +712,7 @@ export type BalanceOfParams = {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { balanceOf } from "TODO";
+ * import { balanceOf } from "VaultLib";
  *
  * const result = await balanceOf({
  *  account: ...,
@@ -745,7 +757,7 @@ export type CanManageAssetsParams = {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { canManageAssets } from "TODO";
+ * import { canManageAssets } from "VaultLib";
  *
  * const result = await canManageAssets({
  *  who: ...,
@@ -790,7 +802,7 @@ export type CanMigrateParams = {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { canMigrate } from "TODO";
+ * import { canMigrate } from "VaultLib";
  *
  * const result = await canMigrate({
  *  who: ...,
@@ -835,7 +847,7 @@ export type CanRelayCallsParams = {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { canRelayCalls } from "TODO";
+ * import { canRelayCalls } from "VaultLib";
  *
  * const result = await canRelayCalls({
  *  who: ...,
@@ -873,7 +885,7 @@ export async function canRelayCalls(options: BaseTransactionOptions<CanRelayCall
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { decimals } from "TODO";
+ * import { decimals } from "VaultLib";
  *
  * const result = await decimals();
  *
@@ -903,7 +915,7 @@ export async function decimals(options: BaseTransactionOptions) {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { getAccessor } from "TODO";
+ * import { getAccessor } from "VaultLib";
  *
  * const result = await getAccessor();
  *
@@ -933,7 +945,7 @@ export async function getAccessor(options: BaseTransactionOptions) {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { getActiveExternalPositions } from "TODO";
+ * import { getActiveExternalPositions } from "VaultLib";
  *
  * const result = await getActiveExternalPositions();
  *
@@ -963,7 +975,7 @@ export async function getActiveExternalPositions(options: BaseTransactionOptions
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { getCreator } from "TODO";
+ * import { getCreator } from "VaultLib";
  *
  * const result = await getCreator();
  *
@@ -1000,7 +1012,7 @@ export type GetExternalPositionLibForTypeParams = {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { getExternalPositionLibForType } from "TODO";
+ * import { getExternalPositionLibForType } from "VaultLib";
  *
  * const result = await getExternalPositionLibForType({
  *  typeId: ...,
@@ -1040,7 +1052,7 @@ export async function getExternalPositionLibForType(
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { getExternalPositionManager } from "TODO";
+ * import { getExternalPositionManager } from "VaultLib";
  *
  * const result = await getExternalPositionManager();
  *
@@ -1070,7 +1082,7 @@ export async function getExternalPositionManager(options: BaseTransactionOptions
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { getFundDeployer } from "TODO";
+ * import { getFundDeployer } from "VaultLib";
  *
  * const result = await getFundDeployer();
  *
@@ -1100,7 +1112,7 @@ export async function getFundDeployer(options: BaseTransactionOptions) {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { getGasRelayPaymasterFactory } from "TODO";
+ * import { getGasRelayPaymasterFactory } from "VaultLib";
  *
  * const result = await getGasRelayPaymasterFactory();
  *
@@ -1130,7 +1142,7 @@ export async function getGasRelayPaymasterFactory(options: BaseTransactionOption
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { getGasRelayTrustedForwarder } from "TODO";
+ * import { getGasRelayTrustedForwarder } from "VaultLib";
  *
  * const result = await getGasRelayTrustedForwarder();
  *
@@ -1160,7 +1172,7 @@ export async function getGasRelayTrustedForwarder(options: BaseTransactionOption
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { getMigrator } from "TODO";
+ * import { getMigrator } from "VaultLib";
  *
  * const result = await getMigrator();
  *
@@ -1190,7 +1202,7 @@ export async function getMigrator(options: BaseTransactionOptions) {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { getMlnBurner } from "TODO";
+ * import { getMlnBurner } from "VaultLib";
  *
  * const result = await getMlnBurner();
  *
@@ -1220,7 +1232,7 @@ export async function getMlnBurner(options: BaseTransactionOptions) {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { getMlnToken } from "TODO";
+ * import { getMlnToken } from "VaultLib";
  *
  * const result = await getMlnToken();
  *
@@ -1250,7 +1262,7 @@ export async function getMlnToken(options: BaseTransactionOptions) {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { getNominatedOwner } from "TODO";
+ * import { getNominatedOwner } from "VaultLib";
  *
  * const result = await getNominatedOwner();
  *
@@ -1280,7 +1292,7 @@ export async function getNominatedOwner(options: BaseTransactionOptions) {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { getOwner } from "TODO";
+ * import { getOwner } from "VaultLib";
  *
  * const result = await getOwner();
  *
@@ -1310,7 +1322,7 @@ export async function getOwner(options: BaseTransactionOptions) {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { getPositionsLimit } from "TODO";
+ * import { getPositionsLimit } from "VaultLib";
  *
  * const result = await getPositionsLimit();
  *
@@ -1340,7 +1352,7 @@ export async function getPositionsLimit(options: BaseTransactionOptions) {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { getProtocolFeeReserve } from "TODO";
+ * import { getProtocolFeeReserve } from "VaultLib";
  *
  * const result = await getProtocolFeeReserve();
  *
@@ -1370,7 +1382,7 @@ export async function getProtocolFeeReserve(options: BaseTransactionOptions) {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { getProtocolFeeTracker } from "TODO";
+ * import { getProtocolFeeTracker } from "VaultLib";
  *
  * const result = await getProtocolFeeTracker();
  *
@@ -1400,7 +1412,7 @@ export async function getProtocolFeeTracker(options: BaseTransactionOptions) {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { getTrackedAssets } from "TODO";
+ * import { getTrackedAssets } from "VaultLib";
  *
  * const result = await getTrackedAssets();
  *
@@ -1430,7 +1442,7 @@ export async function getTrackedAssets(options: BaseTransactionOptions) {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { getVaultLib } from "TODO";
+ * import { getVaultLib } from "VaultLib";
  *
  * const result = await getVaultLib();
  *
@@ -1460,7 +1472,7 @@ export async function getVaultLib(options: BaseTransactionOptions) {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { getWethToken } from "TODO";
+ * import { getWethToken } from "VaultLib";
  *
  * const result = await getWethToken();
  *
@@ -1501,7 +1513,7 @@ export type IsActiveExternalPositionParams = {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { isActiveExternalPosition } from "TODO";
+ * import { isActiveExternalPosition } from "VaultLib";
  *
  * const result = await isActiveExternalPosition({
  *  externalPosition: ...,
@@ -1546,7 +1558,7 @@ export type IsAssetManagerParams = {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { isAssetManager } from "TODO";
+ * import { isAssetManager } from "VaultLib";
  *
  * const result = await isAssetManager({
  *  who: ...,
@@ -1591,7 +1603,7 @@ export type IsTrackedAssetParams = {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { isTrackedAsset } from "TODO";
+ * import { isTrackedAsset } from "VaultLib";
  *
  * const result = await isTrackedAsset({
  *  asset: ...,
@@ -1629,7 +1641,7 @@ export async function isTrackedAsset(options: BaseTransactionOptions<IsTrackedAs
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { name } from "TODO";
+ * import { name } from "VaultLib";
  *
  * const result = await name();
  *
@@ -1659,7 +1671,7 @@ export async function name(options: BaseTransactionOptions) {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { proxiableUUID } from "TODO";
+ * import { proxiableUUID } from "VaultLib";
  *
  * const result = await proxiableUUID();
  *
@@ -1689,7 +1701,7 @@ export async function proxiableUUID(options: BaseTransactionOptions) {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { sharesAreFreelyTransferable } from "TODO";
+ * import { sharesAreFreelyTransferable } from "VaultLib";
  *
  * const result = await sharesAreFreelyTransferable();
  *
@@ -1719,7 +1731,7 @@ export async function sharesAreFreelyTransferable(options: BaseTransactionOption
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { symbol } from "TODO";
+ * import { symbol } from "VaultLib";
  *
  * const result = await symbol();
  *
@@ -1749,7 +1761,7 @@ export async function symbol(options: BaseTransactionOptions) {
  * @returns The parsed result of the function call.
  * @example
  * ```
- * import { totalSupply } from "TODO";
+ * import { totalSupply } from "VaultLib";
  *
  * const result = await totalSupply();
  *
@@ -1790,7 +1802,7 @@ export type AddAssetManagersParams = {
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { addAssetManagers } from "TODO";
+ * import { addAssetManagers } from "VaultLib";
  *
  * const transaction = addAssetManagers({
  *  managers: ...,
@@ -1832,7 +1844,7 @@ export type AddTrackedAssetParams = {
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { addTrackedAsset } from "TODO";
+ * import { addTrackedAsset } from "VaultLib";
  *
  * const transaction = addTrackedAsset({
  *  asset: ...,
@@ -1875,7 +1887,7 @@ export type ApproveParams = {
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { approve } from "TODO";
+ * import { approve } from "VaultLib";
  *
  * const transaction = approve({
  *  spender: ...,
@@ -1930,7 +1942,7 @@ export type BurnSharesParams = {
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { burnShares } from "TODO";
+ * import { burnShares } from "VaultLib";
  *
  * const transaction = burnShares({
  *  target: ...,
@@ -1980,7 +1992,7 @@ export type BuyBackProtocolFeeSharesParams = {
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { buyBackProtocolFeeShares } from "TODO";
+ * import { buyBackProtocolFeeShares } from "VaultLib";
  *
  * const transaction = buyBackProtocolFeeShares({
  *  sharesAmount: ...,
@@ -2035,7 +2047,7 @@ export type CallOnContractParams = {
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { callOnContract } from "TODO";
+ * import { callOnContract } from "VaultLib";
  *
  * const transaction = callOnContract({
  *  contract: ...,
@@ -2082,7 +2094,7 @@ export function callOnContract(options: BaseTransactionOptions<CallOnContractPar
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { claimOwnership } from "TODO";
+ * import { claimOwnership } from "VaultLib";
  *
  * const transaction = claimOwnership();
  *
@@ -2114,7 +2126,7 @@ export type InitParams = {
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { init } from "TODO";
+ * import { init } from "VaultLib";
  *
  * const transaction = init({
  *  owner: ...,
@@ -2169,7 +2181,7 @@ export type MintSharesParams = {
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { mintShares } from "TODO";
+ * import { mintShares } from "VaultLib";
  *
  * const transaction = mintShares({
  *  target: ...,
@@ -2210,7 +2222,7 @@ export function mintShares(options: BaseTransactionOptions<MintSharesParams>) {
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { payProtocolFee } from "TODO";
+ * import { payProtocolFee } from "VaultLib";
  *
  * const transaction = payProtocolFee();
  *
@@ -2241,7 +2253,7 @@ export type ReceiveValidatedVaultActionParams = {
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { receiveValidatedVaultAction } from "TODO";
+ * import { receiveValidatedVaultAction } from "VaultLib";
  *
  * const transaction = receiveValidatedVaultAction({
  *  action: ...,
@@ -2289,7 +2301,7 @@ export type RemoveAssetManagersParams = {
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { removeAssetManagers } from "TODO";
+ * import { removeAssetManagers } from "VaultLib";
  *
  * const transaction = removeAssetManagers({
  *  managers: ...,
@@ -2324,7 +2336,7 @@ export function removeAssetManagers(options: BaseTransactionOptions<RemoveAssetM
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { removeNominatedOwner } from "TODO";
+ * import { removeNominatedOwner } from "VaultLib";
  *
  * const transaction = removeNominatedOwner();
  *
@@ -2354,7 +2366,7 @@ export type SetAccessorParams = {
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { setAccessor } from "TODO";
+ * import { setAccessor } from "VaultLib";
  *
  * const transaction = setAccessor({
  *  nextAccessor: ...,
@@ -2396,7 +2408,7 @@ export type SetAccessorForFundReconfigurationParams = {
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { setAccessorForFundReconfiguration } from "TODO";
+ * import { setAccessorForFundReconfiguration } from "VaultLib";
  *
  * const transaction = setAccessorForFundReconfiguration({
  *  nextAccessor: ...,
@@ -2433,7 +2445,7 @@ export function setAccessorForFundReconfiguration(
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { setFreelyTransferableShares } from "TODO";
+ * import { setFreelyTransferableShares } from "VaultLib";
  *
  * const transaction = setFreelyTransferableShares();
  *
@@ -2463,7 +2475,7 @@ export type SetMigratorParams = {
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { setMigrator } from "TODO";
+ * import { setMigrator } from "VaultLib";
  *
  * const transaction = setMigrator({
  *  nextMigrator: ...,
@@ -2505,7 +2517,7 @@ export type SetNameParams = {
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { setName } from "TODO";
+ * import { setName } from "VaultLib";
  *
  * const transaction = setName({
  *  nextName: ...,
@@ -2551,7 +2563,7 @@ export type SetNominatedOwnerParams = {
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { setNominatedOwner } from "TODO";
+ * import { setNominatedOwner } from "VaultLib";
  *
  * const transaction = setNominatedOwner({
  *  nextNominatedOwner: ...,
@@ -2593,7 +2605,7 @@ export type SetSymbolParams = {
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { setSymbol } from "TODO";
+ * import { setSymbol } from "VaultLib";
  *
  * const transaction = setSymbol({
  *  nextSymbol: ...,
@@ -2635,7 +2647,7 @@ export type SetVaultLibParams = {
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { setVaultLib } from "TODO";
+ * import { setVaultLib } from "VaultLib";
  *
  * const transaction = setVaultLib({
  *  nextVaultLib: ...,
@@ -2678,7 +2690,7 @@ export type TransferParams = {
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { transfer } from "TODO";
+ * import { transfer } from "VaultLib";
  *
  * const transaction = transfer({
  *  recipient: ...,
@@ -2734,7 +2746,7 @@ export type TransferFromParams = {
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { transferFrom } from "TODO";
+ * import { transferFrom } from "VaultLib";
  *
  * const transaction = transferFrom({
  *  sender: ...,
@@ -2796,7 +2808,7 @@ export type TransferSharesParams = {
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { transferShares } from "TODO";
+ * import { transferShares } from "VaultLib";
  *
  * const transaction = transferShares({
  *  from: ...,
@@ -2852,7 +2864,7 @@ export type WithdrawAssetToParams = {
  * @returns A prepared transaction object.
  * @example
  * ```
- * import { withdrawAssetTo } from "TODO";
+ * import { withdrawAssetTo } from "VaultLib";
  *
  * const transaction = withdrawAssetTo({
  *  asset: ...,

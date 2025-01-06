@@ -6,7 +6,7 @@ import {
   scale as scaleExt,
   totalAssets as totalAssetsExt,
   totalSupply as totalSupplyExt,
-} from '@src/liquid-stone/extensions/v1.3/liquid-stone-generated';
+} from '@src/liquid-stone/extensions/v1.3/liquid-stone.codegen';
 import { Address } from '@utils/rpc-types';
 import { sendTransaction, waitForReceipt } from 'thirdweb';
 import { totalSupply as totalSupplyByIdExt } from 'thirdweb/extensions/erc1155';

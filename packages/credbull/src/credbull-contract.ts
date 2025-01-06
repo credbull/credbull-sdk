@@ -1,6 +1,6 @@
 import { CredbullClient } from '@src/credbull-client';
 import { Address } from '@utils/rpc-types';
-import { ThirdwebContract } from 'thirdweb';
+import { ThirdwebContract, getContract } from 'thirdweb';
 
 export class CredbullContract {
   protected _credbullClient: CredbullClient;
@@ -17,7 +17,7 @@ export class CredbullContract {
 
     this._credbullClient = credbullClient;
     this._address = address;
-    this._contract = this._credbullClient.getContract(this._address);
+    this._contract = this.getContract(this._address);
   }
 
   get credbullClient(): CredbullClient {
@@ -30,5 +30,13 @@ export class CredbullContract {
 
   get contract(): ThirdwebContract {
     return this._contract;
+  }
+
+  private getContract(contractAddress: Address): ThirdwebContract {
+    return getContract({
+      client: this._credbullClient.thirdWebClient,
+      address: contractAddress,
+      chain: this._credbullClient.chainConfig.chain,
+    });
   }
 }

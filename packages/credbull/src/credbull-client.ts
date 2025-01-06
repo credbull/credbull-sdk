@@ -1,7 +1,6 @@
 import { ChainConfig } from '@utils/chain-config';
 import { loadConfig } from '@utils/config';
-import { Address } from '@utils/rpc-types';
-import { createThirdwebClient, getContract } from 'thirdweb';
+import { createThirdwebClient } from 'thirdweb';
 import { ThirdwebClient } from 'thirdweb/src/client/client';
 import { privateKeyToAccount } from 'thirdweb/wallets';
 import { Account } from 'thirdweb/wallets';
@@ -27,14 +26,6 @@ export class CredbullClient {
 
   get thirdWebClient() {
     return this._thirdWebClient;
-  }
-
-  getContract(contractAddress: Address) {
-    return getContract({
-      client: this._thirdWebClient,
-      address: contractAddress,
-      chain: this._chainConfig.chain,
-    });
   }
 
   createThirdWebClient(): ThirdwebClient {
