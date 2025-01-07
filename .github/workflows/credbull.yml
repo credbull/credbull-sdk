@@ -1,0 +1,44 @@
+name: 
+
+defaults:
+  run:
+    working-directory: .
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "main*"
+      - "dev/**"
+    paths:
+      - "packages/credbull/**"
+      - ".github/workflows/credbull.yml"
+
+jobs:
+  sdk-int-test:
+    runs-on: ubuntu-latest
+    environment: local
+
+    steps:
+      - name: Checkout credbull-sdk
+        uses: actions/checkout@v4
+
+      - name: Install yarn
+        run: |
+          corepack prepare yarn@stable --activate
+          npm install -g yarn
+
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "yarn"
+
+      - name: Install Project Dependencies
+        run: yarn install
+
+      - name: Setup Local Environment
+        run: find . -type f -name ".env*.sample" -exec sh -c 'F={}; cp -nv $F $(dirname $F)/$(basename $F .sample)' \;
+
+      - name: Run SDK Integration Tests
+        run: yarn test
