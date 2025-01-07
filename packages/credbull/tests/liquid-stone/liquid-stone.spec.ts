@@ -6,6 +6,9 @@ import { Address } from '@utils/rpc-types';
 import { toBigInt } from 'ethers';
 
 const userAddress: Address = process.env.USER_ADDRESS as string;
+if (!userAddress) {
+  throw Error('User address required.');
+}
 
 const chainConfig: ChainConfig = testnetConfig;
 
