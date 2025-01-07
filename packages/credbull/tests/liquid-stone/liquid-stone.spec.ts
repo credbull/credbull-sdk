@@ -57,23 +57,10 @@ test.describe('Test LiquidStone view functions - User Specific', () => {
 
   test('Test Amount to Invest (requestRedeems[periodX] - deposits[periodX])', async () => {
     const depositPeriod = toBigInt(2);
+    const depositAmount: bigint = await liquidStone.totalSupplyById(depositPeriod);
 
-    // get the deposits
-    const depoositsAtValuePeriod = await liquidStone.totalSupplyById(depositPeriod);
-    console.log(depoositsAtValuePeriod);
+    const sharesToInvest = await liquidStone.depositSharesToInvest(userAddress, depositPeriod);
 
-    // TODO - calc the requestId / redeemPeriod from the noticePeeriod
-    const redeemPeriod = depositPeriod + (await liquidStone.noticePeriod());
-
-    // TODO - need to loop through all depositors or use a user-agnostic function
-    // get the unlock request amount
-    const unlockRequestAmountAtValuePeriod = await liquidStone.unlockRequests(userAddress, redeemPeriod);
-    console.log(unlockRequestAmountAtValuePeriod);
-
-    // TODO - calc unlockRequestAssetsAmount by converting unlockRequests in shares to assets and then totaling
-
-    // TODO - calc difference of unlockRequestAssetsAmount - depositValue
-
-    // assert this is > 0
+    expect(sharesToInvest).toBeLessThan(depositAmount);
   });
 });

@@ -29,16 +29,16 @@ export class CredbullSafeClient {
   }
 
   // send 1 signer txn https://docs.safe.global/sdk/starter-kit/guides/send-transactions
-  deposit(to: Address, amountInWei: string) {
+  deposit(to: Address, amountInWei: string): Promise<SafeClientResult> {
     return this.sendTxn(to, amountInWei, '0x');
   }
 
-  call(to: Address, txnData: Hex) {
+  call(to: Address, txnData: Hex): Promise<SafeClientResult> {
     return this.sendTxn(to, '0', txnData);
   }
 
   // TODO - change amountInWei to be a number type
-  async sendTxn(to: Address, amountInWei: string, txnData: Hex) {
+  async sendTxn(to: Address, amountInWei: string, txnData: Hex): Promise<SafeClientResult> {
     const transactions = [
       {
         to: to,
@@ -58,7 +58,7 @@ export class CredbullSafeClient {
     return txnResult;
   }
 
-  async confirmTxn(safeTxHash: TransactionHash) {
+  async confirmTxn(safeTxHash: TransactionHash): Promise<SafeClientResult> {
     const safeClient = await this._safeClient;
 
     const pendingTransactions = await safeClient.getPendingTransactions();
@@ -71,6 +71,8 @@ export class CredbullSafeClient {
         return safeClient.confirm({ safeTxHash });
       }
     }
+
+    throw Error(`Safe transaction ${safeTxHash} not found!`);
   }
 
   logTxnResult(depositTxnResult: SafeClientResult | undefined) {

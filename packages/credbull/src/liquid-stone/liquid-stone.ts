@@ -2,6 +2,7 @@ import { CredbullClient } from '@src/credbull-client';
 import { CredbullContract } from '@src/credbull-contract';
 import {
   asset as assetExt,
+  convertToAssetsForDepositPeriod as convertToAssetsForDepositPeriodExt,
   currentPeriod as currentPeriodExt,
   deposit as depositExt,
   noticePeriod as noticePeriodExt,
@@ -12,6 +13,7 @@ import {
   unlockRequests as unlockRequestsExt,
 } from '@src/liquid-stone/extensions/v1.3/liquid-stone.codegen';
 import { Address } from '@utils/rpc-types';
+import { toBigInt } from 'ethers';
 import { sendTransaction, waitForReceipt } from 'thirdweb';
 import { totalSupply as totalSupplyByIdExt } from 'thirdweb/extensions/erc1155';
 import { TransactionReceipt } from 'thirdweb/src/transaction/types';
@@ -25,7 +27,6 @@ export class LiquidStone extends CredbullContract {
   }
 
   // ============================== Write ==============================
-  // TODO - move write operations into a class that has an associated account?  if not, need to pass account/wallet into every function
 
   // PRE-REQUISITE: requires approval on underlying asset (e.g. USDC) prior to deposit (see #approve)
   async deposit(owner: Account, depositAmount: number, receiver: Address): Promise<TransactionReceipt> {
@@ -88,6 +89,15 @@ export class LiquidStone extends CredbullContract {
     });
   }
 
+  convertToAssets(shares: bigint, depositPeriod: bigint, redeemPeriod: bigint): Promise<bigint> {
+    return convertToAssetsForDepositPeriodExt({
+      contract: this._contract,
+      shares,
+      depositPeriod,
+      redeemPeriod,
+    });
+  }
+
   currentPeriod(): Promise<bigint> {
     return currentPeriodExt({
       contract: this._contract,
@@ -118,11 +128,38 @@ export class LiquidStone extends CredbullContract {
     });
   }
 
-  totalAssetsByOwner(ownerAddress: string): Promise<bigint> {
+  totalAssetsByOwner(ownerAddress: Address): Promise<bigint> {
     return extTotalAssetsByOwner({
       contract: this._contract,
       owner: ownerAddress,
     });
+  }
+
+  // calculate the shares to invest (calculate deposits - requested redeems)
+  async depositSharesToInvest(ownerAddress: Address, depositPeriod: bigint) {
+    // totalSupply(id) returns shares, but at deposit period shares = assets
+    const depositAmount: bigint = await this.totalSupplyById(depositPeriod);
+
+    const redeemPeriod = depositPeriod + (await this.noticePeriod());
+    const totalRedeemAmount = await this.totalRedeemAssetAmount(ownerAddress, redeemPeriod);
+
+    return depositAmount - totalRedeemAmount;
+  }
+
+  async totalRedeemAssetAmount(ownerAddress: Address, redeemPeriod: bigint) {
+    // TODO - need to loop through all depositors or use a user-agnostic function
+    const unlockRequests: { depositPeriods: bigint[]; amounts: bigint[] } = await this.unlockRequests(
+      ownerAddress,
+      redeemPeriod,
+    );
+
+    let totalRedeemAmount = toBigInt(0);
+    for (const [index, depositPeriod] of unlockRequests.depositPeriods.entries()) {
+      const redeemSharesAtPeriod = unlockRequests.amounts[index];
+      const redeemAmountsAtPeriod = await this.convertToAssets(redeemSharesAtPeriod, depositPeriod, redeemPeriod);
+      totalRedeemAmount += redeemAmountsAtPeriod;
+    }
+    return totalRedeemAmount;
   }
 
   totalSupply(): Promise<bigint> {
@@ -138,11 +175,20 @@ export class LiquidStone extends CredbullContract {
     });
   }
 
-  async unlockRequests(ownerAddress: Address, redeemPeriod: bigint) {
-    return unlockRequestsExt({
-      contract: this._contract,
-      owner: ownerAddress,
-      requestId: redeemPeriod,
-    });
+  async unlockRequests(
+    ownerAddress: Address,
+    redeemPeriod: bigint,
+  ): Promise<{ depositPeriods: bigint[]; amounts: bigint[] }> {
+    const [readonlyDepositPeriods, readonlyAmounts]: readonly [readonly bigint[], readonly bigint[]] =
+      await unlockRequestsExt({
+        contract: this._contract,
+        owner: ownerAddress,
+        requestId: redeemPeriod,
+      });
+
+    const depositPeriods = [...readonlyDepositPeriods];
+    const amounts = [...readonlyAmounts];
+
+    return { depositPeriods, amounts };
   }
 }

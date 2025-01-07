@@ -8,7 +8,6 @@ import { name, totalSupply } from '@src/fund/enzyme/extensions/vault.codegen';
 import { loadConfig } from '@utils/config';
 import { Address } from '@utils/rpc-types';
 import { simulateTransaction } from 'thirdweb';
-import { totalAssets } from 'thirdweb/extensions/erc4626';
 
 loadConfig();
 
@@ -38,21 +37,6 @@ test.describe('Test LiquidStone Fund Read', () => {
   test('Test Total Supply - ERC20', async () => {
     const supply = await liquidStoneFund.totalSupply();
     expect(supply).toBeGreaterThanOrEqual(1);
-  });
-
-  // TODO - reverts - Enzyme not an ERC4626 ?!?!
-  test.skip('Test Total Assets', async () => {
-    try {
-      const assets = await totalAssets({
-        contract: liquidStoneFund.contract,
-      });
-
-      console.log(`totalAssets: ${totalAssets}`);
-      expect(assets).toBeGreaterThanOrEqual(1);
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
   });
 });
 
