@@ -75,28 +75,18 @@ test.describe('Test LiquidStone view functions - User Specific', () => {
   });
 
   test('Test Unlock Requests by Owner is empty', async () => {
-    const endPeriod = await liquidStone.minUnlockPeriod();
-    for (let period = 0; period <= Number(endPeriod); period++) {
-      const unlockRequests: { depositPeriods: bigint[]; amounts: bigint[] } = await liquidStone.unlockRequests(
-        userAddress,
-        toBigInt(period),
-      );
-
-      if (unlockRequests.depositPeriods.length > 0) {
-        console.log(`Found unlock at redeemPeriod: ${period}!`);
-        console.log(unlockRequests);
-      }
-    }
+    const unlockRequests = await liquidStone.unlockRequestsAll(userAddress);
+    expect(unlockRequests.length).toBeGreaterThanOrEqual(minExpectedAmount);
   });
 
   test('Test Amount to Invest (requestRedeems[periodX] - deposits[periodX])', async () => {
     const period = toBigInt(2);
 
     const depositAmount: bigint = await liquidStone.totalSupplyById(period);
-    const sharesToInvest = await liquidStone.depositSharesToInvest(userAddress, period);
+    const amountToInvest = await liquidStone.amountToInvest(userAddress, period);
 
-    console.log(`Shares to invest: ${sharesToInvest}`);
+    console.log(`Amount to invest: ${amountToInvest}`);
 
-    expect(sharesToInvest).toBeLessThan(depositAmount);
+    expect(amountToInvest).toBeLessThan(depositAmount);
   });
 });

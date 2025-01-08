@@ -151,6 +151,11 @@ export class LiquidStone extends CredbullContract {
     return { depositPeriods, shares };
   }
 
+  async scaleDown(amount: number): Promise<number> {
+    const scaleAmount = await this.scale();
+    return amount / Number(scaleAmount);
+  }
+
   async scaleUp(amount: number): Promise<bigint> {
     const scaleAmount = await this.scale();
     const scaledAmount = Math.round(amount * Number(scaleAmount)); // Scale up
@@ -176,14 +181,15 @@ export class LiquidStone extends CredbullContract {
   }
 
   // calculate the shares to invest (calculate deposits - requested redeems)
-  async depositSharesToInvest(ownerAddress: Address, depositPeriod: bigint) {
+  // Negative here means assets must be returned to the vault to process redeems
+  async amountToInvest(ownerAddress: Address, depositPeriod: bigint): Promise<number> {
     // totalSupply(id) returns shares, but at deposit period shares = assets
     const depositAmount: bigint = await this.totalSupplyById(depositPeriod);
 
     const redeemPeriod = depositPeriod + (await this.noticePeriod());
     const totalRedeemAmount = await this.totalRedeemAssetAmount(ownerAddress, redeemPeriod);
 
-    return depositAmount - totalRedeemAmount;
+    return Number(depositAmount) - Number(totalRedeemAmount);
   }
 
   async totalRedeemAssetAmount(ownerAddress: Address, redeemPeriod: bigint) {
@@ -230,5 +236,30 @@ export class LiquidStone extends CredbullContract {
     const amounts = [...readonlyAmounts];
 
     return { depositPeriods, amounts };
+  }
+
+  async unlockRequestsAll(
+    ownerAddress: Address,
+  ): Promise<Array<{ redeemPeriod: number; depositPeriods: bigint[]; amounts: bigint[] }>> {
+    const endPeriod = await this.minUnlockPeriod();
+
+    const unlockRequestsArray: Array<{ redeemPeriod: number; depositPeriods: bigint[]; amounts: bigint[] }> = [];
+
+    for (let redeemPeriod = 0; redeemPeriod <= Number(endPeriod); redeemPeriod++) {
+      const unlockRequestsByPeriod: { depositPeriods: bigint[]; amounts: bigint[] } = await this.unlockRequests(
+        ownerAddress,
+        toBigInt(redeemPeriod),
+      );
+
+      if (unlockRequestsByPeriod.depositPeriods.length > 0) {
+        unlockRequestsArray.push({
+          redeemPeriod: redeemPeriod,
+          depositPeriods: unlockRequestsByPeriod.depositPeriods,
+          amounts: unlockRequestsByPeriod.amounts,
+        });
+      }
+    }
+
+    return unlockRequestsArray;
   }
 }
