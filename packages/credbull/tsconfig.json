@@ -12,8 +12,8 @@
     "declaration": true,
     "baseUrl": ".", // Set the base directory for resolving paths
     "paths": {
-      "@src/*": ["src/*"], // Alias for src/
-      "@utils/*": ["src/utils/*"] // Optional: More specific alias for utils
+      "@src/*": ["src/*"],
+      "@utils/*": ["src/utils/*"]
     },
     "moduleResolution": "node"
   },
