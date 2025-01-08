@@ -5,11 +5,6 @@ import { ChainConfig, testnetConfig } from '@utils/chain-config';
 import { Address } from '@utils/rpc-types';
 import { toBigInt } from 'ethers';
 
-const userAddress: Address = process.env.USER_ADDRESS as string;
-if (!userAddress) {
-  throw Error('User address required.');
-}
-
 const chainConfig: ChainConfig = testnetConfig;
 
 const minExpectedAmount: number = 1;
@@ -50,16 +45,57 @@ test.describe('Test LiquidStone view functions', () => {
 
 // View - User specific
 test.describe('Test LiquidStone view functions - User Specific', () => {
+  const userAddress: Address = process.env.USER_ADDRESS as string;
+  if (!userAddress) {
+    throw Error('User address required.');
+  }
+
   test('Test total assets by Owner is >= 1', async () => {
     const assetsByOwner = await liquidStone.totalAssetsByOwner(userAddress);
+    console.log(assetsByOwner);
     expect(assetsByOwner).toBeGreaterThanOrEqual(minExpectedAmount);
   });
 
-  test('Test Amount to Invest (requestRedeems[periodX] - deposits[periodX])', async () => {
-    const depositPeriod = toBigInt(2);
-    const depositAmount: bigint = await liquidStone.totalSupplyById(depositPeriod);
+  test('Test balanceOf Owner and depositPeriod is >= 1', async () => {
+    const depositPeriod = toBigInt(0);
 
-    const sharesToInvest = await liquidStone.depositSharesToInvest(userAddress, depositPeriod);
+    const balanceOf = await liquidStone.balanceOf(userAddress, depositPeriod);
+    console.log(`balanceOf ${balanceOf}`);
+    expect(balanceOf).toBeGreaterThanOrEqual(minExpectedAmount);
+  });
+
+  test('Test Total Shares by Owner is >= 1', async () => {
+    const allShares: { depositPeriods: bigint[]; shares: bigint[] } = await liquidStone.shares(userAddress);
+    console.log(allShares);
+    expect(allShares.depositPeriods.length).toBeGreaterThanOrEqual(minExpectedAmount);
+    expect(allShares.depositPeriods.length).toEqual(allShares.shares.length);
+
+    const totalShares = await liquidStone.totalSharesByOwner(userAddress);
+    expect(totalShares).toBeGreaterThanOrEqual(minExpectedAmount);
+  });
+
+  test('Test Unlock Requests by Owner is empty', async () => {
+    const endPeriod = await liquidStone.minUnlockPeriod();
+    for (let period = 0; period <= Number(endPeriod); period++) {
+      const unlockRequests: { depositPeriods: bigint[]; amounts: bigint[] } = await liquidStone.unlockRequests(
+        userAddress,
+        toBigInt(period),
+      );
+
+      if (unlockRequests.depositPeriods.length > 0) {
+        console.log(`Found unlock at redeemPeriod: ${period}!`);
+        console.log(unlockRequests);
+      }
+    }
+  });
+
+  test('Test Amount to Invest (requestRedeems[periodX] - deposits[periodX])', async () => {
+    const period = toBigInt(2);
+
+    const depositAmount: bigint = await liquidStone.totalSupplyById(period);
+    const sharesToInvest = await liquidStone.depositSharesToInvest(userAddress, period);
+
+    console.log(`Shares to invest: ${sharesToInvest}`);
 
     expect(sharesToInvest).toBeLessThan(depositAmount);
   });

@@ -2,9 +2,11 @@ import { CredbullClient } from '@src/credbull-client';
 import { CredbullContract } from '@src/credbull-contract';
 import {
   asset as assetExt,
+  balanceOf as balanceOfExt,
   convertToAssetsForDepositPeriod as convertToAssetsForDepositPeriodExt,
   currentPeriod as currentPeriodExt,
   deposit as depositExt,
+  minUnlockPeriod as minUnlockPeriodExt,
   noticePeriod as noticePeriodExt,
   requestRedeem as requestRedeemExt,
   scale as scaleExt,
@@ -89,6 +91,14 @@ export class LiquidStone extends CredbullContract {
     });
   }
 
+  balanceOf(owner: Address, depositPeriod: bigint): Promise<bigint> {
+    return balanceOfExt({
+      contract: this._contract,
+      account: owner,
+      id: depositPeriod,
+    });
+  }
+
   convertToAssets(shares: bigint, depositPeriod: bigint, redeemPeriod: bigint): Promise<bigint> {
     return convertToAssetsForDepositPeriodExt({
       contract: this._contract,
@@ -104,6 +114,12 @@ export class LiquidStone extends CredbullContract {
     });
   }
 
+  minUnlockPeriod(): Promise<bigint> {
+    return minUnlockPeriodExt({
+      contract: this._contract,
+    });
+  }
+
   noticePeriod(): Promise<bigint> {
     return noticePeriodExt({
       contract: this._contract,
@@ -114,6 +130,25 @@ export class LiquidStone extends CredbullContract {
     return scaleExt({
       contract: this._contract,
     });
+  }
+
+  // return all shares for the owner (e.g. all holdings across all ERC1155 positions utp to the deposit period)
+  async shares(ownerAddress: Address): Promise<{ depositPeriods: bigint[]; shares: bigint[] }> {
+    const currentPeriod = Number(await this.currentPeriod());
+
+    const depositPeriods: bigint[] = [];
+    const shares: bigint[] = [];
+
+    for (let depositPeriod = 0; depositPeriod <= currentPeriod; depositPeriod++) {
+      const sharesAtPeriod = await this.balanceOf(ownerAddress, toBigInt(depositPeriod)); // Convert depositPeriod back to bigint
+
+      if (sharesAtPeriod > toBigInt(0)) {
+        depositPeriods.push(toBigInt(depositPeriod)); // Store as bigint
+        shares.push(sharesAtPeriod);
+      }
+    }
+
+    return { depositPeriods, shares };
   }
 
   async scaleUp(amount: number): Promise<bigint> {
@@ -133,6 +168,11 @@ export class LiquidStone extends CredbullContract {
       contract: this._contract,
       owner: ownerAddress,
     });
+  }
+
+  async totalSharesByOwner(ownerAddress: Address): Promise<bigint> {
+    const allShares: { depositPeriods: bigint[]; shares: bigint[] } = await this.shares(ownerAddress);
+    return allShares.shares.reduce((acc, share) => acc + share, BigInt(0));
   }
 
   // calculate the shares to invest (calculate deposits - requested redeems)
