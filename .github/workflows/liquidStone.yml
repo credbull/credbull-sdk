@@ -1,0 +1,41 @@
+name: 
+
+defaults:
+  run:
+    working-directory: .
+
+on:
+  workflow_dispatch:
+
+jobs:
+  liquidStone-ops:
+    runs-on: ubuntu-latest
+    environment: local
+
+    steps:
+      - name: Checkout credbull-sdk
+        uses: actions/checkout@v4
+
+      - name: Install yarn
+        run: |
+          corepack prepare yarn@stable --activate
+          npm install -g yarn
+
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "yarn"
+
+      - name: Install Project Dependencies
+        run: yarn install
+
+      - name: Run LiquidStone Ops Scripts
+        run: run-liquid-stone-ops
+        working-directory: packages/credbull
+        env:
+          THIRDWEB_SECRET_KEY: ${{ secrets.CREDBULL_DEVOPS_THIRDWEB_SECRET_KEY }}
+          DEPLOYER_PRIVATE_KEY: ${{ secrets.CREDBULL_DEVOPS_DEPLOYER_PRIVATE_KEY }}
+          DEPLOYER_ALT_PRIVATE_KEY: ${{ secrets.CREDBULL_DEVOPS_DEPLOYER_ALT_PRIVATE_KEY }}
+          USER_PRIVATE_KEY: ${{ secrets.CREDBULL_DEVOPS_CHARLIE_PRIVATE_KEY }}
+          USER_ADDRESS: ${{ secrets.CREDBULL_DEVOPS_CHARLIE_ADDRESS }}

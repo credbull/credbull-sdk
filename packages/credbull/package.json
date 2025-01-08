@@ -4,7 +4,6 @@
   "license": "MIT",
   "scripts": {
     "clean": "tsc --build --clean && rm -rf playwright-report test-results",
-
     "dev": "ts-node",
     "run-liquid-stone-ops": "ts-node -r tsconfig-paths/register src/liquid-stone/liquid-stone-ops.ts",
     "build": "tsc --build",
