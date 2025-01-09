@@ -1,28 +1,36 @@
 # credbull-sdk
 
-## Usage
+## Setup
+### Install Pre-requisite Tools
+- NodeJS LTS (v20) ([install node.js](https://nodejs.org/en/learn/getting-started/how-to-install-nodejs))
+- Yarn ([install yarn](https://v3.yarnpkg.com/getting-started/install))
+- ThirdWeb Account ([thirdweb -> get started](https://thirdweb.com/))
 
-### Test
-
-`yarn test`
-
-### Run
-
-Run the LiquidStone Operational Scripts
-
+### Setup Environment
 ```bash
-yarn run-liquid-stone-ops
+cp -n .env.sample .env
+# Manually edit the .env with your own thirdweb and wallet settings
 ```
 
-Run verbose mode, logging all deposit periods
+## Run and Test
+
+### Install dependencies
+`yarn install`
+
+### Run
+Run the LiquidStone Operational Scripts (optional --verbose flag)
 ```bash
 yarn run-liquid-stone-ops --verbose
 ```
 
-### Generate ThirdWeb Extensions
+### Integration Test
+`yarn test`
 
-Generates typescript for a deployed contract, see: https://portal.thirdweb.com/typescript/v5/extensions/generate
 
+## Developers
+
+### Add Contract Typescript
+Generates typescript for a deployed smart contract, see: https://portal.thirdweb.com/typescript/v5/extensions/generate
 ```bash
 # <chainid>/<contract-address>, e.g. for Arb Sepolia LiquidStone:
 yarn thirdweb generate 421614/0x111b6a3dbace7f0b32baad47027907765e88abd2
