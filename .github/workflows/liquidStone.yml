@@ -31,7 +31,7 @@ jobs:
         run: yarn install
 
       - name: Run LiquidStone Ops Scripts
-        run: yarn run-liquid-stone-ops
+        run: yarn run-liquid-stone-ops --verbose
         working-directory: packages/credbull
         env:
           THIRDWEB_SECRET_KEY: ${{ secrets.CREDBULL_DEVOPS_THIRDWEB_SECRET_KEY }}

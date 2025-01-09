@@ -108,6 +108,10 @@ export class LiquidStone extends CredbullContract {
     });
   }
 
+  async convertToAssetsAtCurrentPeriod(shares: bigint, depositPeriod: bigint) {
+    return this.convertToAssets(shares, depositPeriod, await this.currentPeriod());
+  }
+
   currentPeriod(): Promise<bigint> {
     return currentPeriodExt({
       contract: this._contract,

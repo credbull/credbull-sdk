@@ -14,6 +14,11 @@ Run the LiquidStone Operational Scripts
 yarn run-liquid-stone-ops
 ```
 
+Run verbose mode, logging all deposit periods
+```bash
+yarn run-liquid-stone-ops --verbose
+```
+
 ### Generate ThirdWeb Extensions
 
 Generates typescript for a deployed contract, see: https://portal.thirdweb.com/typescript/v5/extensions/generate
