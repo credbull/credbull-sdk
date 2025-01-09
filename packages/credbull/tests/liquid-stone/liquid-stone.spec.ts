@@ -12,24 +12,24 @@ const liquidStone: LiquidStone = new LiquidStone(new CredbullClient(chainConfig)
 
 test.describe('Test LiquidStone view functions', () => {
   test('Test current period >= 1', async () => {
-    const currentPeriod = await liquidStone.currentPeriod();
-    expect(currentPeriod).toBeGreaterThanOrEqual(minExpectedAmount);
+    expect(await liquidStone.currentPeriod()).toBeGreaterThanOrEqual(minExpectedAmount);
   });
 
   test('Test total supply is >= 1', async () => {
     const depositId = toBigInt(0);
-    const supply = await liquidStone.totalSupplyById(depositId);
-    expect(supply).toBeGreaterThanOrEqual(minExpectedAmount);
+    expect(await liquidStone.totalSupplyById(depositId)).toBeGreaterThanOrEqual(minExpectedAmount);
   });
 
   test('Test underlying asset is USDC', async () => {
-    const liquidStoneAsset = await liquidStone.asset();
-    expect(liquidStoneAsset).toBe(chainConfig.usdc);
+    expect(await liquidStone.assetAddress()).toBe(chainConfig.usdc);
+  });
+
+  test('Test vault asset balance >= 1', async () => {
+    expect(await liquidStone.assetBalance()).toBeGreaterThanOrEqual(minExpectedAmount);
   });
 
   test('Test total assets >= 1', async () => {
-    const assets = await liquidStone.totalAssets();
-    expect(assets).toBeGreaterThanOrEqual(minExpectedAmount);
+    expect(await liquidStone.totalAssets()).toBeGreaterThanOrEqual(minExpectedAmount);
   });
 
   test('Test scale is 10^6', async () => {

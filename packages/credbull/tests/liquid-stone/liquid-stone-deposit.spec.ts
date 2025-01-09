@@ -35,7 +35,7 @@ test.describe('Test LiquidStone Deposit & Redeem', () => {
   });
 
   test('Test Deposit', async () => {
-    const erc20: ERC20 = new ERC20(credbullClient, await liquidStone.asset());
+    const erc20: ERC20 = new ERC20(credbullClient, await liquidStone.assetAddress());
 
     // first, approve the deposit
     const approveTxnReceipt = await erc20.approve(liquidStone.address, owner, depositAmount);

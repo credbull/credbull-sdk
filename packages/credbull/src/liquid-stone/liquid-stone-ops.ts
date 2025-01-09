@@ -22,12 +22,19 @@ async function toAssets(shares: bigint, depositPeriod: bigint): Promise<bigint> 
   }
 }
 
-async function toStrAssets(assets: bigint | number) {
-  return `${await liquidStone.scaleDown(Number(assets))} USDC`;
+async function toStr(amount: bigint | number) {
+  // return `${(await liquidStone.scaleDown(Number(amount))).toFixed(6).toLocaleString()}`;
+  const scaledDown = await liquidStone.scaleDown(Number(amount));
+  const [integerPart, decimalPart] = scaledDown.toFixed(6).split('.');
+  return `${Number(integerPart).toLocaleString()}.${decimalPart}`;
 }
 
-function toStrShares(shares: bigint | number) {
-  return `${shares.toLocaleString()} shares`;
+async function toStrAssets(assets: bigint | number) {
+  return `${await toStr(assets)} USDC`;
+}
+
+async function toStrShares(shares: bigint | number) {
+  return `${await toStr(shares)} shrs`;
 }
 
 async function logBalances(depositPeriod: bigint, skipZeroBalance = false) {
@@ -39,10 +46,10 @@ async function logBalances(depositPeriod: bigint, skipZeroBalance = false) {
   }
 
   console.log(
-    `-- id[${depositPeriod}] nestVault: ${toStrShares(nestShares)}. (${await toStrAssets(await toAssets(nestShares, depositPeriod))}).`,
+    `-- id[${depositPeriod}] nestVault: ${await toStrShares(nestShares)}. (${await toStrAssets(await toAssets(nestShares, depositPeriod))}).`,
   );
   console.log(
-    `-- id[${depositPeriod}] TOTAL    : ${toStrShares(totalShares)}. (${await toStrAssets(await toAssets(totalShares, depositPeriod))}).`,
+    `-- id[${depositPeriod}] TOTAL    : ${await toStrShares(totalShares)}. (${await toStrAssets(await toAssets(totalShares, depositPeriod))}).`,
   );
 
   if (totalShares != nestShares) {
@@ -89,9 +96,12 @@ async function main(isVerbose = false) {
 
   const currentPeriod: bigint = await liquidStone.currentPeriod();
 
+  const valuePadding = 25;
+
   console.log(`Current Period: id[${currentPeriod}]`);
-  console.log(`Total Shares      : ${toStrShares(await liquidStone.totalSupply())}`);
-  console.log(`Total Asset Value : ${await toStrAssets(await liquidStone.totalAssets())}`);
+  console.log(`Total Shares      : ${(await toStrShares(await liquidStone.totalSupply())).padStart(valuePadding)}`);
+  console.log(`Total Asset Value : ${(await toStrAssets(await liquidStone.totalAssets())).padStart(valuePadding)}`);
+  console.log(`Asset Balance     : ${(await toStrAssets(await liquidStone.assetBalance())).padStart(valuePadding)}`);
 
   console.log();
 

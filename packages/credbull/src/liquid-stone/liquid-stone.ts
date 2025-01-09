@@ -1,5 +1,6 @@
 import { CredbullClient } from '@src/credbull-client';
 import { CredbullContract } from '@src/credbull-contract';
+import { ERC20 } from '@src/erc20/erc20';
 import {
   asset as assetExt,
   balanceOf as balanceOfExt,
@@ -85,10 +86,18 @@ export class LiquidStone extends CredbullContract {
     return this._address;
   }
 
-  asset(): Promise<string> {
+  async asset(): Promise<ERC20> {
+    return new ERC20(this._credbullClient, await this.assetAddress());
+  }
+
+  assetAddress(): Promise<string> {
     return assetExt({
       contract: this._contract,
     });
+  }
+
+  async assetBalance(): Promise<bigint> {
+    return (await this.asset()).balanceOf(this.address);
   }
 
   balanceOf(owner: Address, depositPeriod: bigint): Promise<bigint> {
