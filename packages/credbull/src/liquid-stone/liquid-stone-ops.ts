@@ -72,25 +72,35 @@ async function verboseLogging(startPeriod: bigint, endPeriod: bigint) {
   console.log();
 }
 
+async function logDepositPeriod(depositPeriod: bigint) {
+  const currentPeriod = Number(await liquidStone.currentPeriod());
+
+  console.log(`Operations for period id[${depositPeriod}] (Current Period - ${currentPeriod - Number(depositPeriod)})`);
+
+  await logBalances(depositPeriod);
+  await logRequestRedeems();
+  await logAmountToInvest(depositPeriod);
+  console.log();
+}
+
 async function main(isVerbose = false) {
   console.log('Starting LiquidStone Ops checks...');
   console.log();
 
   const currentPeriod: bigint = await liquidStone.currentPeriod();
 
-  console.log(`Current Period is: id[${currentPeriod}]\n`);
+  console.log(`Current Period: id[${currentPeriod}]`);
+  console.log(`Total Shares      : ${toStrShares(await liquidStone.totalSupply())}`);
+  console.log(`Total Asset Value : ${await toStrAssets(await liquidStone.totalAssets())}`);
+
+  console.log();
 
   if (isVerbose) {
     await verboseLogging(toBigInt(0), currentPeriod);
   }
 
-  console.log(`Operations for period id[${currentPeriod}]`);
-
-  await logBalances(currentPeriod);
-  await logRequestRedeems();
-  await logAmountToInvest(currentPeriod);
-
-  console.log();
+  await logDepositPeriod(currentPeriod - toBigInt(1));
+  await logDepositPeriod(currentPeriod);
 
   console.log('LiquidStone Ops checks completed!');
 }
