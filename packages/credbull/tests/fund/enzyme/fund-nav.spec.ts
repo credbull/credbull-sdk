@@ -4,12 +4,12 @@ import { CredbullContract } from '@src/credbull-contract';
 import { ERC20 } from '@src/erc20/erc20';
 import { EnzymeConfig, FlexibleLoan, testEnzymePolygonConfig } from '@src/fund/enzyme/enzyme-config';
 import { calcNav } from '@src/fund/enzyme/extensions/fund-value-calculator.codegen';
-import { getUpdater, getValue, updateValueTxn } from '@src/fund/enzyme/extensions/manual-value-oracle-lib';
+import { ManualValueOracle } from '@src/fund/enzyme/extensions/manual-value-oracle';
 import { name, totalSupply } from '@src/fund/enzyme/extensions/vault.codegen';
 import { loadConfig } from '@utils/config';
 import { Address } from '@utils/rpc-types';
 import { toBigInt } from 'ethers';
-import { sendTransaction, simulateTransaction, waitForReceipt } from 'thirdweb';
+import { simulateTransaction } from 'thirdweb';
 import { Account } from 'thirdweb/wallets';
 
 loadConfig();
@@ -65,47 +65,23 @@ test.describe('Test LiquidStone Fund NAV', () => {
 
 test.describe('Test LiquidStone Fund Manual Value Oracle', () => {
   const flexibleLoan: FlexibleLoan = enzymeConfig.flexibleLoans[0];
-  const manualValueOracle = new CredbullContract(credbullClient, flexibleLoan.manualValueOracleProxy);
+  const manualValueOracle = new ManualValueOracle(credbullClient, flexibleLoan.manualValueOracleProxy);
 
   test('Test getters', async () => {
-    const value = await getValue({
-      contract: manualValueOracle.contract,
-    });
-    expect(value).toBeGreaterThanOrEqual(minExpectedValue);
-
-    const updater = await getUpdater({
-      contract: manualValueOracle.contract,
-    });
-    expect(updater).toBeDefined();
+    expect(await manualValueOracle.getValue()).toBeGreaterThanOrEqual(minExpectedValue);
+    expect(await manualValueOracle.getUpdater()).toBeDefined();
   });
 
   test('Test update value', async () => {
-    const prevValue = await getValue({
-      contract: manualValueOracle.contract,
-    });
+    const prevValue = await manualValueOracle.getValue();
 
     const newValue = prevValue == toBigInt(1) ? toBigInt(2) : toBigInt(1); // alternate value between 1 and 2
     const deployerPrivateKey = process.env.DEPLOYER_PRIVATE_KEY as string;
     const deployer: Account = credbullClient.createAccount(deployerPrivateKey);
 
-    const updatevalueTxn = updateValueTxn({
-      contract: manualValueOracle.contract,
-      nextValue: newValue,
-    });
+    console.log(`Manual Value Oracle updating value from ${prevValue} -> ${newValue}`);
+    const txnReceipt = await manualValueOracle.updateValue(deployer, newValue);
 
-    console.log(`Updating value from ${prevValue} -> ${newValue}`);
-
-    try {
-      const txnResult = await sendTransaction({
-        account: deployer, // the account initiating the transaction
-        transaction: updatevalueTxn,
-      });
-
-      const txnReceipt = await waitForReceipt(txnResult);
-      expect(txnReceipt.status).toBe('success');
-    } catch (error) {
-      console.error('Error sending deposit transaction:', error);
-      throw error;
-    }
+    expect(txnReceipt.status).toBe('success');
   });
 });
