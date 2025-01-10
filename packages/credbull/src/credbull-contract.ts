@@ -1,6 +1,7 @@
-import { CredbullClient } from '@src/credbull-client';
-import { Address } from '@utils/rpc-types';
 import { ThirdwebContract, getContract } from 'thirdweb';
+
+import { CredbullClient } from './credbull-client';
+import { Address } from './utils/rpc-types';
 
 export class CredbullContract {
   protected _credbullClient: CredbullClient;

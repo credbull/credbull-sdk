@@ -1,9 +1,10 @@
-import { ChainConfig } from '@utils/chain-config';
-import { loadConfig } from '@utils/config';
 import { createThirdwebClient } from 'thirdweb';
 import { ThirdwebClient } from 'thirdweb/src/client/client';
 import { privateKeyToAccount } from 'thirdweb/wallets';
 import { Account } from 'thirdweb/wallets';
+
+import { ChainConfig } from './utils/chain-config';
+import { loadConfig } from './utils/config';
 
 loadConfig();
 

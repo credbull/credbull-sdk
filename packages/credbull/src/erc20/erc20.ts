@@ -1,6 +1,3 @@
-import { CredbullClient } from '@src/credbull-client';
-import { CredbullContract } from '@src/credbull-contract';
-import { Address } from '@utils/rpc-types';
 import { sendAndConfirmTransaction } from 'thirdweb';
 import {
   approve as approveExt,
@@ -8,6 +5,10 @@ import {
   totalSupply as totalSupplyExt,
 } from 'thirdweb/extensions/erc20';
 import { Account } from 'thirdweb/wallets';
+
+import { CredbullClient } from '../credbull-client';
+import { CredbullContract } from '../credbull-contract';
+import { Address } from '../utils/rpc-types';
 
 export class ERC20 extends CredbullContract {
   constructor(credbullClient: CredbullClient, erc20Address: Address) {

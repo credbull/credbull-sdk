@@ -1,8 +1,9 @@
 import { SafeClient, SafeClientResult, createSafeClient } from '@safe-global/sdk-starter-kit';
-import { ChainConfig } from '@utils/chain-config';
-import { loadConfig } from '@utils/config';
-import { Address, TransactionHash } from '@utils/rpc-types';
 import { Hex } from 'thirdweb/src/utils/encoding/hex';
+
+import { ChainConfig } from '../utils/chain-config';
+import { loadConfig } from '../utils/config';
+import { Address, TransactionHash } from '../utils/rpc-types';
 
 loadConfig();
 

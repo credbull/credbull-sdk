@@ -1,16 +1,18 @@
 import { expect, test } from '@playwright/test';
-import { CredbullClient } from '@src/credbull-client';
-import { CredbullContract } from '@src/credbull-contract';
-import { ERC20 } from '@src/erc20/erc20';
-import { EnzymeConfig, FlexibleLoan, testEnzymePolygonConfig } from '@src/fund/enzyme/enzyme-config';
-import { calcNav } from '@src/fund/enzyme/extensions/fund-value-calculator.codegen';
-import { ManualValueOracle } from '@src/fund/enzyme/extensions/manual-value-oracle';
-import { name, totalSupply } from '@src/fund/enzyme/extensions/vault.codegen';
-import { loadConfig } from '@utils/config';
-import { Address } from '@utils/rpc-types';
+// import { loadConfig } from '@utils/config';
+// import { Address } from '@utils/rpc-types';
 import { toBigInt } from 'ethers';
-import { simulateTransaction } from 'thirdweb';
+import { Address, simulateTransaction } from 'thirdweb';
 import { Account } from 'thirdweb/wallets';
+import { loadConfig } from 'tsconfig-paths';
+
+import { CredbullClient } from '../../../src/credbull-client';
+import { CredbullContract } from '../../../src/credbull-contract';
+import { ERC20 } from '../../../src/erc20/erc20';
+import { EnzymeConfig, FlexibleLoan, testEnzymePolygonConfig } from '../../../src/fund/enzyme/enzyme-config';
+import { calcNav } from '../../../src/fund/enzyme/extensions/fund-value-calculator.codegen';
+import { ManualValueOracle } from '../../../src/fund/enzyme/extensions/manual-value-oracle';
+import { name, totalSupply } from '../../../src/fund/enzyme/extensions/vault.codegen';
 
 loadConfig();
 

@@ -1,6 +1,3 @@
-import { CredbullClient } from '@src/credbull-client';
-import { CredbullContract } from '@src/credbull-contract';
-import { Address } from '@utils/rpc-types';
 import {
   type AbiParameterToPrimitiveType,
   type BaseTransactionOptions,
@@ -10,6 +7,10 @@ import {
   waitForReceipt,
 } from 'thirdweb';
 import { Account } from 'thirdweb/dist/types/exports/wallets';
+
+import { CredbullClient } from '../../../credbull-client';
+import { CredbullContract } from '../../../credbull-contract';
+import { Address } from '../../../utils/rpc-types';
 
 export type UpdateValueParams = {
   nextValue: AbiParameterToPrimitiveType<{ internalType: 'int192'; name: '_nextValue'; type: 'int192' }>;

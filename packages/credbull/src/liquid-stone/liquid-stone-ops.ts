@@ -1,8 +1,10 @@
-import { CredbullClient } from '@src/credbull-client';
-import { LiquidStone } from '@src/liquid-stone/liquid-stone';
-import { ChainConfig, plumeMainetConfig } from '@utils/chain-config';
-import { Address } from '@utils/rpc-types';
 import { toBigInt } from 'ethers';
+
+import { CredbullClient } from '../credbull-client';
+import { ChainConfig, plumeMainetConfig } from '../utils/chain-config';
+import { Address } from '../utils/rpc-types';
+
+import { LiquidStone } from './liquid-stone';
 
 interface OpsConfig extends ChainConfig {
   nestVault: Address;

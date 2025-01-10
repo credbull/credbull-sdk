@@ -1,6 +1,7 @@
-import { Address } from '@utils/rpc-types';
 import { defineChain } from 'thirdweb';
 import { ChainOptions, arbitrumSepolia, baseSepolia } from 'thirdweb/chains';
+
+import { Address } from './rpc-types';
 
 export interface ChainConfig {
   chainName: string;

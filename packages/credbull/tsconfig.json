@@ -11,10 +11,6 @@
     "rootDir": "src",
     "declaration": true,
     "baseUrl": ".", // Set the base directory for resolving paths
-    "paths": {
-      "@src/*": ["src/*"],
-      "@utils/*": ["src/utils/*"]
-    },
     "moduleResolution": "node"
   },
   "include": ["src/**/*", "tests/**/*", "*.ts"],

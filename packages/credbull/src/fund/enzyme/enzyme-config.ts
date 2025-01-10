@@ -1,6 +1,7 @@
-import { ChainConfig } from '@utils/chain-config';
-import { Address } from '@utils/rpc-types';
 import { polygon } from 'thirdweb/chains';
+
+import { ChainConfig } from '../../utils/chain-config';
+import { Address } from '../../utils/rpc-types';
 
 // Enzyme Polygon Deploys: https://github.com/enzymefinance/sdk/blob/main/packages/environment/src/deployments/polygon.ts#L157
 export interface EnzymeConfig extends ChainConfig {

@@ -1,8 +1,9 @@
 import { expect, test } from '@playwright/test';
 import { SafeClientResult } from '@safe-global/sdk-starter-kit';
 import { SafeClientTxStatus } from '@safe-global/sdk-starter-kit/dist/src/constants';
-import { CredbullSafeClient } from '@src/safe/credbull-safe-client';
-import { loadConfig } from '@utils/config';
+
+import { CredbullSafeClient } from '../../src/safe/credbull-safe-client';
+import { loadConfig } from '../../src/utils/config';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Suppress error about file not being under rootDir

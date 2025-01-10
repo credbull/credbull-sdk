@@ -1,9 +1,10 @@
 import { expect, test } from '@playwright/test';
-import { CredbullClient } from '@src/credbull-client';
-import { LiquidStone } from '@src/liquid-stone/liquid-stone';
-import { ChainConfig, testnetConfig } from '@utils/chain-config';
-import { Address } from '@utils/rpc-types';
 import { toBigInt } from 'ethers';
+
+import { CredbullClient } from '../../src/credbull-client';
+import { LiquidStone } from '../../src/liquid-stone/liquid-stone';
+import { ChainConfig, testnetConfig } from '../../src/utils/chain-config';
+import { Address } from '../../src/utils/rpc-types';
 
 const chainConfig: ChainConfig = testnetConfig;
 

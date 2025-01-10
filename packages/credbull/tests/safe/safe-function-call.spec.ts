@@ -1,13 +1,14 @@
 import { expect, test } from '@playwright/test';
 import { SafeClientTxStatus } from '@safe-global/sdk-starter-kit/dist/src/constants';
-import { CredbullClient } from '@src/credbull-client';
-import { ERC20 } from '@src/erc20/erc20';
-import { CredbullSafeClient } from '@src/safe/credbull-safe-client';
-import { ChainConfig, baseSepoliaConfig } from '@utils/chain-config';
-import { loadConfig } from '@utils/config';
-import { Address } from '@utils/rpc-types';
 import { encode } from 'thirdweb';
 import { Hex } from 'thirdweb/src/utils/encoding/hex';
+
+import { CredbullClient } from '../../src/credbull-client';
+import { ERC20 } from '../../src/erc20/erc20';
+import { CredbullSafeClient } from '../../src/safe/credbull-safe-client';
+import { ChainConfig, baseSepoliaConfig } from '../../src/utils/chain-config';
+import { loadConfig } from '../../src/utils/config';
+import { Address } from '../../src/utils/rpc-types';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Suppress error about file not being under rootDir

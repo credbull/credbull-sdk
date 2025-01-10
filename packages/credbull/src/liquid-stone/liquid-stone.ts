@@ -1,6 +1,14 @@
-import { CredbullClient } from '@src/credbull-client';
-import { CredbullContract } from '@src/credbull-contract';
-import { ERC20 } from '@src/erc20/erc20';
+import { toBigInt } from 'ethers';
+import { sendTransaction, waitForReceipt } from 'thirdweb';
+import { totalSupply as totalSupplyByIdExt } from 'thirdweb/extensions/erc1155';
+import { TransactionReceipt } from 'thirdweb/src/transaction/types';
+import { Account } from 'thirdweb/wallets';
+
+import { CredbullClient } from '../credbull-client';
+import { CredbullContract } from '../credbull-contract';
+import { ERC20 } from '../erc20/erc20';
+import { Address } from '../utils/rpc-types';
+
 import {
   asset as assetExt,
   balanceOf as balanceOfExt,
@@ -14,14 +22,7 @@ import {
   totalAssets as totalAssetsExt,
   totalSupply as totalSupplyExt,
   unlockRequests as unlockRequestsExt,
-} from '@src/liquid-stone/extensions/v1.3/liquid-stone.codegen';
-import { Address } from '@utils/rpc-types';
-import { toBigInt } from 'ethers';
-import { sendTransaction, waitForReceipt } from 'thirdweb';
-import { totalSupply as totalSupplyByIdExt } from 'thirdweb/extensions/erc1155';
-import { TransactionReceipt } from 'thirdweb/src/transaction/types';
-import { Account } from 'thirdweb/wallets';
-
+} from './extensions/v1.3/liquid-stone.codegen';
 import { totalAssetsByOwner as extTotalAssetsByOwner } from './extensions/v1.3/totalAssetsByOwner';
 
 export class LiquidStone extends CredbullContract {
@@ -184,7 +185,7 @@ export class LiquidStone extends CredbullContract {
   totalAssetsByOwner(ownerAddress: Address): Promise<bigint> {
     return extTotalAssetsByOwner({
       contract: this._contract,
-      owner: ownerAddress,
+      owner: ownerAddress as `0x${string}`,
     });
   }
 
