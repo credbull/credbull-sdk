@@ -25,8 +25,8 @@ jobs:
 
       - name: Install yarn
         run: |
-          corepack prepare yarn@stable --activate
-          npm install -g yarn
+          corepack enable
+          yarn set version stable
 
       - name: Install Node
         uses: actions/setup-node@v4

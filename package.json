@@ -4,7 +4,6 @@
   "private": true,
   "license": "MIT",
   "description": "Credbull SDK. DeFi protocol integration.",
-  "packageManager": "yarn@4.6.0",
   "workspaces": [
     "packages/*"
   ],
