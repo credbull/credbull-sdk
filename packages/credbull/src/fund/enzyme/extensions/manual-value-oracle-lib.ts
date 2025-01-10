@@ -21,37 +21,14 @@ export async function getValue(options: BaseTransactionOptions) {
   });
 }
 
-// TODO - replace with updateValue() ABI
-export type CalcNavParams = {
-  vaultProxy: AbiParameterToPrimitiveType<{ internalType: 'address'; name: '_vaultProxy'; type: 'address' }>;
+export type UpdateValueParams = {
+  nextValue: AbiParameterToPrimitiveType<{ internalType: 'int192'; name: '_nextValue'; type: 'int192' }>;
 };
 
-// TODO - replace with updateValue()
-export function calcNav(options: BaseTransactionOptions<CalcNavParams>) {
+export function updateValueTxn(options: BaseTransactionOptions<UpdateValueParams>) {
   return prepareContractCall({
     contract: options.contract,
-    method: [
-      '0x53d467f3',
-      [
-        {
-          internalType: 'address',
-          name: '_vaultProxy',
-          type: 'address',
-        },
-      ],
-      [
-        {
-          internalType: 'address',
-          name: 'denominationAsset_',
-          type: 'address',
-        },
-        {
-          internalType: 'uint256',
-          name: 'nav_',
-          type: 'uint256',
-        },
-      ],
-    ],
-    params: [options.vaultProxy],
+    method: 'function updateValue(int192 _nextValue)',
+    params: [options.nextValue],
   });
 }

@@ -4,16 +4,20 @@ import { CredbullContract } from '@src/credbull-contract';
 import { ERC20 } from '@src/erc20/erc20';
 import { EnzymeConfig, FlexibleLoan, testEnzymePolygonConfig } from '@src/fund/enzyme/enzyme-config';
 import { calcNav } from '@src/fund/enzyme/extensions/fund-value-calculator.codegen';
-import { getUpdater, getValue } from '@src/fund/enzyme/extensions/manual-value-oracle-lib';
+import { getUpdater, getValue, updateValueTxn } from '@src/fund/enzyme/extensions/manual-value-oracle-lib';
 import { name, totalSupply } from '@src/fund/enzyme/extensions/vault.codegen';
 import { loadConfig } from '@utils/config';
 import { Address } from '@utils/rpc-types';
-import { simulateTransaction } from 'thirdweb';
+import { toBigInt } from 'ethers';
+import { sendTransaction, simulateTransaction, waitForReceipt } from 'thirdweb';
+import { Account } from 'thirdweb/wallets';
 
 loadConfig();
 
 const enzymeConfig: EnzymeConfig = testEnzymePolygonConfig;
 const credbullClient = new CredbullClient(enzymeConfig);
+
+const minExpectedValue: number = 1;
 
 // Write & Simulate Operations, see https://portal.thirdweb.com/typescript/v5/transactions/send
 test.describe('Test LiquidStone Fund Read', () => {
@@ -31,12 +35,12 @@ test.describe('Test LiquidStone Fund Read', () => {
     const supply = await totalSupply({
       contract: liquidStoneFund.contract,
     });
-    expect(supply).toBeGreaterThanOrEqual(1);
+    expect(supply).toBeGreaterThanOrEqual(minExpectedValue);
   });
 
   test('Test Total Supply - ERC20', async () => {
     const supply = await liquidStoneFund.totalSupply();
-    expect(supply).toBeGreaterThanOrEqual(1);
+    expect(supply).toBeGreaterThanOrEqual(minExpectedValue);
   });
 });
 
@@ -60,20 +64,48 @@ test.describe('Test LiquidStone Fund NAV', () => {
 });
 
 test.describe('Test LiquidStone Fund Manual Value Oracle', () => {
-  test('Test Read Options', async () => {
-    const flexibleLoan: FlexibleLoan = enzymeConfig.flexibleLoans[0];
-    const manualValueOracle = new CredbullContract(credbullClient, flexibleLoan.manualValueOracleProxy);
+  const flexibleLoan: FlexibleLoan = enzymeConfig.flexibleLoans[0];
+  const manualValueOracle = new CredbullContract(credbullClient, flexibleLoan.manualValueOracleProxy);
 
-    // get updater
-    const updater = await getUpdater({
-      contract: manualValueOracle.contract,
-    });
-    console.log(updater);
-
-    // get value
+  test('Test getters', async () => {
     const value = await getValue({
       contract: manualValueOracle.contract,
     });
-    console.log(value);
+    expect(value).toBeGreaterThanOrEqual(minExpectedValue);
+
+    const updater = await getUpdater({
+      contract: manualValueOracle.contract,
+    });
+    expect(updater).toBeDefined();
+  });
+
+  test('Test update value', async () => {
+    const prevValue = await getValue({
+      contract: manualValueOracle.contract,
+    });
+
+    const newValue = prevValue == toBigInt(1) ? toBigInt(2) : toBigInt(1); // alternate value between 1 and 2
+    const deployerPrivateKey = process.env.DEPLOYER_PRIVATE_KEY as string;
+    const deployer: Account = credbullClient.createAccount(deployerPrivateKey);
+
+    const updatevalueTxn = updateValueTxn({
+      contract: manualValueOracle.contract,
+      nextValue: newValue,
+    });
+
+    console.log(`Updating value from ${prevValue} -> ${newValue}`);
+
+    try {
+      const txnResult = await sendTransaction({
+        account: deployer, // the account initiating the transaction
+        transaction: updatevalueTxn,
+      });
+
+      const txnReceipt = await waitForReceipt(txnResult);
+      expect(txnReceipt.status).toBe('success');
+    } catch (error) {
+      console.error('Error sending deposit transaction:', error);
+      throw error;
+    }
   });
 });
