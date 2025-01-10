@@ -6,9 +6,16 @@ defaults:
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - "main*"
+      - "dev/**"
+    paths:
+      - "packages/credbull/**"
+      - ".github/workflows/**"
 
 jobs:
-  liquidStone-ops:
+  liquid-stone-ops:
     runs-on: ubuntu-latest
     environment: local
 
