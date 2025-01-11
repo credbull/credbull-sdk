@@ -6,6 +6,7 @@
     "clean": "tsc --build --clean && rm -rf playwright-report test-results",
     "dev": "ts-node",
     "run-liquid-stone-ops": "ts-node src/liquid-stone/liquid-stone-ops.ts",
+    "run-fund-ops": "ts-node src/fund/fund-ops.ts",
     "build": "tsc --build",
     "test": "playwright test",
     "format": "prettier . --write",

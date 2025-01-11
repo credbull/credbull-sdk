@@ -2,6 +2,7 @@ import { sendAndConfirmTransaction } from 'thirdweb';
 import {
   approve as approveExt,
   balanceOf as balanceOfExt,
+  getCurrencyMetadata as getCurrencyMetadataExt,
   totalSupply as totalSupplyExt,
 } from 'thirdweb/extensions/erc20';
 import { Account } from 'thirdweb/wallets';
@@ -42,16 +43,22 @@ export class ERC20 extends CredbullContract {
     }
   }
 
-  totalSupply() {
-    return totalSupplyExt({
-      contract: this._contract,
-    });
-  }
-
   balanceOf(address: Address) {
     return balanceOfExt({
       contract: this._contract,
       address: address,
+    });
+  }
+
+  getCurrencyMetadata() {
+    return getCurrencyMetadataExt({
+      contract: this._contract,
+    });
+  }
+
+  totalSupply() {
+    return totalSupplyExt({
+      contract: this._contract,
     });
   }
 }

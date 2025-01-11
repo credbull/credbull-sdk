@@ -5,6 +5,7 @@ import { Address, ChainConfig } from '../../utils/utils';
 // Enzyme Polygon Deploys: https://github.com/enzymefinance/sdk/blob/main/packages/environment/src/deployments/polygon.ts#L157
 export interface EnzymeConfig extends ChainConfig {
   liquidStoneFund: Address;
+  liquidSToneFundApprovers: Approvers;
   fundValueCalculator: Address;
   flexibleLoans: FlexibleLoan[];
 }
@@ -13,6 +14,12 @@ export interface FlexibleLoan {
   name: string;
   flexibleLoan: Address;
   manualValueOracleProxy: Address;
+}
+
+export interface Approvers {
+  credbullDefiCustody: Address; // Temp custody for assets.  Handles deposits to and redemptions from the Fund.  Holds assets to bridge to and from Polygon.
+  blackOpalFundOwner: Address; // Manages the on-chain fund structure, including deposits, balances, redemptions, and fund NAV.
+  blackOpalFundCustodianWrapper: Address; // Wraps the BitGo custodial wallet for interaction with DeFi protocols (e.g. Enzyme)
 }
 
 const enzymePolygonConfigBase = {
@@ -26,6 +33,11 @@ const enzymePolygonConfigBase = {
 export const enzymePolygonConfig: EnzymeConfig = {
   ...enzymePolygonConfigBase,
   liquidStoneFund: '0x2eda17eb596858566be933b26fae6fa4ee8ccd6d', // see: https://app.enzyme.finance/vault/0x2eda17eb596858566be933b26fae6fa4ee8ccd6d?network=polygon
+  liquidSToneFundApprovers: {
+    credbullDefiCustody: '0xD2071c01d243CED66521B14aC717B97a71b5a1B1',
+    blackOpalFundOwner: '0x7E6A4Be1877c6298440aCBCCDC6fE862d97e1E51',
+    blackOpalFundCustodianWrapper: '0xB1dc50Da4FB51A74520E0fe5C83e8a1320eB0bf6',
+  },
   flexibleLoans: [
     {
       name: 'BlackOpal LiquidStone x Plume 2024',
@@ -38,6 +50,11 @@ export const enzymePolygonConfig: EnzymeConfig = {
 export const testEnzymePolygonConfig: EnzymeConfig = {
   ...enzymePolygonConfigBase,
   liquidStoneFund: '0xc6024bb5d1d3379943f0193aff7a2ca55f02ba21', // test / preview fund.  see: https://app.enzyme.finance/vault/0xc6024bb5d1d3379943f0193aff7a2ca55f02ba21?network=polygon
+  liquidSToneFundApprovers: {
+    credbullDefiCustody: '0x555d341316B75B097cD9089127631194dd921568',
+    blackOpalFundOwner: '0xC52D5F1DdF6742C1D658bC03CE1Af8e188E5c048',
+    blackOpalFundCustodianWrapper: '0xC52D5F1DdF6742C1D658bC03CE1Af8e188E5c048', // same as blackOpalFund owner
+  },
   flexibleLoans: [
     {
       name: 'TEST - BlackOpal Test Vault Flexible Loan 20241218',

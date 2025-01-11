@@ -1,7 +1,7 @@
 import { toBigInt } from 'ethers';
 
 import { CredbullClient } from '../credbull-client';
-import { Address, ChainConfig, plumeMainetConfig } from '../utils/utils';
+import { Address, ChainConfig, plumeMainetConfig, toStrShares, toStrUSDC } from '../utils/utils';
 
 import { LiquidStone } from './liquid-stone';
 
@@ -23,21 +23,6 @@ async function toAssets(shares: bigint, depositPeriod: bigint): Promise<bigint> 
   }
 }
 
-async function toStr(amount: bigint | number) {
-  // return `${(await liquidStone.scaleDown(Number(amount))).toFixed(6).toLocaleString()}`;
-  const scaledDown = await liquidStone.scaleDown(Number(amount));
-  const [integerPart, decimalPart] = scaledDown.toFixed(6).split('.');
-  return `${Number(integerPart).toLocaleString()}.${decimalPart}`;
-}
-
-async function toStrAssets(assets: bigint | number) {
-  return `${await toStr(assets)} USDC`;
-}
-
-async function toStrShares(shares: bigint | number) {
-  return `${await toStr(shares)} shrs`;
-}
-
 async function logBalances(depositPeriod: bigint, skipZeroBalance = false) {
   const nestShares: bigint = await liquidStone.balanceOf(plumeMainnetOpsConfig.nestVault, depositPeriod);
   const totalShares: bigint = await liquidStone.totalSupplyById(depositPeriod);
@@ -47,10 +32,10 @@ async function logBalances(depositPeriod: bigint, skipZeroBalance = false) {
   }
 
   console.log(
-    `-- id[${depositPeriod}] nestVault: ${await toStrShares(nestShares)}. (${await toStrAssets(await toAssets(nestShares, depositPeriod))}).`,
+    `-- id[${depositPeriod}] nestVault: ${await toStrShares(nestShares)}. (${await toStrUSDC(await toAssets(nestShares, depositPeriod))}).`,
   );
   console.log(
-    `-- id[${depositPeriod}] TOTAL    : ${await toStrShares(totalShares)}. (${await toStrAssets(await toAssets(totalShares, depositPeriod))}).`,
+    `-- id[${depositPeriod}] TOTAL    : ${await toStrShares(totalShares)}. (${await toStrUSDC(await toAssets(totalShares, depositPeriod))}).`,
   );
 
   if (totalShares != nestShares) {
@@ -69,7 +54,7 @@ async function logRequestRedeems() {
 
 async function logAmountToInvest(depositPeriod: bigint) {
   const amountToInvest = await liquidStone.amountToInvest(plumeMainnetOpsConfig.nestVault, depositPeriod);
-  console.log(`-- id[${depositPeriod}] Amount to Invest(+)/Redeem(-): ${await toStrAssets(amountToInvest)}`);
+  console.log(`-- id[${depositPeriod}] Amount to Invest(+)/Redeem(-): ${await toStrUSDC(amountToInvest)}`);
 }
 
 async function verboseLogging(startPeriod: bigint, endPeriod: bigint) {
@@ -101,8 +86,8 @@ async function main(isVerbose = false) {
 
   console.log(`Current Period: id[${currentPeriod}]`);
   console.log(`Total Shares      : ${(await toStrShares(await liquidStone.totalSupply())).padStart(valuePadding)}`);
-  console.log(`Total Asset Value : ${(await toStrAssets(await liquidStone.totalAssets())).padStart(valuePadding)}`);
-  console.log(`Asset Balance     : ${(await toStrAssets(await liquidStone.assetBalance())).padStart(valuePadding)}`);
+  console.log(`Total Asset Value : ${(await toStrUSDC(await liquidStone.totalAssets())).padStart(valuePadding)}`);
+  console.log(`Asset Balance     : ${(await toStrUSDC(await liquidStone.assetBalance())).padStart(valuePadding)}`);
 
   console.log();
 
