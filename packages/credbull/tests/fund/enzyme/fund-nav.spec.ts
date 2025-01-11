@@ -74,18 +74,37 @@ test.describe('Test LiquidStone Fund Manual Value Oracle', () => {
 
   test('Test getters', async () => {
     expect(await manualValueOracle.getValue()).toBeGreaterThanOrEqual(minExpectedValue);
-    expect(await manualValueOracle.getUpdater()).toBeDefined();
+    const updater = await manualValueOracle.getUpdater();
+    console.log(`updater: ${updater}`);
+    expect(updater).toBeDefined();
+
+    const owner = await manualValueOracle.getOwner();
+    console.log(`owner: ${owner}`);
+    expect(owner).toBeDefined();
   });
+});
+
+test.describe('Test LiquidStone Fund Manual Value Oracle - Write', () => {
+  const flexibleLoan: FlexibleLoan = enzymeConfig.flexibleLoans[0];
+  const manualValueOracle = new ManualValueOracle(credbullClient, flexibleLoan.manualValueOracleProxy);
+  const deployer: Account = credbullClient.createAccount(process.env.DEPLOYER_PRIVATE_KEY as string);
 
   test('Test update value', async () => {
     const prevValue = await manualValueOracle.getValue();
 
     const newValue = prevValue == toBigInt(1) ? toBigInt(2) : toBigInt(1); // alternate value between 1 and 2
-    const deployerPrivateKey = process.env.DEPLOYER_PRIVATE_KEY as string;
-    const deployer: Account = credbullClient.createAccount(deployerPrivateKey);
 
     console.log(`Manual Value Oracle updating value from ${prevValue} -> ${newValue}`);
     const txnReceipt = await manualValueOracle.updateValue(deployer, newValue);
+
+    expect(txnReceipt.status).toBe('success');
+  });
+
+  // Skipping - this test needs the owner signer actually
+  test.skip('Test set updater', async () => {
+    const owner: Account = credbullClient.createAccount(process.env.OWNER_PRIVATE_KEY as string);
+    const newUpdater = deployer.address; // need to keep the updater as deployer.  but txn should succeed.
+    const txnReceipt = await manualValueOracle.setUpdater(owner, newUpdater);
 
     expect(txnReceipt.status).toBe('success');
   });
