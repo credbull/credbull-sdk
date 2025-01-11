@@ -46,3 +46,14 @@ jobs:
           DEPLOYER_ALT_PRIVATE_KEY: ${{ secrets.CREDBULL_DEVOPS_DEPLOYER_ALT_PRIVATE_KEY }}
           USER_PRIVATE_KEY: ${{ secrets.CREDBULL_DEVOPS_CHARLIE_PRIVATE_KEY }}
           USER_ADDRESS: ${{ secrets.CREDBULL_DEVOPS_CHARLIE_ADDRESS }}
+
+      - name: Run BlackOpal Fund Ops Scripts
+        run: yarn run-fund-ops --verbose
+        working-directory: packages/credbull
+        env:
+          THIRDWEB_SECRET_KEY: ${{ secrets.CREDBULL_DEVOPS_THIRDWEB_SECRET_KEY }}
+          DEPLOYER_PRIVATE_KEY: ${{ secrets.CREDBULL_DEVOPS_DEPLOYER_PRIVATE_KEY }}
+          DEPLOYER_ALT_PRIVATE_KEY: ${{ secrets.CREDBULL_DEVOPS_DEPLOYER_ALT_PRIVATE_KEY }}
+          USER_PRIVATE_KEY: ${{ secrets.CREDBULL_DEVOPS_CHARLIE_PRIVATE_KEY }}
+          USER_ADDRESS: ${{ secrets.CREDBULL_DEVOPS_CHARLIE_ADDRESS }}
+
