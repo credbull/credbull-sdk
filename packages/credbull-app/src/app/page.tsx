@@ -1,9 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import { ConnectButton } from "thirdweb/react";
+import {
+  ConnectButton,
+  useActiveAccount,
+  useWalletBalance,
+} from "thirdweb/react";
 import thirdwebIcon from "@public/thirdweb.svg";
 import { client } from "./client";
+
+import { arbitrumSepolia } from "thirdweb/chains";
+
+const chain = arbitrumSepolia;
 
 export default function Home() {
   return (
@@ -11,15 +19,17 @@ export default function Home() {
       <div className="py-20">
         <Header />
 
-        <div className="flex justify-center mb-20">
+        <div className="flex justify-center mb-10">
           <ConnectButton
             client={client}
             appMetadata={{
-              name: "Example App",
+              name: "DeFi Project",
               url: "https://example.com",
             }}
           />
         </div>
+
+        <WalletInfo />
 
         <ThirdwebResources />
       </div>
@@ -53,6 +63,37 @@ function Header() {
         file to get started.
       </p>
     </header>
+  );
+}
+
+function WalletInfo() {
+  const account = useActiveAccount();
+  const { data: balance, isLoading } = useWalletBalance({
+    client,
+    chain, // Replace with the desired chain (e.g., "goerli", "polygon", etc.)
+    address: account?.address,
+  });
+
+  if (!account) {
+    return (
+      <p className="text-center text-zinc-400">
+        Connect your wallet to see details.
+      </p>
+    );
+  }
+
+  return (
+    <div className="text-center bg-zinc-800 p-4 rounded-lg mb-10">
+      <p className="text-zinc-200">
+        <strong>Wallet Address:</strong> {account.address}
+      </p>
+      <p className="text-zinc-200">
+        <strong>Wallet Balance:</strong>{" "}
+        {isLoading
+          ? "Loading..."
+          : `${balance?.displayValue} ${balance?.symbol || ""}`}
+      </p>
+    </div>
   );
 }
 
