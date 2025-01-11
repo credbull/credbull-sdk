@@ -8,6 +8,7 @@ import {
   useChainMetadata,
   useActiveWalletChain,
 } from "thirdweb/react";
+import { useState } from "react";
 import { client } from "./client";
 import logo from "../../public/logo.3227e7d9.svg"; // Adjust path to match your file structure
 
@@ -48,50 +49,77 @@ export default function Home() {
 }
 
 function WalletInfo() {
-  const account = useActiveAccount();
-  const activeChain = useActiveWalletChain();
-  const activeChainMetadata = useChainMetadata(activeChain);
+  const [notifications, setNotifications] = useState<string[]>([]);
 
-  const { data: balance, isLoading } = useWalletBalance({
-    client,
-    chain: activeChain,
-    address: account?.address,
-  });
-
-  if (!account) {
-    return (
-      <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-center text-gray-300 max-w-lg mx-auto">
-        <h2 className="text-2xl font-semibold text-white mb-4">
-          Connect Your Wallet
-        </h2>
-        <p>Connect your wallet to see your details.</p>
-      </div>
-    );
-  }
+  const showNotification = (message: string) => {
+    setNotifications((prev) => [...prev, message]); // Add new notification
+    setTimeout(() => {
+      setNotifications((prev) => prev.slice(1)); // Remove the oldest notification after 3 seconds
+    }, 3000);
+  };
 
   return (
-    <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white max-w-lg mx-auto">
-      <h2 className="text-2xl font-semibold mb-4 text-center">
+    <div className="bg-gray-800 p-8 rounded-lg shadow-lg text-white max-w-xl mx-auto">
+      <h2 className="text-2xl font-semibold mb-6 text-center">
         Wallet Details
       </h2>
-      <div className="text-gray-300 text-sm">
-        <p className="mb-2">
-          <span className="font-medium text-white">Chain:</span>
-          <br />
-          {activeChainMetadata?.data?.name} ({activeChain?.id})
-        </p>
-        <p className="mb-2">
-          <span className="font-medium text-white">Address:</span>
-          <br />
-          <span className="break-all">{account.address}</span>
-        </p>
-        <p>
-          <span className="font-medium text-white">Balance:</span>
-          <br />
-          {isLoading
-            ? "Loading..."
-            : `${balance?.displayValue} ${balance?.symbol || ""}`}
-        </p>
+      <div className="space-y-6">
+        <DetailBlock label="Chain" value="Arbitrum Sepolia (421613)" />
+        <DetailBlock
+          label="Address"
+          value="0x1234567890abcdef1234567890abcdef12345678"
+          isAddress
+          showNotification={showNotification}
+        />
+        <DetailBlock label="Balance" value="1.23 ETH" />
+      </div>
+
+      {/* Notifications Container */}
+      <div className="fixed bottom-4 left-4 space-y-2">
+        {notifications.map((notification, index) => (
+          <div
+            key={index}
+            className="bg-gray-700 text-white py-2 px-4 rounded shadow-md animate-popup"
+          >
+            {notification}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function DetailBlock({
+  label,
+  value,
+  isAddress,
+  showNotification,
+}: {
+  label: string;
+  value: string | undefined;
+  isAddress?: boolean;
+  showNotification?: (message: string) => void;
+}) {
+  const handleCopy = () => {
+    if (value && showNotification) {
+      navigator.clipboard.writeText(value);
+      showNotification("Address copied to clipboard!");
+    }
+  };
+
+  return (
+    <div className="flex flex-col space-y-1">
+      <span className="text-gray-400 text-sm">{label}:</span>
+      <div
+        className={`text-lg font-medium ${
+          isAddress
+            ? "text-gray-300 cursor-pointer hover:underline"
+            : "text-white"
+        } break-words`}
+        onClick={isAddress ? handleCopy : undefined} // Make address clickable
+        style={{ wordWrap: "break-word" }}
+      >
+        {value || "N/A"}
       </div>
     </div>
   );

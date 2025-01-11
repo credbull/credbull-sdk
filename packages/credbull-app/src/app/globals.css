@@ -20,3 +20,29 @@
     @apply bg-zinc-950 text-neutral-200;
   }
 }
+
+@keyframes popup {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes easeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-popup {
+  animation:
+    popup 0.3s ease-out,
+    easeOut 2.7s ease-in 0.3s forwards; /* Combined entry and exit */
+}
