@@ -51,27 +51,62 @@ export default function Home() {
 function WalletInfo() {
   const [notifications, setNotifications] = useState<string[]>([]);
 
+  // Fetching wallet data dynamically
+  const account = useActiveAccount();
+  const activeChain = useActiveWalletChain();
+  const activeChainMetadata = useChainMetadata(activeChain);
+
+  const { data: balance, isLoading } = useWalletBalance({
+    client,
+    chain: activeChain,
+    address: account?.address,
+  });
+
+  // Show notification function
   const showNotification = (message: string) => {
     setNotifications((prev) => [...prev, message]); // Add new notification
     setTimeout(() => {
-      setNotifications((prev) => prev.slice(1)); // Remove the oldest notification after 3 seconds
+      setNotifications((prev) => prev.slice(1)); // Remove after 3 seconds
     }, 3000);
   };
 
+  // Handle case when no wallet is connected
+  if (!account) {
+    return (
+      <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-center text-gray-300 max-w-lg mx-auto">
+        <h2 className="text-2xl font-semibold text-white mb-4">
+          Connect Your Wallet
+        </h2>
+        <p>Connect your wallet to see your details.</p>
+      </div>
+    );
+  }
+
+  // Render wallet details dynamically
   return (
     <div className="bg-gray-800 p-8 rounded-lg shadow-lg text-white max-w-xl mx-auto">
       <h2 className="text-2xl font-semibold mb-6 text-center">
         Wallet Details
       </h2>
       <div className="space-y-6">
-        <DetailBlock label="Chain" value="Arbitrum Sepolia (421613)" />
+        <DetailBlock
+          label="Chain"
+          value={`${activeChainMetadata?.data?.name || "Unknown"} (${activeChain?.id || "N/A"})`}
+        />
         <DetailBlock
           label="Address"
-          value="0x1234567890abcdef1234567890abcdef12345678"
+          value={account.address}
           isAddress
           showNotification={showNotification}
         />
-        <DetailBlock label="Balance" value="1.23 ETH" />
+        <DetailBlock
+          label="Balance"
+          value={
+            isLoading
+              ? "Loading..."
+              : `${balance?.displayValue} ${balance?.symbol || ""}`
+          }
+        />
       </div>
 
       {/* Notifications Container */}
@@ -89,6 +124,7 @@ function WalletInfo() {
   );
 }
 
+// Reusable Detail Block for rendering wallet fields
 function DetailBlock({
   label,
   value,
