@@ -108,7 +108,7 @@ export async function getFeeManager(options: BaseTransactionOptions) {
  *
  * ```
  */
-export async function getProtocolFeeTracker(options: BaseTransactionOptions) {
+export async function getProtocolFeeTrackerFund(options: BaseTransactionOptions) {
   return readContract({
     contract: options.contract,
     method: [

@@ -3,8 +3,7 @@ import { toBigInt } from 'ethers';
 
 import { CredbullClient } from '../../src/credbull-client';
 import { LiquidStone } from '../../src/liquid-stone/liquid-stone';
-import { ChainConfig, testnetConfig } from '../../src/utils/chain-config';
-import { Address } from '../../src/utils/rpc-types';
+import { Address, ChainConfig, testnetConfig } from '../../src/utils/utils';
 
 const chainConfig: ChainConfig = testnetConfig;
 

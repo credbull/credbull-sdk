@@ -6,9 +6,7 @@ import { Hex } from 'thirdweb/src/utils/encoding/hex';
 import { CredbullClient } from '../../src/credbull-client';
 import { ERC20 } from '../../src/erc20/erc20';
 import { CredbullSafeClient } from '../../src/safe/credbull-safe-client';
-import { ChainConfig, baseSepoliaConfig } from '../../src/utils/chain-config';
-import { loadConfig } from '../../src/utils/config';
-import { Address } from '../../src/utils/rpc-types';
+import { Address, ChainConfig, baseSepoliaConfig, loadConfig } from '../../src/utils/utils';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Suppress error about file not being under rootDir

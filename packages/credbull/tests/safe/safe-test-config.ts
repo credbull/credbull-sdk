@@ -1,6 +1,5 @@
 import { CredbullSafeClient } from '../../src/safe/credbull-safe-client';
-import { ChainConfig, baseSepoliaConfig } from '../../src/utils/chain-config';
-import { Address } from '../../src/utils/rpc-types';
+import { Address, ChainConfig, baseSepoliaConfig } from '../../src/utils/utils';
 
 interface SafeTestConfig {
   chainConfig: ChainConfig;

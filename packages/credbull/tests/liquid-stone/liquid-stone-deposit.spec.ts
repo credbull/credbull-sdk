@@ -4,9 +4,7 @@ import { simulateTransaction } from 'thirdweb';
 import { CredbullClient } from '../../src/credbull-client';
 import { ERC20 } from '../../src/erc20/erc20';
 import { LiquidStone } from '../../src/liquid-stone/liquid-stone';
-import { testnetConfig } from '../../src/utils/chain-config';
-import { loadConfig } from '../../src/utils/config';
-import { Address } from '../../src/utils/rpc-types';
+import { Address, loadConfig, testnetConfig } from '../../src/utils/utils';
 
 loadConfig();
 

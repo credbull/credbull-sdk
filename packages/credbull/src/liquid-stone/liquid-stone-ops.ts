@@ -1,8 +1,7 @@
 import { toBigInt } from 'ethers';
 
 import { CredbullClient } from '../credbull-client';
-import { ChainConfig, plumeMainetConfig } from '../utils/chain-config';
-import { Address } from '../utils/rpc-types';
+import { Address, ChainConfig, plumeMainetConfig } from '../utils/utils';
 
 import { LiquidStone } from './liquid-stone';
 

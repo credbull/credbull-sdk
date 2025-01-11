@@ -7,7 +7,7 @@ import { Account } from 'thirdweb/wallets';
 import { CredbullClient } from '../credbull-client';
 import { CredbullContract } from '../credbull-contract';
 import { ERC20 } from '../erc20/erc20';
-import { Address } from '../utils/rpc-types';
+import { Address } from '../utils/utils';
 
 import {
   asset as assetExt,

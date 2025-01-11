@@ -8,7 +8,7 @@ import { Account } from 'thirdweb/wallets';
 
 import { CredbullClient } from '../credbull-client';
 import { CredbullContract } from '../credbull-contract';
-import { Address } from '../utils/rpc-types';
+import { Address } from '../utils/utils';
 
 export class ERC20 extends CredbullContract {
   constructor(credbullClient: CredbullClient, erc20Address: Address) {
