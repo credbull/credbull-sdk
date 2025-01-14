@@ -10,7 +10,7 @@ loadConfig();
 
 export class CredbullClient {
   private _chainConfig: ChainConfig;
-  private _thirdWebClient;
+  private _thirdWebClient: ThirdwebClient;
 
   constructor(chainConfig: ChainConfig) {
     if (!chainConfig) {
@@ -25,7 +25,7 @@ export class CredbullClient {
     return this._chainConfig;
   }
 
-  get thirdWebClient() {
+  get thirdWebClient(): ThirdwebClient {
     return this._thirdWebClient;
   }
 

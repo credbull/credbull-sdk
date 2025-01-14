@@ -28,6 +28,11 @@ test.describe('Test Safe Deposit', () => {
     const depositSafeTxnHash = depositTxnResult.transactions?.safeTxHash;
     expect(depositSafeTxnHash).toBeDefined();
 
+    // viewer - reads the pending transaction
+    const safeClientViewer: CredbullSafeClient = safeClientMultiSig(undefined);
+    const pendingTransactions = await (await safeClientViewer.safeClient).getPendingTransactions();
+    expect(pendingTransactions.results.length).toBeGreaterThanOrEqual(1);
+
     // second signer - confirms
     const safeClientSigner2: CredbullSafeClient = safeClientMultiSig(deployerAltPrivateKey);
     const confirmTxnResult = await safeClientSigner2.confirmTxn(depositSafeTxnHash!);

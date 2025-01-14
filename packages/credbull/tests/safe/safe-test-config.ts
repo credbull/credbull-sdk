@@ -1,3 +1,5 @@
+import { SafeProvider } from '@safe-global/protocol-kit';
+
 import { CredbullSafeClient } from '../../src/safe/credbull-safe-client';
 import { Address, ChainConfig, baseSepoliaConfig } from '../../src/utils/utils';
 
@@ -13,10 +15,10 @@ export const safeTestConfig: SafeTestConfig = {
   safeWithMultiSig: '0xE8aD45571A667E7cF7E976842BDabE0Eb87D8F68',
 };
 
-export function safeClientSingleSigner(signerPrivateKey: string): CredbullSafeClient {
-  return new CredbullSafeClient(safeTestConfig.chainConfig, safeTestConfig.safeWithSingleSigner, signerPrivateKey);
+export function safeClientSingleSigner(safeSigner: SafeProvider['signer'] | undefined): CredbullSafeClient {
+  return new CredbullSafeClient(safeTestConfig.chainConfig, safeTestConfig.safeWithSingleSigner, safeSigner);
 }
 
-export function safeClientMultiSig(signerPrivateKey: string): CredbullSafeClient {
-  return new CredbullSafeClient(safeTestConfig.chainConfig, safeTestConfig.safeWithMultiSig, signerPrivateKey);
+export function safeClientMultiSig(safeSigner: SafeProvider['signer'] | undefined): CredbullSafeClient {
+  return new CredbullSafeClient(safeTestConfig.chainConfig, safeTestConfig.safeWithMultiSig, safeSigner);
 }

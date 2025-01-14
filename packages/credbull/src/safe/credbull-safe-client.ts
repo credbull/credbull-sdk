@@ -1,3 +1,5 @@
+import { SafeMultisigTransactionListResponse } from '@safe-global/api-kit';
+import { SafeProvider } from '@safe-global/protocol-kit';
 import { SafeClient, SafeClientResult, createSafeClient } from '@safe-global/sdk-starter-kit';
 import { Hex } from 'thirdweb/src/utils/encoding/hex';
 
@@ -12,19 +14,19 @@ export class CredbullSafeClient {
   private _safeAddress: Address;
   private _safeClient: Promise<SafeClient>;
 
-  constructor(chainConfig: ChainConfig, safeAddress: Address, signerPrivateKey: string) {
+  constructor(chainConfig: ChainConfig, safeAddress: Address, safeSigner: SafeProvider['signer'] | undefined) {
     if (!chainConfig) {
       throw Error('Chain config undefined!');
     }
     this._chainConfig = chainConfig;
     this._safeAddress = safeAddress;
-    this._safeClient = this.createSafeClient(signerPrivateKey);
+    this._safeClient = this.createSafeClient(safeSigner);
   }
 
-  createSafeClient(signerPrivateKey: string): Promise<SafeClient> {
+  createSafeClient(safeSigner: SafeProvider['signer'] | undefined): Promise<SafeClient> {
     return createSafeClient({
       provider: this._chainConfig.chain.rpc,
-      signer: signerPrivateKey,
+      signer: safeSigner,
       safeAddress: this._safeAddress,
     });
   }
@@ -62,7 +64,7 @@ export class CredbullSafeClient {
   async confirmTxn(safeTxHash: TransactionHash): Promise<SafeClientResult> {
     const safeClient = await this._safeClient;
 
-    const pendingTransactions = await safeClient.getPendingTransactions();
+    const pendingTransactions: SafeMultisigTransactionListResponse = await this.getPendingTransactions();
 
     for (const transaction of pendingTransactions.results) {
       if (transaction.safeTxHash !== safeTxHash) {
@@ -76,6 +78,10 @@ export class CredbullSafeClient {
     throw Error(`Safe transaction ${safeTxHash} not found!`);
   }
 
+  async getPendingTransactions(): Promise<SafeMultisigTransactionListResponse> {
+    return (await this._safeClient).getPendingTransactions();
+  }
+
   logTxnResult(depositTxnResult: SafeClientResult | undefined) {
     console.debug(`Transaction status: ${depositTxnResult?.status}`);
     console.debug(`Transaction safeTxHash: ${depositTxnResult?.transactions?.safeTxHash}`);
@@ -84,5 +90,9 @@ export class CredbullSafeClient {
 
   get safeAddress(): Address {
     return this._safeAddress;
+  }
+
+  get safeClient(): Promise<SafeClient> {
+    return this._safeClient;
   }
 }
