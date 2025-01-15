@@ -30,6 +30,7 @@
   "devDependencies": {
     "@playwright/test": "^1.49.1",
     "@types/node": "^22.10.2",
+    "eslint": "^9.18.0",
     "js-toml": "^1.0.1",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
