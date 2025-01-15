@@ -1,7 +1,7 @@
 import { toBigInt } from 'ethers';
 
 import { CredbullClient } from '../credbull-client';
-import { Address, ChainConfig, plumeMainetConfig, toStrShares, toStrUSDC } from '../utils/utils';
+import { Address, ChainConfig, plumeMainetConfig, stringifyWithBigint, toStrShares, toStrUSDC } from '../utils/utils';
 
 import { LiquidStone } from './liquid-stone';
 
@@ -47,9 +47,7 @@ async function logBalances(depositPeriod: bigint, skipZeroBalance = false) {
 
 async function logRequestRedeems() {
   const nestRequestReedemsArray = await liquidStone.unlockRequestsAll(plumeMainnetOpsConfig.nestVault);
-  const stringifyWithBigInt = (key: string, value: any) => (typeof value === 'bigint' ? value.toString() : value);
-
-  console.log(`-- nestVault redeem requests: ${JSON.stringify(nestRequestReedemsArray, stringifyWithBigInt)}`);
+  console.log(`-- nestVault redeem requests: ${JSON.stringify(nestRequestReedemsArray, stringifyWithBigint())}`);
 }
 
 async function logAmountToInvest(depositPeriod: bigint) {

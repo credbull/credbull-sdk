@@ -1,18 +1,12 @@
 import {
   type AbiParameterToPrimitiveType,
   type BaseTransactionOptions,
-  Chain,
-  ThirdwebContract,
   prepareContractCall,
   readContract,
   sendTransaction,
   waitForReceipt,
 } from 'thirdweb';
 import { Account } from 'thirdweb/dist/types/exports/wallets';
-import { StaticPrepareTransactionOptions } from 'thirdweb/dist/types/transaction/prepare-transaction';
-import { PreparedMethod } from 'thirdweb/dist/types/utils/abi/prepare-method';
-import { PromisedObject } from 'thirdweb/dist/types/utils/promise/resolve-promised-value';
-import { ThirdwebClient } from 'thirdweb/src/client/client';
 
 import { CredbullClient } from '../../../credbull-client';
 import { CredbullContract } from '../../../credbull-contract';
@@ -78,7 +72,17 @@ export class ManualValueOracle extends CredbullContract {
       nextUpdater,
     });
 
-    return await this.sendTxn(deployer, txn);
+    try {
+      const txnResult = await sendTransaction({
+        account: deployer, // the account initiating the transaction
+        transaction: txn,
+      });
+
+      return waitForReceipt(txnResult);
+    } catch (error) {
+      console.error('Error sending transaction:', error);
+      throw error;
+    }
   }
 
   private updateValueTxn(options: BaseTransactionOptions<UpdateValueParams>) {
@@ -94,21 +98,7 @@ export class ManualValueOracle extends CredbullContract {
       contract: this._contract,
       nextValue: newValue,
     });
-    return await this.sendTxn(deployer, txn);
-  }
 
-  private async sendTxn(
-    deployer: Account,
-    txn: Readonly<
-      {
-        chain: Chain;
-        client: ThirdwebClient;
-      } & PromisedObject<Omit<StaticPrepareTransactionOptions, 'chain' | 'client'>>
-    > & {
-      __preparedMethod?: () => Promise<PreparedMethod<any>>;
-      __contract?: ThirdwebContract<any>;
-    },
-  ) {
     try {
       const txnResult = await sendTransaction({
         account: deployer, // the account initiating the transaction
