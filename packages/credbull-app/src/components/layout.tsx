@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { ConnectButton } from "thirdweb/react";
 import logo from "../../public/logo.3227e7d9.svg";
-import { client } from "@/app/client"; // Adjust the path as needed
+import { client } from "./client"; // Adjust the path as needed
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-base-200 text-base-content flex flex-col">
+    <div className="flex flex-col">
       <NavBar />
       <PageContent>{children}</PageContent>
       <Footer />
@@ -16,8 +16,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 // NavBar Component
 function NavBar() {
   return (
-    <header className="navbar bg-base-300 shadow-md">
-      <div className="flex-1">
+    <div className="navbar bg-base-300 shadow-md">
+      <div className="navbar-start">
         <Image
           src={logo}
           alt="CredBull Logo"
@@ -26,7 +26,7 @@ function NavBar() {
           className="brightness-0 invert"
         />
       </div>
-      <div className="flex-none">
+      <div className="navbar-end">
         <ConnectButton
           client={client}
           appMetadata={{
@@ -35,20 +35,20 @@ function NavBar() {
           }}
         />
       </div>
-    </header>
+    </div>
   );
 }
 
 // PageContent Component
 function PageContent({ children }: { children: React.ReactNode }) {
-  return <main className="flex-grow">{children}</main>;
+  return <main className="flex-grow p-6">{children}</main>;
 }
 
 // Footer Component
 function Footer() {
   return (
-    <footer className="footer p-4 bg-base-300 text-center text-base-content">
-      © {new Date().getFullYear()} CredBull. All Rights Reserved.
-    </footer>
+    <div className="footer items-center justify-center p-4 bg-base-300 text-center">
+      <p>© {new Date().getFullYear()} CredBull. All Rights Reserved.</p>
+    </div>
   );
 }
