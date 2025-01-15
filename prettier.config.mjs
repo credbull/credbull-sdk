@@ -1,6 +1,6 @@
 /* eslint-disable */
-// TODO - put cjs back in.  but currently failing at modules.exports
-module.exports = {
+// TODO - put cjs back in.  but currently failing at module.exports
+export default {
   plugins: ['@trivago/prettier-plugin-sort-imports'],
   singleQuote: true,
   trailingComma: 'all',
