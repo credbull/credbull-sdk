@@ -9,11 +9,12 @@
   ],
   "scripts": {
     "prepare": "husky",
-    "test": "yarn workspace @credbull-sdk/credbull test",
-    "format": "yarn workspace @credbull-sdk/credbull format",
-    "lint": "yarn workspace @credbull-sdk/credbull lint"
+    "test": "yarn workspaces foreach --all --topological-dev run test",
+    "lint": "yarn workspace @credbull-sdk/credbull lint",
+    "format": "prettier . --write"
   },
   "devDependencies": {
+    "@eslint/compat": "^1.2.5",
     "@eslint/js": "^9.18.0",
     "@trivago/prettier-plugin-sort-imports": "^5.2.0",
     "@typescript-eslint/eslint-plugin": "^8.20.0",
