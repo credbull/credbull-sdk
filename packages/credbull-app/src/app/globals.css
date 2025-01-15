@@ -2,25 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Root-level styles */
 :root {
-  line-height: 1.5;
-  font-weight: 400;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-family: "Inter", sans-serif;
-  font-optical-sizing: auto;
-  font-style: normal;
-  font-variation-settings: "slnt" 0;
+  @apply font-sans text-base leading-6;
 }
 
+/* Base body styles */
 @layer base {
   body {
-    @apply bg-zinc-950 text-neutral-200;
+    @apply bg-base-200 text-base-content;
   }
 }
 
+/* Popup animation */
 @keyframes popup {
   0% {
     opacity: 0;
@@ -44,5 +38,5 @@
 .animate-popup {
   animation:
     popup 0.3s ease-out,
-    easeOut 2.7s ease-in 0.3s forwards; /* Combined entry and exit */
+    easeOut 2.7s ease-in 0.3s forwards;
 }
