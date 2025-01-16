@@ -22,6 +22,7 @@ import {
   totalAssets as totalAssetsExt,
   totalSupply as totalSupplyExt,
   unlockRequests as unlockRequestsExt,
+  withdrawAsset as withdrawExt,
 } from './extensions/v1.3/liquid-stone.codegen';
 import { totalAssetsByOwner as extTotalAssetsByOwner } from './extensions/v1.3/totalAssetsByOwner';
 
@@ -79,6 +80,17 @@ export class LiquidStone extends CredbullContract {
       console.error('Error sending deposit transaction:', error);
       throw error;
     }
+  }
+
+  async withdrawAssetTxn(to: Address, assets: number) {
+    // scale the deposit to include decimals.  e.g. turn 10 USDC into 10_000_000 USDC with decimals
+    const amountScaled = await this.scaleUp(assets);
+
+    return withdrawExt({
+      contract: this._contract,
+      amount: amountScaled,
+      to,
+    });
   }
 
   // ============================== View / Read-only ==============================
@@ -277,3 +289,5 @@ export class LiquidStone extends CredbullContract {
     return unlockRequestsArray;
   }
 }
+
+export * from './extensions/v1.3/liquid-stone.codegen';

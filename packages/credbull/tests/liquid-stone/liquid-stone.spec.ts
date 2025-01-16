@@ -1,9 +1,11 @@
 import { expect, test } from '@playwright/test';
 import { toBigInt } from 'ethers';
+import { encode } from 'thirdweb';
+import { Hex } from 'thirdweb/src/utils/encoding/hex';
 
 import { CredbullClient } from '../../src/credbull-client';
-import { LiquidStone } from '../../src/liquid-stone/liquid-stone';
-import { Address, ChainConfig, testnetConfig } from '../../src/utils/utils';
+import { LiquidStone, withdrawAsset } from '../../src/liquid-stone/liquid-stone';
+import { Address, ChainConfig, decode, testnetConfig } from '../../src/utils/utils';
 
 const chainConfig: ChainConfig = testnetConfig;
 
@@ -40,6 +42,28 @@ test.describe('Test LiquidStone view functions', () => {
 
     const amount = 25;
     expect(await liquidStone.scaleUp(amount)).toBe(toBigInt(amount) * expectedScale);
+  });
+
+  test('Test encode/decode withdraw assets', async () => {
+    const to: Address = chainConfig.liquidStone;
+    const amount = 0.00002;
+
+    const withdrawTxn = withdrawAsset({
+      contract: liquidStone.contract,
+      amount: await liquidStone.scaleUp(amount),
+      to,
+    });
+
+    // encode
+    const encWithdrawTxn: Hex = await encode(withdrawTxn);
+
+    // decode
+    if (!withdrawTxn.__preparedMethod) {
+      throw new Error('__preparedMethod is not defined on the transaction object.');
+    }
+
+    const abi = await withdrawTxn.__preparedMethod();
+    decode(encWithdrawTxn, abi);
   });
 });
 

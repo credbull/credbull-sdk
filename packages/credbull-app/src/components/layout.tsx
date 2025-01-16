@@ -48,7 +48,7 @@ function PageContent({ children }: { children: React.ReactNode }) {
 function Footer() {
   return (
     <div className="footer items-center justify-center p-4 bg-base-300 text-center">
-      <p>© {new Date().getFullYear()} CredBull. All Rights Reserved.</p>
+      <p>© {new Date().getFullYear()} Credbull. All Rights Reserved.</p>
     </div>
   );
 }
