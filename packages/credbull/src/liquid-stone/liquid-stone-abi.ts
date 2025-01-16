@@ -2,7 +2,7 @@ import type { Abi } from 'abitype';
 
 // Import the Abi type
 
-export const liquidStoneAbi: Readonly<Abi> = [
+export const liquidStoneAbi: Abi = [
   {
     type: 'constructor',
     inputs: [],
@@ -3155,4 +3155,4 @@ export const liquidStoneAbi: Readonly<Abi> = [
       },
     ],
   },
-] as const;
+];
