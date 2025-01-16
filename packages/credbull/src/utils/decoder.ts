@@ -1,5 +1,6 @@
 import { AbiFunction, AbiParameter } from 'abitype';
 
+// TODO: parse the function name rather than passing it in
 export async function toAbiFunction(
   name: string,
   txn: {
@@ -10,11 +11,11 @@ export async function toAbiFunction(
     throw new Error('Transaction does not contain a prepared method.');
   }
 
-  const [, inputs, outputs] = await txn.__preparedMethod();
+  const [selector, inputs, outputs] = await txn.__preparedMethod();
 
   return {
     type: 'function',
-    name,
+    name: `${name} + (${selector})`,
     stateMutability: 'nonpayable', // Replace with actual stateMutability if resolvable
     inputs,
     outputs,

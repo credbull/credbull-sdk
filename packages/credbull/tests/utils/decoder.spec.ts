@@ -25,7 +25,7 @@ test.describe('Test Decoder', () => {
   test('Test toAbiFunction', async () => {
     // @ts-expect-error // transaction types too complex to infer
     const abi: AbiFunction = await toAbiFunction(functionName, withdrawTxn);
-    expect(abi.name).toEqual(functionName);
+    expect(abi.name).toContain(functionName);
     expect(abi.type).toEqual('function');
     expect(abi.inputs).toEqual([
       { internalType: 'address', name: 'to', type: 'address' },
