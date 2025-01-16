@@ -8,9 +8,9 @@ export class CredbullContract {
   protected _credbullClient: CredbullClient;
   protected _address: Address;
   protected _contract: ThirdwebContract;
-  protected _abi?: Abi;
+  protected _abi?: Readonly<Abi>;
 
-  constructor(credbullClient: CredbullClient, address: Address, abi?: Abi) {
+  constructor(credbullClient: CredbullClient, address: Address, abi?: Readonly<Abi>) {
     if (!credbullClient) {
       throw new Error('CredbullClient is undefined!');
     }
@@ -21,7 +21,7 @@ export class CredbullContract {
     this._credbullClient = credbullClient;
     this._address = address;
     this._abi = abi;
-    this._contract = this.getContract(this._address, this._abi);
+    this._contract = this.getContract(this._address);
   }
 
   get credbullClient(): CredbullClient {
@@ -36,12 +36,12 @@ export class CredbullContract {
     return this._contract;
   }
 
-  private getContract(contractAddress: Address, abi?: Readonly<Abi>): ThirdwebContract {
+  private getContract(contractAddress: Address): ThirdwebContract {
     return getContract({
       client: this._credbullClient.thirdWebClient,
       address: contractAddress,
       chain: this._credbullClient.chainConfig.chain,
-      abi,
+      // abi,   // NB - getContract accepts an abi.  however, the types are a mess and the abi doesn't seem to be used anyhow.
     });
   }
 }

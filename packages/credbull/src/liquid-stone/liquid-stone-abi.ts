@@ -3155,4 +3155,4 @@ export const liquidStoneAbi: Readonly<Abi> = [
       },
     ],
   },
-];
+] as const;
