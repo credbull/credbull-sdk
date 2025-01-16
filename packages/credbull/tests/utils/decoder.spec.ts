@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { AbiFunction } from 'abitype';
+import { toBigInt } from 'ethers';
 import { AbiParameterToPrimitiveType, type BaseTransactionOptions, encode, prepareContractCall } from 'thirdweb';
 import { Hex } from 'thirdweb/src/utils/encoding/hex';
 import { decodeFunctionData } from 'thirdweb/utils';
@@ -11,21 +12,18 @@ import { Address, testnetConfig, toAbiFunction } from '../../src/utils/utils';
 const liquidStone: LiquidStone = new LiquidStone(new CredbullClient(testnetConfig));
 
 test.describe('Test Decoder', () => {
-  test('Test Decode Function', async () => {
-    const to: Address = testnetConfig.liquidStone;
-    const amount = 0.00005;
-    const functionName = 'withdrawAsset';
+  const to: Address = testnetConfig.liquidStone;
+  const amount = toBigInt(12345); // amount with decimals
+  const functionName = 'withdrawAsset';
 
-    const withdrawTxn = withdrawAsset({
-      contract: liquidStone.contract,
-      amount: await liquidStone.scaleUp(amount),
-      to,
-    });
+  const withdrawTxn = withdrawAsset({
+    contract: liquidStone.contract,
+    amount: amount,
+    to,
+  });
 
-    // encode
-    const encWithdrawTxn: Hex = await encode(withdrawTxn);
-
-    // abi related
+  test('Test toAbiFunction', async () => {
+    // @ts-expect-error // transaction types too complex to infer
     const abi: AbiFunction = await toAbiFunction(functionName, withdrawTxn);
     expect(abi.name).toEqual(functionName);
     expect(abi.type).toEqual('function');
@@ -34,6 +32,11 @@ test.describe('Test Decoder', () => {
       { internalType: 'uint256', name: 'amount', type: 'uint256' },
     ]);
     expect(abi.outputs).toEqual([]);
+  });
+
+  test('Test Decode Function', async () => {
+    // encode
+    const encWithdrawTxn: Hex = await encode(withdrawTxn);
 
     // // decode the inputs.  expected result: [ '<toAddress', <scaledAmount> ]
     const decodedData = (await decodeFunctionData({
@@ -42,7 +45,7 @@ test.describe('Test Decoder', () => {
     })) as [string, bigint]; // typecast to expected output;
 
     expect(decodedData[0].toLowerCase()).toEqual(to.toLowerCase());
-    expect(decodedData[1]).toEqual(await liquidStone.scaleUp(amount));
+    expect(decodedData[1]).toEqual(amount);
   });
 });
 
