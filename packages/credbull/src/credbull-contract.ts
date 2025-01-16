@@ -21,7 +21,13 @@ export class CredbullContract<abiType extends Abi = Abi> {
     this._credbullClient = credbullClient;
     this._address = address;
     this._abi = abi;
-    this._contract = this.getContract<abiType>(this._address, this?._abi);
+
+    this._contract = getContract<abiType>({
+      client: this._credbullClient.thirdWebClient,
+      address: this._address,
+      chain: this._credbullClient.chainConfig.chain,
+      abi: this._abi,
+    });
   }
 
   get credbullClient(): CredbullClient {
@@ -34,14 +40,5 @@ export class CredbullContract<abiType extends Abi = Abi> {
 
   get contract(): ThirdwebContract<abiType> {
     return this._contract;
-  }
-
-  private getContract<abiType extends Abi>(contractAddress: Address, abi?: abiType): ThirdwebContract<abiType> {
-    return getContract<abiType>({
-      client: this._credbullClient.thirdWebClient,
-      address: contractAddress,
-      chain: this._credbullClient.chainConfig.chain,
-      abi,
-    });
   }
 }
