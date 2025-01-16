@@ -1,78 +1,50 @@
 import { expect, test } from '@playwright/test';
-import { AbiFunction } from 'abitype';
-import { toBigInt } from 'ethers';
-import { AbiParameterToPrimitiveType, type BaseTransactionOptions, encode, prepareContractCall } from 'thirdweb';
+import { encode } from 'thirdweb';
 import { Hex } from 'thirdweb/src/utils/encoding/hex';
 import { decodeFunctionData } from 'thirdweb/utils';
+import { decodeFunctionData as decodeFunctionDataViem, encodeFunctionData as encodeFunctionDataViem } from 'viem';
 
 import { CredbullClient } from '../../src/credbull-client';
-import { LiquidStone } from '../../src/liquid-stone/liquid-stone';
-import { Address, testnetConfig, toAbiFunction } from '../../src/utils/utils';
+import { LiquidStone, liquidStoneAbi } from '../../src/liquid-stone/liquid-stone';
+import { Address, ChainConfig, testnetConfig } from '../../src/utils/utils';
 
-const liquidStone: LiquidStone = new LiquidStone(new CredbullClient(testnetConfig));
+const chainConfig: ChainConfig = testnetConfig;
+const liquidStone: LiquidStone = new LiquidStone(new CredbullClient(chainConfig));
 
-test.describe('Test Decoder', () => {
-  const to: Address = testnetConfig.liquidStone;
-  const amount = toBigInt(12345); // amount with decimals
+test.describe('Test encode and decode', () => {
   const functionName = 'withdrawAsset';
+  const toAddress: Address = chainConfig.liquidStone;
+  const amount: bigint = BigInt(12345); // amount with decimals
 
-  const withdrawTxn = withdrawAsset({
-    contract: liquidStone.contract,
-    amount: amount,
-    to,
+  // see: https://viem.sh/docs/contract/decodeFunctionData.html
+  test('Test abi encode and decode', async () => {
+    const encodedFunction: Hex = encodeFunctionDataViem({
+      abi: liquidStoneAbi,
+      functionName,
+      args: [toAddress, amount],
+    });
+    console.log(encodedFunction);
+
+    const { functionName: decFunctionName, args: decArgs } = decodeFunctionDataViem({
+      abi: liquidStoneAbi,
+      data: encodedFunction,
+    });
+
+    expect(decFunctionName).toEqual(functionName);
+    expect(decArgs).toEqual([toAddress, amount]);
   });
 
-  test('Test toAbiFunction', async () => {
-    // @ts-expect-error // transaction types too complex to infer
-    const abi: AbiFunction = await toAbiFunction(functionName, withdrawTxn);
-    expect(abi.name).toContain(functionName);
-    expect(abi.type).toEqual('function');
-    expect(abi.inputs).toEqual([
-      { internalType: 'address', name: 'to', type: 'address' },
-      { internalType: 'uint256', name: 'amount', type: 'uint256' },
-    ]);
-    expect(abi.outputs).toEqual([]);
-  });
+  // see: https://portal.thirdweb.com/references/typescript/v5/decodeFunctionData
+  test('Test thirdweb encode and decode', async () => {
+    const preparedTxn = await liquidStone.withdrawAssetTxn(toAddress, amount);
+    const encodedFunction: Hex = await encode(preparedTxn);
 
-  test('Test Decode Function', async () => {
-    // encode
-    const encWithdrawTxn: Hex = await encode(withdrawTxn);
-
-    // // decode the inputs.  expected result: [ '<toAddress', <scaledAmount> ]
-    const decodedData = (await decodeFunctionData({
+    const [decodedAddress, decodedAmount] = (await decodeFunctionData({
       contract: liquidStone.contract,
-      data: encWithdrawTxn,
-    })) as [string, bigint]; // typecast to expected output;
+      data: encodedFunction,
+    })) as [Address, bigint]; // cast to correct types
 
-    expect(decodedData[0].toLowerCase()).toEqual(to.toLowerCase());
-    expect(decodedData[1]).toEqual(amount);
+    expect(decodedAddress.toLowerCase()).toEqual(toAddress.toLowerCase());
+    expect(decodedAmount).toEqual(amount);
   });
 });
-
-type WithdrawAssetParams = {
-  to: AbiParameterToPrimitiveType<{ internalType: 'address'; name: 'to'; type: 'address' }>;
-  amount: AbiParameterToPrimitiveType<{ internalType: 'uint256'; name: 'amount'; type: 'uint256' }>;
-};
-
-function withdrawAsset(options: BaseTransactionOptions<WithdrawAssetParams>) {
-  return prepareContractCall({
-    contract: options.contract,
-    method: [
-      '0x38e4f064',
-      [
-        {
-          internalType: 'address',
-          name: 'to',
-          type: 'address',
-        },
-        {
-          internalType: 'uint256',
-          name: 'amount',
-          type: 'uint256',
-        },
-      ],
-      [],
-    ],
-    params: [options.to, options.amount],
-  });
-}

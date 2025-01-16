@@ -1,3 +1,4 @@
+import type { Abi } from 'abitype';
 import { ThirdwebContract, getContract } from 'thirdweb';
 
 import { CredbullClient } from './credbull-client';
@@ -7,8 +8,9 @@ export class CredbullContract {
   protected _credbullClient: CredbullClient;
   protected _address: Address;
   protected _contract: ThirdwebContract;
+  protected _abi?: Abi;
 
-  constructor(credbullClient: CredbullClient, address: Address) {
+  constructor(credbullClient: CredbullClient, address: Address, abi?: Abi) {
     if (!credbullClient) {
       throw new Error('CredbullClient is undefined!');
     }
@@ -18,7 +20,8 @@ export class CredbullContract {
 
     this._credbullClient = credbullClient;
     this._address = address;
-    this._contract = this.getContract(this._address);
+    this._abi = abi;
+    this._contract = this.getContract(this._address, this._abi);
   }
 
   get credbullClient(): CredbullClient {
@@ -33,11 +36,12 @@ export class CredbullContract {
     return this._contract;
   }
 
-  private getContract(contractAddress: Address): ThirdwebContract {
+  private getContract(contractAddress: Address, abi?: Readonly<Abi>): ThirdwebContract {
     return getContract({
       client: this._credbullClient.thirdWebClient,
       address: contractAddress,
       chain: this._credbullClient.chainConfig.chain,
+      abi,
     });
   }
 }

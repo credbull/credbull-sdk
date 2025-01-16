@@ -25,10 +25,11 @@ import {
   withdrawAsset as withdrawExt,
 } from './extensions/v1.3/liquid-stone.codegen';
 import { totalAssetsByOwner as extTotalAssetsByOwner } from './extensions/v1.3/totalAssetsByOwner';
+import { liquidStoneAbi } from './liquid-stone-abi';
 
 export class LiquidStone extends CredbullContract {
   constructor(credbullClient: CredbullClient) {
-    super(credbullClient, credbullClient.chainConfig.liquidStone);
+    super(credbullClient, credbullClient.chainConfig.liquidStone, liquidStoneAbi);
   }
 
   // ============================== Write ==============================
@@ -82,13 +83,10 @@ export class LiquidStone extends CredbullContract {
     }
   }
 
-  async withdrawAssetTxn(to: Address, assets: number) {
-    // scale the deposit to include decimals.  e.g. turn 10 USDC into 10_000_000 USDC with decimals
-    const amountScaled = await this.scaleUp(assets);
-
+  async withdrawAssetTxn(to: Address, assets: bigint) {
     return withdrawExt({
       contract: this._contract,
-      amount: amountScaled,
+      amount: assets,
       to,
     });
   }
@@ -177,14 +175,14 @@ export class LiquidStone extends CredbullContract {
     return { depositPeriods, shares };
   }
 
-  async scaleDown(amount: number): Promise<number> {
+  async scaleDown(amount: number | bigint): Promise<number> {
     const scaleAmount = await this.scale();
-    return amount / Number(scaleAmount);
+    return Number(amount) / Number(scaleAmount);
   }
 
-  async scaleUp(amount: number): Promise<bigint> {
+  async scaleUp(amount: number | bigint): Promise<bigint> {
     const scaleAmount = await this.scale();
-    const scaledAmount = Math.round(amount * Number(scaleAmount)); // Scale up
+    const scaledAmount = Math.round(Number(amount) * Number(scaleAmount)); // Scale up
     return BigInt(scaledAmount); // Convert the result to BigInt
   }
 
@@ -291,3 +289,4 @@ export class LiquidStone extends CredbullContract {
 }
 
 export * from './extensions/v1.3/liquid-stone.codegen';
+export * from './liquid-stone-abi';
