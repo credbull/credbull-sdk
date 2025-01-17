@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link"; // Import the Link component
 import { ConnectButton } from "thirdweb/react";
 import logo from "../../public/logo.3227e7d9.svg";
 import { client } from "./client";
@@ -18,7 +19,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 // NavBar Component
 function NavBar() {
   return (
-    <div className="navbar bg-base-300 shadow-md top-0 left-0 z-50">
+    <div className="navbar bg-base-300 shadow-md">
       <div className="navbar-start">
         <Image
           src={logo}
@@ -27,10 +28,20 @@ function NavBar() {
           height={40}
           className="brightness-0 invert"
         />
+        {/* Navigation Links */}
+        <ul className="menu menu-horizontal px-4">
+          <li>
+            <Link href="/">Home</Link>
+          </li>
+          <li>
+            <Link href="/liquid-stone">LiquidStone</Link>
+          </li>
+        </ul>
       </div>
       <div className="navbar-end">
         <ConnectButton
           client={client}
+          theme="light"
           appMetadata={{
             name: "Credbull",
             url: "https://credbull.io",

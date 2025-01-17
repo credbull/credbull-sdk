@@ -9,13 +9,13 @@ import {
 import { decodeFunctionData, Hex } from "viem";
 import ErrorMessage from "@/components/error";
 
-export default function HexDecoder() {
-  const [hexInput, setHexInput] = useState<Hex>("0x0"); // State to store the input
+export default function HexFunctionDecoder() {
+  const [hexInput, setHexInput] = useState<string>("");
   const [decodedFunction, setDecodedFunction] = useState<{
     functionName: string;
     args: DecodedArgument[];
   } | null>(null);
-  const [error, setError] = useState<string | null>(null); // State to store errors
+  const [error, setError] = useState<string | null>(null);
 
   const handleDecode = () => {
     setError(null);
@@ -24,13 +24,13 @@ export default function HexDecoder() {
     try {
       const { functionName, args } = decodeFunctionData({
         abi: liquidStoneAbi,
-        data: hexInput,
+        data: hexInput as Hex,
       });
 
       const decodedArgs = decodeFunctionArgs(
         functionName,
         liquidStoneAbi,
-        args,
+        args || [],
       );
 
       setDecodedFunction({ functionName, args: decodedArgs });
@@ -47,7 +47,7 @@ export default function HexDecoder() {
   return (
     <div className="card">
       <div className="card-body">
-        <h2 className="card-title">Hex Decoder</h2>
+        <h2 className="card-title">Decode Function</h2>
         <div className="form-control">
           {/* Input Box */}
           <input

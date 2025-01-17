@@ -1,12 +1,12 @@
 "use client";
 
 import Layout from "@/components/layout";
-import HexDecoder from "@/components/decoder";
+import HexFunctionDecoder from "@/components/decoder";
 
 export default function Home() {
   return (
     <Layout>
-      <HexDecoder />
+      <HexFunctionDecoder />
     </Layout>
   );
 }
