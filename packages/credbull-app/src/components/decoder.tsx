@@ -4,76 +4,106 @@ import { useState } from "react";
 import { liquidStoneAbi } from "@credbull-sdk/credbull";
 import { decodeFunctionData } from "viem";
 
+type DecodedFunctionData = {
+  functionName: string;
+  args: (string | bigint | number | boolean)[];
+};
+
 export default function HexDecoder() {
   const [hexInput, setHexInput] = useState<string>(""); // State to store the input
-  const [decodedValue, setDecodedValue] = useState<string | null>(null); // State to store the decoded result
+  const [decodedValue, setDecodedValue] = useState<DecodedFunctionData | null>(
+    null,
+  );
   const [error, setError] = useState<string | null>(null); // State to store errors
 
   const handleDecode = () => {
-    setError(null); // Clear previous errors
-    setDecodedValue(null); // Clear previous results
-
-    console.log(hexInput);
+    setError(null);
+    setDecodedValue(null);
 
     try {
-      // Use the viem decodeFunctionData utility with the liquidStoneAbi
       const { functionName, args } = decodeFunctionData({
         abi: liquidStoneAbi,
         data: hexInput,
       });
 
-      // Convert BigInt values to strings
-      const sanitizedArgs = args.map((arg) =>
-        typeof arg === "bigint" ? arg.toString() : arg,
-      );
-
-      // Set the decoded result
-      setDecodedValue(
-        `Function Name: ${functionName}, Arguments: ${JSON.stringify(sanitizedArgs)}`,
-      );
+      setDecodedValue({ functionName, args });
     } catch (err: unknown) {
-      setError("Invalid hex input or decoding error.");
-      throw err;
+      if (err instanceof Error) {
+        setError(`Decoding Error: ${err.message}`);
+      } else {
+        setError("An unknown error occurred.");
+      }
     }
   };
 
   return (
-    <div className="card bg-base-300 shadow-lg p-6 max-w-md mx-auto">
-      <h2 className="card-title text-center mb-4">Hex Decoder</h2>
-      <div className="form-control space-y-4">
-        {/* Input Box */}
-        <input
-          type="text"
-          className="input input-bordered w-full"
-          placeholder="Enter Hexadecimal"
-          value={hexInput}
-          onChange={(e) => setHexInput(e.target.value)}
-        />
+    <div className="flex items-center justify-center min-h-screen bg-base-200">
+      <div className="card bg-base-100 shadow-lg w-full max-w-2xl p-8 rounded-xl">
+        <h2 className="card-title text-center mb-6 text-3xl font-bold text-primary">
+          Hex Decoder
+        </h2>
+        <div className="form-control space-y-6">
+          {/* Input Box */}
+          <input
+            type="text"
+            className="input input-bordered w-full text-base"
+            placeholder="Enter Hexadecimal"
+            value={hexInput}
+            onChange={(e) => setHexInput(e.target.value)}
+          />
 
-        {/* Decode Button */}
-        <button
-          className="btn btn-primary"
-          onClick={handleDecode}
-          disabled={!hexInput.trim()} // Disable if input is empty
-        >
-          Decode
-        </button>
+          {/* Decode Button */}
+          <button
+            className="btn btn-primary btn-lg"
+            onClick={handleDecode}
+            disabled={!hexInput.trim()} // Disable if input is empty
+          >
+            Decode
+          </button>
 
-        {/* Decoded Result */}
-        {decodedValue && (
-          <div className="mt-4 bg-base-200 p-4 rounded overflow-x-auto break-words max-w-full">
-            <h3 className="text-lg font-bold">Decoded Value:</h3>
-            <p className="text-sm">{decodedValue}</p>
-          </div>
-        )}
+          {/* Decoded Result */}
+          {decodedValue && (
+            <div className="mt-6 bg-base-200 p-6 rounded-lg shadow-inner overflow-x-auto">
+              <h3 className="text-xl font-bold text-secondary mb-4">
+                Decoded Function
+              </h3>
+              <div className="mb-4">
+                <span className="block text-lg font-semibold text-gray-600">
+                  Function Name:
+                </span>
+                <div className="text-lg bg-base-300 p-3 rounded-md">
+                  {decodedValue.functionName}
+                </div>
+              </div>
+              <div>
+                <span className="block text-lg font-semibold text-gray-600">
+                  Arguments:
+                </span>
+                <div className="grid grid-cols-1 gap-3 mt-3">
+                  {decodedValue.args.map((arg, index) => (
+                    <div
+                      key={index}
+                      className="p-3 bg-base-300 rounded-md flex items-center justify-between"
+                    >
+                      <span className="font-medium text-gray-500">
+                        Arg {index + 1}
+                      </span>
+                      <span className="font-mono">{arg.toString()}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
 
-        {/* Error Message */}
-        {error && (
-          <div className="mt-4 bg-red-300 text-red-800 p-4 rounded">
-            <h3 className="text-lg font-bold">Error:</h3>
-            <p className="text-sm">{error}</p>
-          </div>
-        )}
+          {/* Error Message */}
+          {error && (
+            <div className="mt-6 bg-red-200 text-red-900 p-4 rounded-lg">
+              <h3 className="text-lg font-bold">Error:</h3>
+              <p>{error}</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
