@@ -8,7 +8,7 @@
   "scripts": {
     "clean": "tsc --build --clean && rm -rf playwright-report test-results",
     "dev": "ts-node",
-    "build": "tsc --build",
+    "build": "tsc --build && yarn install",
     "test": "playwright test",
     "start": "yarn run-liquid-stone-ops && yarn run-fund-ops",
     "run-liquid-stone-ops": "ts-node src/liquid-stone/liquid-stone-ops.ts",

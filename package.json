@@ -8,7 +8,9 @@
     "packages/*"
   ],
   "scripts": {
+    "clean": "yarn workspaces foreach --all --topological-dev run clean",
     "prepare": "husky",
+    "build": "yarn workspaces foreach --all --topological-dev run build",
     "test": "yarn workspaces foreach --all --topological-dev run test",
     "lint": "yarn workspaces foreach --all run lint",
     "format": "prettier . --write"

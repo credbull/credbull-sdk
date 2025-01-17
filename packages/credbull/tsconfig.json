@@ -10,9 +10,14 @@
     "outDir": "dist",
     "rootDir": "src",
     "declaration": true,
-    "baseUrl": ".", // Set the base directory for resolving paths
+    "baseUrl": ".",
     "moduleResolution": "node"
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "tests", "playwright.config.ts"]
+  "include": ["src"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "tests",
+    "playwright.config.ts"
+  ]
 }

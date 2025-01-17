@@ -5,7 +5,6 @@ dist/
 out/
 
 # test related
-tests/
 playwright.config.*
 
 # Dotenv files
