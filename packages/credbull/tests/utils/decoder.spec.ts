@@ -1,12 +1,13 @@
 import { expect, test } from '@playwright/test';
+import { Abi } from 'abitype';
 import { encode } from 'thirdweb';
 import { Hex } from 'thirdweb/src/utils/encoding/hex';
 import { decodeFunctionData } from 'thirdweb/utils';
 import { decodeFunctionData as decodeFunctionDataViem, encodeFunctionData as encodeFunctionDataViem } from 'viem';
 
+import { DecodedArgument, LiquidStone, liquidStoneAbi } from '../../src';
 import { CredbullClient } from '../../src/credbull-client';
-import { LiquidStone, liquidStoneAbi } from '../../src/liquid-stone/liquid-stone';
-import { Address, ChainConfig, testnetConfig } from '../../src/utils/utils';
+import { Address, ChainConfig, decodeFunctionArgs, testnetConfig } from '../../src/utils/utils';
 
 const chainConfig: ChainConfig = testnetConfig;
 const liquidStone: LiquidStone = new LiquidStone(new CredbullClient(chainConfig));
@@ -15,15 +16,15 @@ test.describe('Test encode and decode', () => {
   const functionName = 'withdrawAsset';
   const toAddress: Address = chainConfig.liquidStone;
   const amount: bigint = BigInt(12345); // amount with decimals
+  const abi: Abi = liquidStoneAbi;
 
   // see: https://viem.sh/docs/contract/decodeFunctionData.html
   test('Test abi encode and decode', async () => {
     const encodedFunction: Hex = encodeFunctionDataViem({
-      abi: liquidStoneAbi,
+      abi,
       functionName,
       args: [toAddress, amount],
     });
-    console.log(encodedFunction);
 
     const { functionName: decFunctionName, args: decArgs } = decodeFunctionDataViem({
       abi: liquidStoneAbi,
@@ -32,6 +33,13 @@ test.describe('Test encode and decode', () => {
 
     expect(decFunctionName).toEqual(functionName);
     expect(decArgs).toEqual([toAddress, amount]);
+
+    const namedArgs: DecodedArgument[] = decodeFunctionArgs(functionName, abi, decArgs);
+
+    expect(namedArgs).toMatchObject([
+      { name: 'to', value: toAddress },
+      { name: 'amount', value: BigInt(amount) },
+    ]);
   });
 
   // see: https://portal.thirdweb.com/references/typescript/v5/decodeFunctionData
