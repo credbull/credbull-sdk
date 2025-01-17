@@ -2,6 +2,9 @@
   "name": "@credbull-sdk/credbull",
   "version": "1.0.0",
   "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "scripts": {
     "clean": "tsc --build --clean && rm -rf playwright-report test-results",
     "dev": "ts-node",

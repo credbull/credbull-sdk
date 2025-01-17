@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2016",
+    "target": "ES2020",
     "module": "commonjs",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -13,6 +13,6 @@
     "baseUrl": ".", // Set the base directory for resolving paths
     "moduleResolution": "node"
   },
-  "include": ["src/**/*", "tests/**/*", "*.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "tests", "playwright.config.ts"]
 }
