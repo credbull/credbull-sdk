@@ -22,40 +22,41 @@ export default function WalletInfo() {
 
   if (!account) {
     return (
-      <div className="card bg-base-300 shadow-lg text-center">
-        <div className="card-body">
-          <h2 className="card-title text-2xl">Connect Your Wallet</h2>
-          <p>Connect your wallet to see your details.</p>
-        </div>
+      <div className="card-container">
+        <h2 className="card-title">Connect Your Wallet</h2>
+        <p>Connect your wallet to see your details.</p>
       </div>
     );
   }
 
   return (
-    <div className="card bg-base-300 shadow-lg">
+    <div className="card">
       <div className="card-body">
-        <h2 className="card-title text-center text-2xl">Wallet Details</h2>
-        <div className="space-y-4">
+        <h2 className="card-title">Wallet Details</h2>
+        <div className="form-control space-y-4">
           {/* Chain Info */}
-          <div>
-            <span className="text-sm text-base-content/70">Chain:</span>
-            <div className="text-lg">
+          <div className="label-value-pair">
+            <span className="label">Chain:</span>
+            <span className="value">
               {activeChainMetadata?.data?.name || "Unknown"} (
               {activeChain?.id || "N/A"})
-            </div>
+            </span>
           </div>
 
-          {/* Address Info with CopyableText */}
-          <CopyableText label="Address" text={account.address || "N/A"} />
+          {/* Address Info */}
+          <div className="label-value-pair">
+            <span className="label">Address:</span>
+            <CopyableText text={account.address || "N/A"} />
+          </div>
 
           {/* Balance Info */}
-          <div>
-            <span className="text-sm text-base-content/70">Balance:</span>
-            <div className="text-lg">
+          <div className="label-value-pair">
+            <span className="label">Balance:</span>
+            <span className="value">
               {isLoading
                 ? "Loading..."
                 : `${balance?.displayValue} ${balance?.symbol || ""}`}
-            </div>
+            </span>
           </div>
         </div>
       </div>

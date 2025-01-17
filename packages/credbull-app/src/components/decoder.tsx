@@ -45,8 +45,8 @@ export default function HexDecoder() {
   };
 
   return (
-    <div className="page-container">
-      <div className="card-container">
+    <div className="card">
+      <div className="card-body">
         <h2 className="card-title">Hex Decoder</h2>
         <div className="form-control">
           {/* Input Box */}

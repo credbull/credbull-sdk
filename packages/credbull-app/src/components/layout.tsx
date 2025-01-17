@@ -1,13 +1,15 @@
 import Image from "next/image";
 import { ConnectButton } from "thirdweb/react";
 import logo from "../../public/logo.3227e7d9.svg";
-import { client } from "./client"; // Adjust the path as needed
+import { client } from "./client";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col min-h-screen">
       <NavBar />
-      <PageContent>{children}</PageContent>
+      <main className="flex-grow flex items-center justify-center">
+        {children}
+      </main>
       <Footer />
     </div>
   );
@@ -16,7 +18,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 // NavBar Component
 function NavBar() {
   return (
-    <div className="navbar bg-base-300 shadow-md">
+    <div className="navbar bg-base-300 shadow-md top-0 left-0 z-50">
       <div className="navbar-start">
         <Image
           src={logo}
@@ -37,11 +39,6 @@ function NavBar() {
       </div>
     </div>
   );
-}
-
-// PageContent Component
-function PageContent({ children }: { children: React.ReactNode }) {
-  return <main className="flex-grow p-6">{children}</main>;
 }
 
 // Footer Component
