@@ -44,6 +44,12 @@ export default function HexFunctionDecoder() {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && hexInput.trim()) {
+      handleDecode();
+    }
+  };
+
   return (
     <div className="card">
       <div className="card-body">
@@ -56,6 +62,7 @@ export default function HexFunctionDecoder() {
             placeholder="Enter Hexadecimal"
             value={hexInput}
             onChange={(e) => setHexInput(e.target.value as Hex)}
+            onKeyDown={handleKeyDown}
           />
 
           {/* Decode Button */}
