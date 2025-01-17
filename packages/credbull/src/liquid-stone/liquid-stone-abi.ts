@@ -1,8 +1,8 @@
 import type { Abi } from 'abitype';
 
-// Import the Abi type
+export type LiquidStoneAbi = Abi;
 
-export const liquidStoneAbi: Abi = [
+export const liquidStoneAbi: LiquidStoneAbi = [
   {
     type: 'constructor',
     inputs: [],

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { liquidStoneAbi } from "@credbull-sdk/credbull";
-import { decodeFunctionData } from "viem";
+import { decodeFunctionData, Hex } from "viem";
 
 type DecodedFunctionData = {
   functionName: string;
@@ -10,7 +10,7 @@ type DecodedFunctionData = {
 };
 
 export default function HexDecoder() {
-  const [hexInput, setHexInput] = useState<string>(""); // State to store the input
+  const [hexInput, setHexInput] = useState<Hex>("0x0"); // State to store the input
   const [decodedValue, setDecodedValue] = useState<DecodedFunctionData | null>(
     null,
   );
@@ -24,7 +24,7 @@ export default function HexDecoder() {
       const { functionName, args } = decodeFunctionData({
         abi: liquidStoneAbi,
         data: hexInput,
-      });
+      }) as DecodedFunctionData;
 
       setDecodedValue({ functionName, args });
     } catch (err: unknown) {
@@ -49,7 +49,7 @@ export default function HexDecoder() {
             className="input input-bordered w-full text-base"
             placeholder="Enter Hexadecimal"
             value={hexInput}
-            onChange={(e) => setHexInput(e.target.value)}
+            onChange={(e) => setHexInput(e.target.value as Hex)}
           />
 
           {/* Decode Button */}
