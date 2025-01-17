@@ -1,7 +1,30 @@
 "use client";
 
-import Layout from "@/components/layout";
+import React from "react";
 
-export default function Home() {
-  return <Layout>test me!!</Layout>;
+function Header() {
+  return <h1>Develop. Preview. Ship.</h1>;
+}
+
+export default function HomePage() {
+  const names = ["Ada Lovelace", "Grace Hopper", "Margaret Hamilton"];
+  const [likes, setLikes] = React.useState(0);
+
+  function handleClick() {
+    setLikes(likes + 1);
+  }
+
+  return (
+    <div>
+      <Header />
+      <ul>
+        {names.map((name) => (
+          <li key={name}>{name}</li>
+        ))}
+      </ul>
+      <button className="btn btn-lg" onClick={handleClick}>
+        Likes ({likes})
+      </button>
+    </div>
+  );
 }
