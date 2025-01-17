@@ -1,0 +1,16 @@
+# Compiler files
+cache
+node_modules
+.next
+dist
+out
+
+# test related
+test-results
+playwright-report
+
+# git related
+.github
+
+# package lock
+yarn.lock
