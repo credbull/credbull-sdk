@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link"; // Import the Link component
 import { ConnectButton } from "thirdweb/react";
 import logo from "../../public/logo.3227e7d9.svg";
-import { client } from "./client";
+import { thirdwebClient } from "./client";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -29,18 +29,21 @@ function NavBar() {
           className="brightness-0 invert"
         />
         {/* Navigation Links */}
-        <ul className="menu menu-horizontal px-4">
+        <ul className="menu menu-horizontal px-2 flex-nowrap">
           <li>
             <Link href="/">Home</Link>
           </li>
           <li>
             <Link href="/liquid-stone">LiquidStone</Link>
           </li>
+          <li>
+            <Link href="/fund">Fund</Link>
+          </li>
         </ul>
       </div>
       <div className="navbar-end">
         <ConnectButton
-          client={client}
+          client={thirdwebClient}
           theme="light"
           appMetadata={{
             name: "Credbull",

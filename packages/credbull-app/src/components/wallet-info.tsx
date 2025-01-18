@@ -6,7 +6,7 @@ import {
   useChainMetadata,
   useActiveWalletChain,
 } from "thirdweb/react";
-import { client } from "./client";
+import { thirdwebClient } from "./client";
 import CopyableText from "@/components/copyable-text";
 
 export default function WalletInfo() {
@@ -15,7 +15,7 @@ export default function WalletInfo() {
   const activeChainMetadata = useChainMetadata(activeChain);
 
   const { data: balance, isLoading } = useWalletBalance({
-    client,
+    client: thirdwebClient,
     chain: activeChain,
     address: account?.address,
   });

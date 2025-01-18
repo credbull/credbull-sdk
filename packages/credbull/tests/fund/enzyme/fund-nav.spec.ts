@@ -1,17 +1,15 @@
 import { expect, test } from '@playwright/test';
 import { toBigInt } from 'ethers';
-import { Address, simulateTransaction } from 'thirdweb';
 import { Account } from 'thirdweb/wallets';
 import { loadConfig } from 'tsconfig-paths';
 
 import { CredbullClient } from '../../../src/credbull-client';
-import { CredbullContract } from '../../../src/credbull-contract';
 import { ERC20 } from '../../../src/erc20/erc20';
 import {
   EnzymeConfig,
   FlexibleLoan,
   ManualValueOracle,
-  calcNav,
+  calcFundNav,
   name,
   testEnzymePolygonConfig,
   totalSupply,
@@ -20,7 +18,7 @@ import {
 loadConfig();
 
 const enzymeConfig: EnzymeConfig = testEnzymePolygonConfig;
-const credbullClient = new CredbullClient(enzymeConfig);
+const credbullClient: CredbullClient<EnzymeConfig> = new CredbullClient(enzymeConfig);
 
 const minExpectedValue: number = 1;
 
@@ -51,20 +49,11 @@ test.describe('Test LiquidStone Fund Read', () => {
 
 test.describe('Test LiquidStone Fund NAV', () => {
   test('Test Simulate LiquiteStone Fund NAV', async () => {
-    const fundValueCalculator = new CredbullContract(credbullClient, enzymeConfig.fundValueCalculator);
+    const result: { navDenominationAsset: string; nav: number } = await calcFundNav(credbullClient);
 
-    const navTxn = calcNav({
-      contract: fundValueCalculator.contract,
-      vaultProxy: enzymeConfig.liquidStoneFund,
-    });
-
-    const [navDenominationAsset, nav]: [Address, number] = await simulateTransaction({
-      transaction: navTxn,
-    });
-
-    console.log(`NAV Denomination Asset: ${navDenominationAsset}, NAV: ${nav}`);
-    expect(navDenominationAsset.toLowerCase()).toEqual(enzymeConfig.usdc.toLowerCase());
-    expect(nav).toBeGreaterThanOrEqual(1);
+    console.log(`NAV Denomination Asset: ${result.navDenominationAsset}, NAV: ${result.nav}`);
+    expect(result.navDenominationAsset.toLowerCase()).toEqual(enzymeConfig.usdc.toLowerCase());
+    expect(result.nav).toBeGreaterThanOrEqual(1);
   });
 });
 

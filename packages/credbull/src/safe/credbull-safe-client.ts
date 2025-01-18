@@ -9,12 +9,12 @@ import { Address, TransactionHash } from '../utils/rpc-types';
 
 loadConfig();
 
-export class CredbullSafeClient {
-  private _chainConfig: ChainConfig;
+export class CredbullSafeClient<T extends ChainConfig = ChainConfig> {
+  private _chainConfig: T;
   private _safeAddress: Address;
   private _safeClient: Promise<SafeClient>;
 
-  constructor(chainConfig: ChainConfig, safeAddress: Address, safeSigner: SafeProvider['signer'] | undefined) {
+  constructor(chainConfig: T, safeAddress: Address, safeSigner: SafeProvider['signer'] | undefined) {
     if (!chainConfig) {
       throw Error('Chain config undefined!');
     }

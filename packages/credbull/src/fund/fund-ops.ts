@@ -1,21 +1,17 @@
 import { SafeMultisigTransactionListResponse } from '@safe-global/api-kit';
-import { simulateTransaction } from 'thirdweb';
 import { GetCurrencyMetadataResult } from 'thirdweb/dist/types/extensions/erc20/read/getCurrencyMetadata';
 
 import { CredbullClient } from '../credbull-client';
-import { CredbullContract } from '../credbull-contract';
 import { ERC20 } from '../erc20/erc20';
 import { CredbullSafeClient } from '../safe/credbull-safe-client';
 import { toStrUSDC } from '../utils/format';
 import { Address } from '../utils/utils';
 
-import { EnzymeConfig, enzymePolygonConfig } from './enzyme/enzyme-config';
-import { calcNav } from './enzyme/extensions/fund-value-calculator.codegen';
+import { calcFundNav } from './enzyme/enzyme';
+import { enzymePolygonConfig } from './enzyme/enzyme-config';
 
-const enzymeConfig: EnzymeConfig = enzymePolygonConfig;
-
-const credbullClient = new CredbullClient(enzymeConfig);
-const erc20: ERC20 = new ERC20(credbullClient, enzymeConfig.usdc);
+const credbullClient = new CredbullClient(enzymePolygonConfig);
+const erc20: ERC20 = new ERC20(credbullClient, credbullClient.chainConfig.usdc);
 
 const valuePadding = 25;
 
@@ -24,7 +20,7 @@ async function logBalance(holderName: string, owner: Address) {
 }
 
 async function logPendingSafeTxns(safeName: string, safeAddress: Address) {
-  const safeClient = new CredbullSafeClient(enzymeConfig, safeAddress, undefined);
+  const safeClient = new CredbullSafeClient(credbullClient.chainConfig, safeAddress, undefined);
 
   const pendingTransactions: SafeMultisigTransactionListResponse = await safeClient.getPendingTransactions();
 
@@ -36,16 +32,7 @@ async function logPendingSafeTxns(safeName: string, safeAddress: Address) {
 }
 
 async function logFundNav() {
-  const fundValueCalculator = new CredbullContract(credbullClient, enzymeConfig.fundValueCalculator);
-
-  const navTxn = calcNav({
-    contract: fundValueCalculator.contract,
-    vaultProxy: enzymeConfig.liquidStoneFund,
-  });
-
-  const [navDenominationAsset, nav]: [Address, number] = await simulateTransaction({
-    transaction: navTxn,
-  });
+  const { navDenominationAsset, nav } = await calcFundNav(credbullClient);
 
   if (navDenominationAsset.toLowerCase() != erc20.address.toLowerCase()) {
     console.error(`NAV Asset wrong !! Asset is ${navDenominationAsset}, but expected ${erc20.address} !!`);
@@ -68,6 +55,8 @@ async function main() {
   console.log(
     `Balances of ${credbullClient.chainConfig.chainName} '${erc20Metadata.name}' (${erc20Metadata.symbol}) at ${erc20.address}.`,
   );
+
+  const enzymeConfig = credbullClient.chainConfig;
 
   await logBalance('[Safe] Credbull Defi Custody         ', enzymeConfig.liquidSToneFundApprovers.credbullDefiCustody);
   await logBalance('[Safe] BlackOpal Fund Owner Custody  ', enzymeConfig.liquidSToneFundApprovers.blackOpalFundOwner);

@@ -8,6 +8,6 @@ if (!clientId) {
   throw new Error("No client ID provided");
 }
 
-export const client = createThirdwebClient({
+export const thirdwebClient = createThirdwebClient({
   clientId: clientId,
 });

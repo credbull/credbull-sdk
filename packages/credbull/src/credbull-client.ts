@@ -1,3 +1,4 @@
+import { thirdwebClient } from 'credbull-app/src/components/client';
 import { createThirdwebClient } from 'thirdweb';
 import { ThirdwebClient } from 'thirdweb/src/client/client';
 import { privateKeyToAccount } from 'thirdweb/wallets';
@@ -8,20 +9,21 @@ import { loadConfig } from './utils/config';
 
 loadConfig();
 
-export class CredbullClient {
-  private _chainConfig: ChainConfig;
+export class CredbullClient<T extends ChainConfig = ChainConfig> {
+  private _chainConfig: T;
   private _thirdWebClient: ThirdwebClient;
 
-  constructor(chainConfig: ChainConfig) {
+  constructor(chainConfig: T, thirdWebClient?: ThirdwebClient) {
     if (!chainConfig) {
       throw Error('Chain config undefined!');
     }
 
     this._chainConfig = chainConfig;
-    this._thirdWebClient = this.createThirdWebClient();
+
+    this._thirdWebClient = !thirdWebClient ? this.createThirdWebClient() : thirdwebClient;
   }
 
-  get chainConfig(): ChainConfig {
+  get chainConfig(): T {
     return this._chainConfig;
   }
 
