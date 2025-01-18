@@ -13,7 +13,6 @@ export default function SetFundNavUpdater() {
   );
   const [newNavUpdaterTxn, setNewNavUpdaterTxn] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-
   const account = useActiveAccount();
 
   const manualValueOracleProxy =
@@ -25,30 +24,33 @@ export default function SetFundNavUpdater() {
   );
 
   useEffect(() => {
-    const fetchNav = async () => {
+    const getUpdater = async () => {
       try {
         const navUpdater = await manualValueOracle.getUpdater();
-        setCurrentNavUpdater(navUpdater); // Assuming `nav.nav` contains the value you need
+        setCurrentNavUpdater(navUpdater);
       } catch (err) {
         console.error("Error Fetching Nav Updater:", err);
         setError("Failed to fetch NAV Updater");
       }
     };
-    fetchNav();
+    getUpdater();
   }, []); // run only once on component mount
 
-  const handleSetNavUpdater = () => {
+  const handleSetNavUpdater = async () => {
     setError(null);
     setNewNavUpdaterTxn(null);
 
     try {
-      const txnResults = "// TODO - call actual setNavUpdater here...";
+      const setUpdaterTxn = await manualValueOracle.setUpdater(
+        account,
+        newNavUpdater,
+      );
 
-      setNewNavUpdaterTxn(txnResults);
+      setNewNavUpdaterTxn(setUpdaterTxn);
     } catch (err: unknown) {
-      console.error("Decoding Error:", err); // Log error to the console
+      console.error("Set New Nav Updater Error:", err); // Log error to the console
       if (err instanceof Error) {
-        setError(`Decoding Error: ${err.message}`);
+        setError(`Set New Nav Updater : ${err.message}`);
       } else {
         setError("An unknown error occurred.");
       }
