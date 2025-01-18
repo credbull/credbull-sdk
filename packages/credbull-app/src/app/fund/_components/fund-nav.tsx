@@ -14,6 +14,7 @@ export default function SetFundNavUpdater() {
     mutate: sendTx,
     data: transactionResult,
     error: transactionError,
+    status: transactionStatus,
   } = useSendTransaction();
 
   const manualValueOracleProxy =
@@ -61,13 +62,21 @@ export default function SetFundNavUpdater() {
           {/* Transaction Result */}
           {transactionResult && (
             <div className="card-section">
-              <h3 className="card-section-title">Transaction Submitted</h3>
+              <h3 className="card-section-title">Transaction Details</h3>
+              {/* Transaction Status */}
               <div className="label-value-pair">
-                <span className="label">Transaction Hash:</span>
-                <span className="value">
-                  {transactionResult.transactionHash}
-                </span>
+                <span className="label">Status:</span>
+                <span className="value">{transactionStatus}</span>
               </div>
+              {/* Transaction Hash */}
+              {transactionResult?.transactionHash && (
+                <div className="label-value-pair">
+                  <span className="label">Hash:</span>
+                  <span className="value text-sm font-mono break-all">
+                    {transactionResult.transactionHash}
+                  </span>
+                </div>
+              )}
             </div>
           )}
           {/* Error Message */}
