@@ -7,9 +7,10 @@
   @apply font-sans text-base leading-6;
 }
 
+/* bg-neutral-500 also possible */
 @layer base {
   body {
-    @apply bg-neutral-600 text-base-content;
+    @apply bg-base-200 text-base-content;
   }
 }
 
@@ -19,7 +20,7 @@
 }
 
 .card-body {
-  @apply bg-base-200 shadow-lg w-full max-w-2xl p-8 rounded-xl;
+  @apply bg-base-100 shadow-lg w-full max-w-2xl p-8 rounded-xl;
 }
 
 .card-title {
@@ -46,7 +47,7 @@
   @apply font-mono;
 }
 .label-value-pair {
-  @apply p-3 bg-neutral-400 rounded-md flex items-center justify-between;
+  @apply p-3 bg-base-200 rounded-md flex items-center justify-between;
 }
 
 .btn {
