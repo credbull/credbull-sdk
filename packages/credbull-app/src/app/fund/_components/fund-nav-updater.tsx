@@ -1,10 +1,10 @@
 "use client";
 
 import { useSendTransaction } from "thirdweb/react";
-import { useState } from "react";
-import { ManualValueOracle } from "@credbull-sdk/credbull";
-import { enzymeCredbullClient } from "@/app/fund/_components/fund-client";
+import { manualValueOracle } from "@/app/fund/_components/fund-client";
 import ErrorMessage from "@/components/error";
+import { useEffect, useState } from "react";
+import CopyableText from "@/components/copyable-text";
 
 export default function SetFundNavUpdater() {
   const [newNavUpdater, setNewNavUpdater] = useState<string>("");
@@ -16,14 +16,6 @@ export default function SetFundNavUpdater() {
     error: transactionError,
     status: transactionStatus,
   } = useSendTransaction();
-
-  const manualValueOracleProxy =
-    enzymeCredbullClient.chainConfig.flexibleLoans[0].manualValueOracleProxy;
-
-  const manualValueOracle = new ManualValueOracle(
-    enzymeCredbullClient,
-    manualValueOracleProxy,
-  );
 
   const handleSetNavUpdater = () => {
     setErrorMessage(null); // Clear any previous errors
@@ -43,6 +35,13 @@ export default function SetFundNavUpdater() {
       <div className="card-body">
         <h2 className="card-title">Set NAV Updater</h2>
         <div className="form-control">
+          {/* Display Current NAV Updater */}
+          <div className="label-value-pair">
+            <span className="label">Current Updater:</span>
+            <span className="value">
+              <GetFundNavUpdater />
+            </span>
+          </div>
           {/* Input Box */}
           <input
             type="text"
@@ -65,15 +64,15 @@ export default function SetFundNavUpdater() {
               <h3 className="card-section-title">Transaction Details</h3>
               {/* Transaction Status */}
               <div className="label-value-pair">
-                <span className="label">Status:</span>
+                <span className="label">Txn Status:</span>
                 <span className="value">{transactionStatus}</span>
               </div>
               {/* Transaction Hash */}
               {transactionResult?.transactionHash && (
                 <div className="label-value-pair">
-                  <span className="label">Hash:</span>
+                  <span className="label">Txn Hash:</span>
                   <span className="value text-sm font-mono break-all">
-                    {transactionResult.transactionHash}
+                    <CopyableText text={transactionResult.transactionHash} />
                   </span>
                 </div>
               )}
@@ -91,4 +90,24 @@ export default function SetFundNavUpdater() {
       </div>
     </div>
   );
+}
+
+export function GetFundNavUpdater() {
+  const [navUpdater, setNavUpdater] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUpdater = async () => {
+      try {
+        const updater = await manualValueOracle.getUpdater();
+        setNavUpdater(updater);
+      } catch (error) {
+        console.error("Error fetching NAV updater:", error);
+        setNavUpdater("Error fetching data");
+      }
+    };
+
+    fetchUpdater();
+  }, []);
+
+  return <span>{navUpdater || "Loading..."}</span>;
 }
