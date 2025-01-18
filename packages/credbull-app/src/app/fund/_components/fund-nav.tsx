@@ -1,19 +1,20 @@
 "use client";
 
-import { useActiveAccount } from "thirdweb/react";
-import { useState, useEffect } from "react";
-import ErrorMessage from "@/components/error";
+import { useSendTransaction } from "thirdweb/react";
+import { useState } from "react";
 import { ManualValueOracle } from "@credbull-sdk/credbull";
 import { enzymeCredbullClient } from "@/app/fund/_components/fund-client";
+import ErrorMessage from "@/components/error";
 
 export default function SetFundNavUpdater() {
   const [newNavUpdater, setNewNavUpdater] = useState<string>("");
-  const [currentNavUpdater, setCurrentNavUpdater] = useState<string | null>(
-    null,
-  );
-  const [newNavUpdaterTxn, setNewNavUpdaterTxn] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const account = useActiveAccount();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const {
+    mutate: sendTx,
+    data: transactionResult,
+    error: transactionError,
+  } = useSendTransaction();
 
   const manualValueOracleProxy =
     enzymeCredbullClient.chainConfig.flexibleLoans[0].manualValueOracleProxy;
@@ -23,66 +24,29 @@ export default function SetFundNavUpdater() {
     manualValueOracleProxy,
   );
 
-  useEffect(() => {
-    const getUpdater = async () => {
-      try {
-        const navUpdater = await manualValueOracle.getUpdater();
-        setCurrentNavUpdater(navUpdater);
-      } catch (err) {
-        console.error("Error Fetching Nav Updater:", err);
-        setError("Failed to fetch NAV Updater");
-      }
-    };
-    getUpdater();
-  }, []); // run only once on component mount
-
-  const handleSetNavUpdater = async () => {
-    setError(null);
-    setNewNavUpdaterTxn(null);
-
+  const handleSetNavUpdater = () => {
+    setErrorMessage(null); // Clear any previous errors
     try {
-      const setUpdaterTxn = await manualValueOracle.setUpdater(
-        account,
-        newNavUpdater,
+      const txn = manualValueOracle.setUpdaterTxn(newNavUpdater);
+      sendTx(txn);
+    } catch (error) {
+      console.error("Error preparing transaction:", error);
+      setErrorMessage(
+        "Failed to prepare the transaction. Please check inputs.",
       );
-
-      setNewNavUpdaterTxn(setUpdaterTxn);
-    } catch (err: unknown) {
-      console.error("Set New Nav Updater Error:", err); // Log error to the console
-      if (err instanceof Error) {
-        setError(`Set New Nav Updater : ${err.message}`);
-      } else {
-        setError("An unknown error occurred.");
-      }
     }
   };
-
-  if (!account) {
-    return (
-      <div className="card-container">
-        <h2 className="card-title">Connect Your Wallet</h2>
-        <p>Connect your wallet to set the Nav updater</p>
-      </div>
-    );
-  }
 
   return (
     <div className="card">
       <div className="card-body">
-        <h2 className="card-title">Set Nav Updater</h2>
+        <h2 className="card-title">Set NAV Updater</h2>
         <div className="form-control">
-          {/* Display Current NAV */}
-          {currentNavUpdater !== null && (
-            <div className="label-value-pair">
-              <span className="label">Current NAV Updater: </span>
-              <span className="value">{currentNavUpdater}</span>
-            </div>
-          )}
           {/* Input Box */}
           <input
             type="text"
             className="input input-bordered w-full text-base"
-            placeholder="Enter New Nav Updater"
+            placeholder="Enter New NAV Updater Address"
             value={newNavUpdater}
             onChange={(e) => setNewNavUpdater(e.target.value)}
           />
@@ -92,22 +56,28 @@ export default function SetFundNavUpdater() {
             onClick={handleSetNavUpdater}
             disabled={!newNavUpdater.trim()}
           >
-            Submit
+            {"Submit"}
           </button>
-          {/* Set Nav Updater Result */}
-          {newNavUpdaterTxn && (
+          {/* Transaction Result */}
+          {transactionResult && (
             <div className="card-section">
-              <h3 className="card-section-title">Set Updater Results</h3>
-
-              {/* Function Name */}
+              <h3 className="card-section-title">Transaction Submitted</h3>
               <div className="label-value-pair">
-                <span className="label">Transaction Results:</span>
-                <span className="value">{newNavUpdaterTxn}</span>
+                <span className="label">Transaction Hash:</span>
+                <span className="value">
+                  {transactionResult.transactionHash}
+                </span>
               </div>
             </div>
           )}
           {/* Error Message */}
-          {error && <ErrorMessage message={error} />}
+          {(errorMessage || transactionError?.message) && (
+            <ErrorMessage
+              message={
+                errorMessage || transactionError?.message || "Unknown error"
+              }
+            />
+          )}
         </div>
       </div>
     </div>

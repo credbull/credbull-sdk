@@ -58,7 +58,7 @@ export class ManualValueOracle extends CredbullContract {
     });
   }
 
-  private setUpdaterTxn(options: BaseTransactionOptions<SetUpdaterParams>) {
+  private setUpdaterTxnExt(options: BaseTransactionOptions<SetUpdaterParams>) {
     return prepareContractCall({
       contract: options.contract,
       method: 'function setUpdater(address _nextUpdater)',
@@ -66,11 +66,15 @@ export class ManualValueOracle extends CredbullContract {
     });
   }
 
-  async setUpdater(deployer: Account, nextUpdater: Address) {
-    const txn = this.setUpdaterTxn({
+  public setUpdaterTxn(nextUpdater: Address) {
+    return this.setUpdaterTxnExt({
       contract: this._contract,
       nextUpdater,
     });
+  }
+
+  async setUpdater(deployer: Account, nextUpdater: Address) {
+    const txn = this.setUpdaterTxn(nextUpdater);
 
     try {
       const txnResult = await sendTransaction({
