@@ -1,14 +1,36 @@
 "use client";
 
 import { useSendTransaction } from "thirdweb/react";
-import { manualValueOracle } from "@/app/fund/_components/fund-client";
 import ErrorMessage from "@/components/error";
 import { useEffect, useState } from "react";
 import CopyableText from "@/components/copyable-text";
+import {
+  Address,
+  CredbullClient,
+  EnzymeConfig,
+  ManualValueOracle,
+  testEnzymePolygonConfig,
+} from "@credbull-sdk/credbull";
+import { thirdwebClient } from "@/components/client";
+
+export const enzymeCredbullClient = new CredbullClient<EnzymeConfig>(
+  testEnzymePolygonConfig,
+  thirdwebClient,
+);
+
+export const defaultManualValueOracleProxy: Address =
+  enzymeCredbullClient.chainConfig.flexibleLoans[0].manualValueOracleProxy;
+
+function createManualValueOracle(manualValueOracleProxy: string) {
+  return new ManualValueOracle(enzymeCredbullClient, manualValueOracleProxy);
+}
 
 export default function SetFundNavUpdater() {
   const [newNavUpdater, setNewNavUpdater] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [manualValueOracleProxy, setManualValueOracleProxy] = useState<Address>(
+    defaultManualValueOracleProxy,
+  );
 
   const {
     mutate: sendTx,
@@ -20,6 +42,7 @@ export default function SetFundNavUpdater() {
   const handleSetNavUpdater = () => {
     setErrorMessage(null); // Clear any previous errors
     try {
+      const manualValueOracle = createManualValueOracle(manualValueOracleProxy);
       const txn = manualValueOracle.setUpdaterTxn(newNavUpdater);
       sendTx(txn);
     } catch (error) {
@@ -35,14 +58,29 @@ export default function SetFundNavUpdater() {
       <div className="card-body">
         <h2 className="card-title">Set NAV Updater</h2>
         <div className="form-control">
+          {/* Manual Value Oracle Proxy Input */}
+          <div className="label-value-pair grid grid-cols-3 gap-4 items-center">
+            <label className="label" htmlFor="manualValueOracleProxyInput">
+              Oracle:
+            </label>
+            <input
+              type="text"
+              id="manualValueOracleProxyInput"
+              className="input-value"
+              value={manualValueOracleProxy}
+              onChange={(e) => setManualValueOracleProxy(e.target.value)}
+            />
+          </div>
           {/* Display Current NAV Updater */}
           <div className="label-value-pair">
             <span className="label">Current Updater:</span>
             <span className="value">
-              <GetFundNavUpdater />
+              <GetFundNavUpdater
+                manualValueOracleProxy={manualValueOracleProxy}
+              />
             </span>
           </div>
-          {/* Input Box */}
+          {/* NAV Updater Input Box */}
           <input
             type="text"
             className="input input-bordered w-full text-base"
@@ -92,12 +130,19 @@ export default function SetFundNavUpdater() {
   );
 }
 
-export function GetFundNavUpdater() {
+export function GetFundNavUpdater({
+  manualValueOracleProxy,
+}: {
+  manualValueOracleProxy: string;
+}) {
   const [navUpdater, setNavUpdater] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUpdater = async () => {
       try {
+        const manualValueOracle = createManualValueOracle(
+          manualValueOracleProxy,
+        );
         const updater = await manualValueOracle.getUpdater();
         setNavUpdater(updater);
       } catch (error) {
@@ -107,7 +152,7 @@ export function GetFundNavUpdater() {
     };
 
     fetchUpdater();
-  }, []);
+  }, [manualValueOracleProxy]);
 
   return <span>{navUpdater || "Loading..."}</span>;
 }

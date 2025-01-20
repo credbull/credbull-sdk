@@ -40,15 +40,21 @@
 }
 
 /* ================== label/value ==================*/
+.label-value-pair {
+  @apply p-4 bg-base-200 rounded-md flex items-center justify-between;
+}
 .label {
-  @apply font-medium text-gray-500;
+  @apply font-medium text-gray-500 flex-shrink-0 min-w-max;
 }
 .value {
   @apply font-mono;
 }
-.label-value-pair {
-  @apply p-3 bg-base-200 rounded-md flex items-center justify-between mb-3;
+.input-value {
+  @apply input;
+  @apply font-mono w-full;
 }
+
+/* ================== buttons ==================*/
 
 .btn {
   @apply btn-secondary;
