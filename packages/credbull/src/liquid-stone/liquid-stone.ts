@@ -26,10 +26,12 @@ import {
 } from './extensions/v1.3/liquid-stone.codegen';
 import { totalAssetsByOwner as extTotalAssetsByOwner } from './extensions/v1.3/totalAssetsByOwner';
 import { liquidStoneAbi } from './liquid-stone-abi';
+import { redeemOptimizerErrors } from './redeem-optimizer-abi';
 
 export class LiquidStone extends CredbullContract {
   constructor(credbullClient: CredbullClient) {
-    super(credbullClient, credbullClient.chainConfig.liquidStone, liquidStoneAbi);
+    // combine the liquidStone and redeemOptimizer error abis to properly decode errors from the optimizer
+    super(credbullClient, credbullClient.chainConfig.liquidStone, [...liquidStoneAbi, ...redeemOptimizerErrors]);
   }
 
   // ============================== Write ==============================

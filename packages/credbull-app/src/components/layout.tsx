@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link"; // Import the Link component
 import { ConnectButton } from "thirdweb/react";
-import logo from "../../public/logo.3227e7d9.svg";
+import logo from "../../public/credbull-logo.svg";
 import { thirdwebClient } from "./client";
 
 export default function Layout({ children }: { children: React.ReactNode }) {

@@ -1,5 +1,5 @@
 import { defineChain } from 'thirdweb';
-import { ChainOptions, arbitrumSepolia, baseSepolia } from 'thirdweb/chains';
+import { ChainOptions, anvil, arbitrumSepolia, baseSepolia, polygonAmoy } from 'thirdweb/chains';
 
 import { Address } from './utils';
 
@@ -22,6 +22,20 @@ export const arbitrumSepoliaConfig: ChainConfig = {
   chain: arbitrumSepolia,
   usdc: '0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d', // see: https://developers.circle.com/stablecoins/usdc-on-test-networks
   liquidStone: '0x111B6a3dbacE7F0b32bAad47027907765e88ABd2',
+};
+
+export const polygonAmoyConfig: ChainConfig = {
+  chainName: polygonAmoy.name || 'polygonAmoy',
+  chain: polygonAmoy,
+  usdc: '0x41e94eb019c0762f9bfcf9fb1e58725bfb0e7582', // see: https://developers.circle.com/stablecoins/usdc-on-test-networks
+  liquidStone: '0xFbE87E74028389789948Ed009296198dB686da8A',
+};
+
+export const anvilConfig: ChainConfig = {
+  chainName: anvil.name || 'anvil',
+  chain: anvil,
+  usdc: '', // see: https://developers.circle.com/stablecoins/usdc-on-test-networks
+  liquidStone: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9', // V3 - deploy, probably different
 };
 
 const plumeMainnet = defineChain({
