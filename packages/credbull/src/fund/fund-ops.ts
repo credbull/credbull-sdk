@@ -8,9 +8,10 @@ import { toStrUSDC } from '../utils/format';
 import { Address } from '../utils/utils';
 
 import { calcFundNav } from './enzyme/enzyme';
-import { enzymePolygonConfig } from './enzyme/enzyme-config';
+import { EnzymeFundConfig, enzymePolygonConfig } from './enzyme/enzyme-config';
 
 const credbullClient = new CredbullClient(enzymePolygonConfig);
+const liquidStoneFund: EnzymeFundConfig = credbullClient.chainConfig.liquidStoneFund;
 const erc20: ERC20 = new ERC20(credbullClient, credbullClient.chainConfig.usdc);
 
 const valuePadding = 25;
@@ -32,7 +33,7 @@ async function logPendingSafeTxns(safeName: string, safeAddress: Address) {
 }
 
 async function logFundNav() {
-  const { navDenominationAsset, nav } = await calcFundNav(credbullClient);
+  const { navDenominationAsset, nav } = await calcFundNav(credbullClient, liquidStoneFund.fundAddress);
 
   if (navDenominationAsset.toLowerCase() != erc20.address.toLowerCase()) {
     console.error(`NAV Asset wrong !! Asset is ${navDenominationAsset}, but expected ${erc20.address} !!`);
@@ -56,32 +57,24 @@ async function main() {
     `Balances of ${credbullClient.chainConfig.chainName} '${erc20Metadata.name}' (${erc20Metadata.symbol}) at ${erc20.address}.`,
   );
 
-  const enzymeConfig = credbullClient.chainConfig;
-
-  await logBalance('[Safe] Credbull Defi Custody         ', enzymeConfig.liquidSToneFundApprovers.credbullDefiCustody);
-  await logBalance('[Safe] BlackOpal Fund Owner Custody  ', enzymeConfig.liquidSToneFundApprovers.blackOpalFundOwner);
-  await logBalance('[Enzyme] BlackOpal LiquidStone Fund  ', enzymeConfig.liquidStoneFund);
-  await logBalance('[Enzyme] BlackOpal LS Fund Flex Loan ', enzymeConfig.flexibleLoans[0].flexibleLoan);
+  await logBalance('[Safe] Credbull Defi Custody         ', liquidStoneFund.fundApprovers.credbullDefiCustody);
+  await logBalance('[Safe] BlackOpal Fund Owner Custody  ', liquidStoneFund.fundApprovers.blackOpalFundOwner);
+  await logBalance('[Enzyme] BlackOpal LiquidStone Fund  ', liquidStoneFund.fundAddress);
+  await logBalance('[Enzyme] BlackOpal LS Fund Flex Loan ', liquidStoneFund.fundFlexibleLoans[0].flexibleLoan);
   await logBalance(
     '[Safe] BlackOpal Fund Custody Wrapper',
-    enzymeConfig.liquidSToneFundApprovers.blackOpalFundCustodianWrapper,
+    liquidStoneFund.fundApprovers.blackOpalFundCustodianWrapper,
   );
 
   console.log();
 
   console.log(`Safe Multi-Sig Pending Safe Transactions for approval.`);
 
-  await logPendingSafeTxns(
-    '[Safe] Credbull Defi Custody         ',
-    enzymeConfig.liquidSToneFundApprovers.credbullDefiCustody,
-  );
-  await logPendingSafeTxns(
-    '[Safe] BlackOpal Fund Owner Custody  ',
-    enzymeConfig.liquidSToneFundApprovers.blackOpalFundOwner,
-  );
+  await logPendingSafeTxns('[Safe] Credbull Defi Custody         ', liquidStoneFund.fundApprovers.credbullDefiCustody);
+  await logPendingSafeTxns('[Safe] BlackOpal Fund Owner Custody  ', liquidStoneFund.fundApprovers.blackOpalFundOwner);
   await logPendingSafeTxns(
     '[Safe] BlackOpal Fund Custody Wrapper',
-    enzymeConfig.liquidSToneFundApprovers.blackOpalFundCustodianWrapper,
+    liquidStoneFund.fundApprovers.blackOpalFundCustodianWrapper,
   );
 
   console.log();

@@ -24,7 +24,7 @@ const minExpectedValue: number = 1;
 
 // Write & Simulate Operations, see https://portal.thirdweb.com/typescript/v5/transactions/send
 test.describe('Test LiquidStone Fund Read', () => {
-  const liquidStoneFund: ERC20 = new ERC20(credbullClient, enzymeConfig.liquidStoneFund);
+  const liquidStoneFund: ERC20 = new ERC20(credbullClient, enzymeConfig.liquidStoneFund.fundAddress);
 
   test('Test Name', async () => {
     const vaultName = await name({
@@ -48,8 +48,11 @@ test.describe('Test LiquidStone Fund Read', () => {
 });
 
 test.describe('Test LiquidStone Fund NAV', () => {
-  test('Test Simulate LiquiteStone Fund NAV', async () => {
-    const result: { navDenominationAsset: string; nav: number } = await calcFundNav(credbullClient);
+  test('Test Simulate LiquidStone Fund NAV', async () => {
+    const result: { navDenominationAsset: string; nav: number } = await calcFundNav(
+      credbullClient,
+      enzymeConfig.liquidStoneFund.fundAddress,
+    );
 
     console.log(`NAV Denomination Asset: ${result.navDenominationAsset}, NAV: ${result.nav}`);
     expect(result.navDenominationAsset.toLowerCase()).toEqual(enzymeConfig.usdc.toLowerCase());
@@ -58,7 +61,7 @@ test.describe('Test LiquidStone Fund NAV', () => {
 });
 
 test.describe('Test LiquidStone Fund Manual Value Oracle', () => {
-  const flexibleLoan: FlexibleLoan = enzymeConfig.flexibleLoans[0];
+  const flexibleLoan: FlexibleLoan = enzymeConfig.liquidStoneFund.fundFlexibleLoans[0];
   const manualValueOracle = new ManualValueOracle(credbullClient, flexibleLoan.manualValueOracleProxy);
 
   test('Test getters', async () => {
@@ -74,7 +77,7 @@ test.describe('Test LiquidStone Fund Manual Value Oracle', () => {
 });
 
 test.describe('Test LiquidStone Fund Manual Value Oracle - Write', () => {
-  const flexibleLoan: FlexibleLoan = enzymeConfig.flexibleLoans[0];
+  const flexibleLoan: FlexibleLoan = enzymeConfig.liquidStoneFund.fundFlexibleLoans[0];
   const manualValueOracle = new ManualValueOracle(credbullClient, flexibleLoan.manualValueOracleProxy);
   const deployer: Account = credbullClient.createAccount(process.env.DEPLOYER_PRIVATE_KEY as string);
 
