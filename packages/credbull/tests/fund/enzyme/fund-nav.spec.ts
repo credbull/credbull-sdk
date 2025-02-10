@@ -65,7 +65,10 @@ test.describe('Test LiquidStone Fund Manual Value Oracle', () => {
   const manualValueOracle = new ManualValueOracle(credbullClient, flexibleLoan.manualValueOracleProxy);
 
   test('Test getters', async () => {
-    expect(await manualValueOracle.getValue()).toBeGreaterThanOrEqual(minExpectedValue);
+    const oracleValue = await manualValueOracle.getValue();
+    expect(oracleValue).toBeGreaterThanOrEqual(minExpectedValue);
+    console.log(`oracleValue: ${oracleValue}`);
+
     const updater = await manualValueOracle.getUpdater();
     console.log(`updater: ${updater}`);
     expect(updater).toBeDefined();
@@ -81,10 +84,13 @@ test.describe('Test LiquidStone Fund Manual Value Oracle - Write', () => {
   const manualValueOracle = new ManualValueOracle(credbullClient, flexibleLoan.manualValueOracleProxy);
   const deployer: Account = credbullClient.createAccount(process.env.DEPLOYER_PRIVATE_KEY as string);
 
+  const TEN_CENTS: bigint = toBigInt(100_000);
+  const TWENTY_CENTS: bigint = toBigInt(200_000);
+
   test('Test update value', async () => {
     const prevValue = await manualValueOracle.getValue();
 
-    const newValue = prevValue == toBigInt(1) ? toBigInt(2) : toBigInt(1); // alternate value between 1 and 2
+    const newValue = prevValue == TEN_CENTS ? TWENTY_CENTS : TEN_CENTS; // alternate values
 
     console.log(`Manual Value Oracle updating value from ${prevValue} -> ${newValue}`);
     const txnReceipt = await manualValueOracle.updateValue(deployer, newValue);
