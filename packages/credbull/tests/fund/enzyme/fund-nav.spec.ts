@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
 import { toBigInt } from 'ethers';
 import { Account } from 'thirdweb/wallets';
-import { loadConfig } from 'tsconfig-paths';
 
+import { loadConfiguration } from '../../../src';
 import { CredbullClient } from '../../../src/credbull-client';
 import { ERC20 } from '../../../src/erc20/erc20';
 import {
@@ -15,7 +15,7 @@ import {
   totalSupply,
 } from '../../../src/fund/enzyme/enzyme';
 
-loadConfig();
+const envConfig = loadConfiguration();
 
 const enzymeConfig: EnzymeConfig = testEnzymePolygonConfig;
 const credbullClient: CredbullClient<EnzymeConfig> = new CredbullClient(enzymeConfig);
@@ -82,7 +82,7 @@ test.describe('Test LiquidStone Fund Manual Value Oracle', () => {
 test.describe('Test LiquidStone Fund Manual Value Oracle - Write', () => {
   const flexibleLoan: FlexibleLoan = enzymeConfig.liquidStoneFund.fundFlexibleLoans[0];
   const manualValueOracle = new ManualValueOracle(credbullClient, flexibleLoan.manualValueOracleProxy);
-  const deployer: Account = credbullClient.createAccount(process.env.DEPLOYER_PRIVATE_KEY as string);
+  const deployer: Account = credbullClient.createAccount(envConfig.secret.deployerPrivateKey);
 
   const TEN_CENTS: bigint = toBigInt(100_000);
   const TWENTY_CENTS: bigint = toBigInt(200_000);
@@ -100,7 +100,8 @@ test.describe('Test LiquidStone Fund Manual Value Oracle - Write', () => {
 
   // Skipping - this test needs the owner signer actually
   test.skip('Test set updater', async () => {
-    const owner: Account = credbullClient.createAccount(process.env.OWNER_PRIVATE_KEY as string);
+    const owner: Account = credbullClient.createAccount(envConfig.secret.deployerPrivateKey); // owner account - truly secret
+
     const newUpdater = deployer.address; // need to keep the updater as deployer.  but txn should succeed.
     const txnReceipt = await manualValueOracle.setUpdater(owner, newUpdater);
 

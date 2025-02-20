@@ -3,16 +3,13 @@ import { SafeClientResult } from '@safe-global/sdk-starter-kit';
 import { SafeClientTxStatus } from '@safe-global/sdk-starter-kit/dist/src/constants';
 
 import { CredbullSafeClient } from '../../src/safe/credbull-safe-client';
-import { loadConfig } from '../../src/utils/utils';
+import { loadConfiguration } from '../../src/utils/utils';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Suppress error about file not being under rootDir
 import { safeClientMultiSig, safeClientSingleSigner } from './safe-test-config';
 
-loadConfig();
-
-const deployerPrivateKey = process.env.DEPLOYER_PRIVATE_KEY as string;
-const deployerAltPrivateKey = process.env.DEPLOYER_ALT_PRIVATE_KEY as string;
+const envConfig = loadConfiguration();
 
 // Write & Simulate Operations, see https://portal.thirdweb.com/typescript/v5/transactions/send
 test.describe('Test Safe Deposit', () => {
@@ -20,7 +17,7 @@ test.describe('Test Safe Deposit', () => {
 
   test('Test Deposit - Multi-sig (2 of N)', async () => {
     // first signer - proposes
-    const safeClientSigner1: CredbullSafeClient = safeClientMultiSig(deployerPrivateKey);
+    const safeClientSigner1: CredbullSafeClient = safeClientMultiSig(envConfig.secret.deployerPrivateKey.valueOf());
 
     const toAddress = safeClientSigner1.safeAddress;
     const depositTxnResult: SafeClientResult = await safeClientSigner1.deposit(toAddress, depositAmountInWei);
@@ -34,7 +31,7 @@ test.describe('Test Safe Deposit', () => {
     expect(pendingTransactions.results.length).toBeGreaterThanOrEqual(1);
 
     // second signer - confirms
-    const safeClientSigner2: CredbullSafeClient = safeClientMultiSig(deployerAltPrivateKey);
+    const safeClientSigner2: CredbullSafeClient = safeClientMultiSig(envConfig.secret.deployerAltPrivateKey.valueOf());
     const confirmTxnResult = await safeClientSigner2.confirmTxn(depositSafeTxnHash!);
 
     expect(confirmTxnResult?.status).toBe(SafeClientTxStatus.EXECUTED);
@@ -44,7 +41,7 @@ test.describe('Test Safe Deposit', () => {
   //  ContractFunctionExecutionError: The contract function "execTransaction" reverted with the following reason:
   //     replacement transaction underpriced
   test.skip('Test Deposit - Single signer', async () => {
-    const safeClient: CredbullSafeClient = safeClientSingleSigner(deployerPrivateKey);
+    const safeClient: CredbullSafeClient = safeClientSingleSigner(envConfig.secret.deployerPrivateKey.valueOf());
 
     const toAddress = safeClient.safeAddress;
     const depositTxnResult: SafeClientResult = await safeClient.deposit(toAddress, depositAmountInWei);

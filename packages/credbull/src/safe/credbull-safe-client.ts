@@ -4,10 +4,7 @@ import { SafeClient, SafeClientResult, createSafeClient } from '@safe-global/sdk
 import { Hex } from 'thirdweb/src/utils/encoding/hex';
 
 import { ChainConfig } from '../utils/chain-config';
-import { loadConfig } from '../utils/config';
 import { Address, TransactionHash } from '../utils/rpc-types';
-
-loadConfig();
 
 export class CredbullSafeClient<T extends ChainConfig = ChainConfig> {
   private _chainConfig: T;

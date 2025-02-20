@@ -4,9 +4,7 @@ import { privateKeyToAccount } from 'thirdweb/wallets';
 import { Account } from 'thirdweb/wallets';
 
 import { ChainConfig } from './utils/chain-config';
-import { loadConfig } from './utils/config';
-
-loadConfig();
+import { Secret } from './utils/rpc-types';
 
 export class CredbullClient<T extends ChainConfig = ChainConfig> {
   private _chainConfig: T;
@@ -43,10 +41,10 @@ export class CredbullClient<T extends ChainConfig = ChainConfig> {
     return client;
   }
 
-  createAccount(privateKey: string): Account {
+  createAccount(privateKey: Secret): Account {
     return privateKeyToAccount({
       client: this._thirdWebClient,
-      privateKey: privateKey,
+      privateKey: privateKey.valueOf(),
     });
   }
 }
