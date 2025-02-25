@@ -1,5 +1,6 @@
-export type Address = string;
+import { Wallet } from 'ethers';
 
+export type Address = string;
 export type TransactionHash = string;
 
 export class Secret extends String {
@@ -7,11 +8,15 @@ export class Secret extends String {
     super(value);
   }
 
-  toString() {
+  toString(): string {
     return '***';
   }
 
-  toJSON() {
+  toJSON(): string {
     return '***';
+  }
+
+  toAddress(): string {
+    return new Wallet(this.valueOf()).address;
   }
 }

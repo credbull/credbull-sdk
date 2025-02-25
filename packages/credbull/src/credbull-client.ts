@@ -4,7 +4,10 @@ import { privateKeyToAccount } from 'thirdweb/wallets';
 import { Account } from 'thirdweb/wallets';
 
 import { ChainConfig } from './utils/chain-config';
+import { loadConfiguration } from './utils/config';
 import { Secret } from './utils/rpc-types';
+
+const envConfig = loadConfiguration();
 
 export class CredbullClient<T extends ChainConfig = ChainConfig> {
   private _chainConfig: T;
@@ -29,13 +32,13 @@ export class CredbullClient<T extends ChainConfig = ChainConfig> {
   }
 
   createThirdWebClient(): ThirdwebClient {
-    const thirdWebKey = process.env.THIRDWEB_SECRET_KEY;
+    const thirdWebKey = envConfig.secret?.thirdwebSecretKey;
     if (!thirdWebKey) {
       throw Error('Third web key required.');
     }
 
     const client: ThirdwebClient = createThirdwebClient({
-      secretKey: thirdWebKey,
+      secretKey: thirdWebKey.valueOf(),
     });
     console.log('Initialized ThirdWeb Client: ', client.clientId);
     return client;
