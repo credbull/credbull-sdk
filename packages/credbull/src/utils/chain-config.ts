@@ -41,7 +41,7 @@ export const anvilConfig: ChainConfig = {
 const plumeMainnet = defineChain({
   name: 'Plume',
   id: 98865,
-  rpc: 'https://phoenix-rpc.plumenetwork.xyz',
+  rpc: 'https://rpc.plumenetwork.xyz',
   nativeCurrency: {
     name: 'Ether',
     symbol: 'ETH',
@@ -50,8 +50,8 @@ const plumeMainnet = defineChain({
   blockExplorers: [
     {
       name: 'plume explorer (Blockscout)',
-      url: 'https://phoenix-explorer.plumenetwork.xyz',
-      apiUrl: 'https://phoenix-explorer.plumenetwork.xyz/api\\?',
+      url: 'https://explorer.plumenetwork.xyz',
+      apiUrl: 'https://explorer.plumenetwork.xyz/api\\?',
     },
   ],
 });
