@@ -12,7 +12,10 @@ export interface ChainConfig {
 
 export const baseSepoliaConfig: ChainConfig = {
   chainName: baseSepolia.name || 'baseSepolia',
-  chain: baseSepolia,
+  chain: {
+    ...baseSepolia,
+    rpc: 'https://sepolia.base.org',
+  },
   usdc: '0x036CbD53842c5426634e7929541eC2318f3dCF7e', // see: https://developers.circle.com/stablecoins/usdc-on-test-networks
   liquidStone: '',
 };

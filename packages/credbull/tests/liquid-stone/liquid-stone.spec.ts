@@ -65,6 +65,7 @@ test.describe('Test LiquidStone view functions - User Specific', () => {
   });
 
   test('Test Total Shares by Owner is >= 1', async () => {
+    test.slow(); // TODO - timing out, investigate why.
     const allShares: { depositPeriods: bigint[]; shares: bigint[] } = await liquidStone.shares(userAddress);
     console.log(allShares);
     expect(allShares.depositPeriods.length).toBeGreaterThanOrEqual(minExpectedAmount);

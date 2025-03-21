@@ -1,9 +1,9 @@
-// import { SafeMultisigTransactionListResponse } from '@safe-global/api-kit';
+import { SafeMultisigTransactionListResponse } from '@safe-global/api-kit';
 import { GetCurrencyMetadataResult } from 'thirdweb/dist/types/extensions/erc20/read/getCurrencyMetadata';
 
 import { CredbullClient } from '../credbull-client';
 import { ERC20 } from '../erc20/erc20';
-// import { CredbullSafeClient } from '../safe/credbull-safe-client';
+import { CredbullSafeClient } from '../safe/credbull-safe-client';
 import { toStrUSDC } from '../utils/format';
 import { Address } from '../utils/utils';
 
@@ -20,18 +20,17 @@ async function logBalance(holderName: string, owner: Address) {
   console.log(`-- ${holderName}: ${(await toStrUSDC(await erc20.balanceOf(owner))).padStart(valuePadding)}`);
 }
 
-// TODO [2/25/2024] - Throws Error: Error in BlackOpal Fund Ops !! Error: Not Found
-// async function logPendingSafeTxns(safeName: string, safeAddress: Address) {
-//   const safeClient = new CredbullSafeClient(credbullClient.chainConfig, safeAddress, undefined);
-//
-//   const pendingTransactions: SafeMultisigTransactionListResponse = await safeClient.getPendingTransactions();
-//
-//   console.log(`-- ${safeName}  : Pending Safe txns: ${pendingTransactions.results.length}`);
-//
-//   for (const transaction of pendingTransactions.results) {
-//     console.log(`-- ${safeName}: Pending Safe txn: ${transaction}`);
-//   }
-// }
+async function logPendingSafeTxns(safeName: string, safeAddress: Address) {
+  const safeClient = new CredbullSafeClient(credbullClient.chainConfig, safeAddress, undefined);
+
+  const pendingTransactions: SafeMultisigTransactionListResponse = await safeClient.getPendingTransactions();
+
+  console.log(`-- ${safeName}  : Pending Safe txns: ${pendingTransactions.results.length}`);
+
+  for (const transaction of pendingTransactions.results) {
+    console.log(`-- ${safeName}: Pending Safe txn: ${transaction}`);
+  }
+}
 
 async function logFundNav() {
   const { navDenominationAsset, nav } = await calcFundNav(credbullClient, liquidStoneFund.fundAddress);
@@ -69,15 +68,14 @@ async function main() {
 
   console.log();
 
-  // TODO [2/25/2024] - Throws Error: Error in BlackOpal Fund Ops !! Error: Not Found
-  // console.log(`Safe Multi-Sig Pending Safe Transactions for approval.`);
-  //
-  // await logPendingSafeTxns('[Safe] Credbull Defi Custody         ', liquidStoneFund.fundApprovers.credbullDefiCustody);
-  // await logPendingSafeTxns('[Safe] BlackOpal Fund Owner Custody  ', liquidStoneFund.fundApprovers.blackOpalFundOwner);
-  // await logPendingSafeTxns(
-  //   '[Safe] BlackOpal Fund Custody Wrapper',
-  //   liquidStoneFund.fundApprovers.blackOpalFundCustodianWrapper,
-  // );
+  console.log(`Safe Multi-Sig Pending Safe Transactions for approval.`);
+
+  await logPendingSafeTxns('[Safe] Credbull Defi Custody         ', liquidStoneFund.fundApprovers.credbullDefiCustody);
+  await logPendingSafeTxns('[Safe] BlackOpal Fund Owner Custody  ', liquidStoneFund.fundApprovers.blackOpalFundOwner);
+  await logPendingSafeTxns(
+    '[Safe] BlackOpal Fund Custody Wrapper',
+    liquidStoneFund.fundApprovers.blackOpalFundCustodianWrapper,
+  );
 
   console.log();
 
