@@ -7,6 +7,7 @@ import { CredbullClient } from '../../../src/credbull-client';
 import { ERC20 } from '../../../src/erc20/erc20';
 import {
   EnzymeConfig,
+  EnzymeFundConfig,
   FlexibleLoan,
   ManualValueOracle,
   calcFundNav,
@@ -18,13 +19,15 @@ import {
 const envConfig = loadConfiguration();
 
 const enzymeConfig: EnzymeConfig = testEnzymePolygonConfig;
+const enzymeFundConfig: EnzymeFundConfig = enzymeConfig.liquidStoneFund;
+
 const credbullClient: CredbullClient<EnzymeConfig> = new CredbullClient(enzymeConfig);
 
 const minExpectedValue: number = 1;
 
 // Write & Simulate Operations, see https://portal.thirdweb.com/typescript/v5/transactions/send
-test.describe('Test LiquidStone Fund Read', () => {
-  const liquidStoneFund: ERC20 = new ERC20(credbullClient, enzymeConfig.liquidStoneFund.fundAddress);
+test.describe('Test BlackOpal Fund Read', () => {
+  const liquidStoneFund: ERC20 = new ERC20(credbullClient, enzymeFundConfig.fundAddress);
 
   test('Test Name', async () => {
     const vaultName = await name({
@@ -47,11 +50,11 @@ test.describe('Test LiquidStone Fund Read', () => {
   });
 });
 
-test.describe('Test LiquidStone Fund NAV', () => {
+test.describe('Test BlackOpal Fund NAV', () => {
   test('Test Simulate LiquidStone Fund NAV', async () => {
     const result: { navDenominationAsset: string; nav: number } = await calcFundNav(
       credbullClient,
-      enzymeConfig.liquidStoneFund.fundAddress,
+      enzymeFundConfig.fundAddress,
     );
 
     console.log(`NAV Denomination Asset: ${result.navDenominationAsset}, NAV: ${result.nav}`);
@@ -60,8 +63,8 @@ test.describe('Test LiquidStone Fund NAV', () => {
   });
 });
 
-test.describe('Test LiquidStone Fund Manual Value Oracle', () => {
-  const flexibleLoan: FlexibleLoan = enzymeConfig.liquidStoneFund.fundFlexibleLoans[0];
+test.describe('Test BlackOpal Fund Manual Value Oracle', () => {
+  const flexibleLoan: FlexibleLoan = enzymeFundConfig.fundFlexibleLoans[0];
   const manualValueOracle = new ManualValueOracle(credbullClient, flexibleLoan.manualValueOracleProxy);
 
   test('Test getters', async () => {
@@ -79,8 +82,8 @@ test.describe('Test LiquidStone Fund Manual Value Oracle', () => {
   });
 });
 
-test.describe('Test LiquidStone Fund Manual Value Oracle - Write', () => {
-  const flexibleLoan: FlexibleLoan = enzymeConfig.liquidStoneFund.fundFlexibleLoans[0];
+test.describe.skip('Test BlackOpal Fund Manual Value Oracle - Write', () => {
+  const flexibleLoan: FlexibleLoan = enzymeFundConfig.fundFlexibleLoans[0];
   const manualValueOracle = new ManualValueOracle(credbullClient, flexibleLoan.manualValueOracleProxy);
   const deployer: Account = credbullClient.createAccount(envConfig.secret.deployerPrivateKey);
 

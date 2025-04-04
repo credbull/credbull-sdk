@@ -5,7 +5,8 @@ import { Address, ChainConfig } from '../../utils/utils';
 // Enzyme Polygon Deploys: https://github.com/enzymefinance/sdk/blob/main/packages/environment/src/deployments/polygon.ts#L157
 export interface EnzymeConfig extends ChainConfig {
   liquidStoneFund: EnzymeFundConfig;
-  pureStoneFund?: EnzymeFundConfig;
+  pureStoneFundUSDC?: EnzymeFundConfig;
+  pureStoneFundUSDT?: EnzymeFundConfig;
   fundValueCalculator: Address;
 }
 
@@ -57,7 +58,7 @@ export const enzymePolygonConfig: EnzymeConfig = {
     ],
   },
 
-  pureStoneFund: {
+  pureStoneFundUSDC: {
     fundName: 'BlackOpal - PureStone',
     fundAddress: '0xd93e3793471e22f2806bc3e0447fc46fb509390b', // see: https://app.enzyme.finance/vault/0xd93e3793471e22f2806bc3e0447fc46fb509390b?network=polygon
     fundApprovers: enzymePolygonApprovers,
@@ -66,6 +67,19 @@ export const enzymePolygonConfig: EnzymeConfig = {
         name: 'BlackOpal PureStone 2025',
         flexibleLoan: '0x99185097c97f20879fded74ea65c0c71de47ca7f',
         manualValueOracleProxy: '0x4627449ECCABdb8A4c72e20AED0F655C41d26ba2',
+      },
+    ],
+  },
+
+  pureStoneFundUSDT: {
+    fundName: 'BlackOpal - PureStone USDT',
+    fundAddress: '0xd1bd301397bf9623a5696f4fdeced13a47888d65', // see: https://app.enzyme.finance/vault/0xd1bd301397bf9623a5696f4fdeced13a47888d65?network=polygon
+    fundApprovers: enzymePolygonApprovers,
+    fundFlexibleLoans: [
+      {
+        name: 'BlackOpal PureStone USDT 2025',
+        flexibleLoan: '0x6c1e5157c29a07d54a5caf2f1852b6890223504c',
+        manualValueOracleProxy: '0x974dc84299eF67282a68f4EecE8bAb7BD6646558',
       },
     ],
   },
