@@ -1,4 +1,3 @@
-import { defineChain } from 'thirdweb';
 import { ChainOptions, anvil, arbitrumSepolia, baseSepolia, polygonAmoy } from 'thirdweb/chains';
 
 import { Address } from './utils';
@@ -41,54 +40,6 @@ export const anvilConfig: ChainConfig = {
   liquidStone: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9', // V3 - deploy, probably different
 };
 
-const plumeMainnet = defineChain({
-  name: 'Plume',
-  id: 98865,
-  rpc: 'https://rpc.plumenetwork.xyz',
-  nativeCurrency: {
-    name: 'Ether',
-    symbol: 'ETH',
-    decimals: 18,
-  },
-  blockExplorers: [
-    {
-      name: 'plume explorer (Blockscout)',
-      url: 'https://explorer.plumenetwork.xyz',
-      apiUrl: 'https://explorer.plumenetwork.xyz/api\\?',
-    },
-  ],
-});
-
-const plumeTestnet = defineChain({
-  name: 'Plume Testnet',
-  id: 98864,
-  rpc: 'https://test-rpc.plumenetwork.xyz',
-  nativeCurrency: {
-    name: 'Ether',
-    symbol: 'ETH',
-    decimals: 18,
-  },
-  blockExplorers: [
-    {
-      name: 'plume testnet explorer (Blockscout)',
-      url: 'https://test-explorer.plumenetwork.xyz',
-      apiUrl: 'https://test-explorer.plumenetwork.xyz/api\\?',
-    },
-  ],
-});
-
-export const plumeTestnetConfig: ChainConfig = {
-  chainName: plumeTestnet.name || 'plumeTestnet',
-  chain: plumeTestnet,
-  usdc: '0x401eCb1D350407f13ba348573E5630B83638E30D',
-  liquidStone: '0x4B1fC984F324D2A0fDD5cD83925124b61175f5C6',
-};
-
-export const plumeMainetConfig: ChainConfig = {
-  chainName: plumeMainnet.name || 'plume',
-  chain: plumeMainnet,
-  usdc: '0x3938A812c54304fEffD266C7E2E70B48F9475aD6',
-  liquidStone: '0x2b9d2023DbF3c7473f1cec42F78713d09DdC9FBF',
-};
-
 export const testnetConfig: ChainConfig = arbitrumSepoliaConfig;
+
+export * from './chain-config-plume';
