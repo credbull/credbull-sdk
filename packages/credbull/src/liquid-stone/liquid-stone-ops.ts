@@ -5,6 +5,7 @@ import {
   Address,
   ChainConfig,
   plumeLegacyMainetConfig,
+  // plumeMainetConfig,
   stringifyWithBigint,
   toStrShares,
   toStrUSDC,
@@ -15,10 +16,17 @@ import { LiquidStone } from './liquid-stone';
 interface OpsConfig extends ChainConfig {
   nestVault: Address;
 }
+
 const plumeLegacyMainnetOpsConfig: OpsConfig = {
   ...plumeLegacyMainetConfig,
   nestVault: '0x81537d879ACc8a290a1846635a0cAA908f8ca3a6',
 };
+
+// const plumeMainnetOpsConfig: OpsConfig = {
+//   ...plumeMainetConfig,
+//   nestVault: '0x593cCcA4c4bf58b7526a4C164cEEf4003C6388db',
+// };
+
 const liquidStone: LiquidStone = new LiquidStone(new CredbullClient(plumeLegacyMainnetOpsConfig));
 
 async function toAssets(shares: bigint, depositPeriod: bigint): Promise<bigint> {

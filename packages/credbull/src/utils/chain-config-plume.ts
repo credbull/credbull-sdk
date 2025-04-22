@@ -79,8 +79,8 @@ const plumeLegacyTestnet = defineChain({
 export const plumeMainetConfig: ChainConfig = {
   chainName: plumeMainnet.name || 'plume',
   chain: plumeMainnet,
-  usdc: '', // TODO
-  liquidStone: '', // TODO
+  usdc: '0x78adD880A697070c1e765Ac44D65323a0DcCE913', // USDC.e
+  liquidStone: '0x577349C99830D3c078034087A532581EF5381A08',
 };
 
 export const plumeTestnetConfig: ChainConfig = {
@@ -92,7 +92,7 @@ export const plumeTestnetConfig: ChainConfig = {
 
 /** @deprecated */
 export const plumeLegacyMainetConfig: ChainConfig = {
-  chainName: plumeLegacyMainnet.name || 'plume',
+  chainName: plumeLegacyMainnet.name || 'plumeLegacy',
   chain: plumeLegacyMainnet,
   usdc: '0x3938A812c54304fEffD266C7E2E70B48F9475aD6',
   liquidStone: '0x2b9d2023DbF3c7473f1cec42F78713d09DdC9FBF',
