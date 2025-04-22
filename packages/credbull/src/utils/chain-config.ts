@@ -41,8 +41,8 @@ export const anvilConfig: ChainConfig = {
   liquidStone: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9', // V3 - deploy, probably different
 };
 
-const plumeMainnet = defineChain({
-  name: 'Plume',
+const plumeLegacyMainnet = defineChain({
+  name: 'Plume Legacy (ETH)',
   id: 98865,
   rpc: 'https://rpc.plumenetwork.xyz',
   nativeCurrency: {
@@ -59,8 +59,8 @@ const plumeMainnet = defineChain({
   ],
 });
 
-const plumeTestnet = defineChain({
-  name: 'Plume Testnet',
+const plumeLegacyTestnet = defineChain({
+  name: 'Plume Legacy Testnet (ETH)',
   id: 98864,
   rpc: 'https://test-rpc.plumenetwork.xyz',
   nativeCurrency: {
@@ -77,16 +77,16 @@ const plumeTestnet = defineChain({
   ],
 });
 
-export const plumeTestnetConfig: ChainConfig = {
-  chainName: plumeTestnet.name || 'plumeTestnet',
-  chain: plumeTestnet,
+export const plumeTestnet98864Config: ChainConfig = {
+  chainName: plumeLegacyTestnet.name || 'plumeLegacyTestnet',
+  chain: plumeLegacyTestnet,
   usdc: '0x401eCb1D350407f13ba348573E5630B83638E30D',
   liquidStone: '0x4B1fC984F324D2A0fDD5cD83925124b61175f5C6',
 };
 
-export const plumeMainetConfig: ChainConfig = {
-  chainName: plumeMainnet.name || 'plume',
-  chain: plumeMainnet,
+export const plumeLegacyMainetConfig: ChainConfig = {
+  chainName: plumeLegacyMainnet.name || 'plume',
+  chain: plumeLegacyMainnet,
   usdc: '0x3938A812c54304fEffD266C7E2E70B48F9475aD6',
   liquidStone: '0x2b9d2023DbF3c7473f1cec42F78713d09DdC9FBF',
 };

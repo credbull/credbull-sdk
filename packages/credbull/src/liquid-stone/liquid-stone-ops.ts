@@ -1,18 +1,25 @@
 import { toBigInt } from 'ethers';
 
 import { CredbullClient } from '../credbull-client';
-import { Address, ChainConfig, plumeMainetConfig, stringifyWithBigint, toStrShares, toStrUSDC } from '../utils/utils';
+import {
+  Address,
+  ChainConfig,
+  plumeLegacyMainetConfig,
+  stringifyWithBigint,
+  toStrShares,
+  toStrUSDC,
+} from '../utils/utils';
 
 import { LiquidStone } from './liquid-stone';
 
 interface OpsConfig extends ChainConfig {
   nestVault: Address;
 }
-const plumeMainnetOpsConfig: OpsConfig = {
-  ...plumeMainetConfig,
+const plumeLegacyMainnetOpsConfig: OpsConfig = {
+  ...plumeLegacyMainetConfig,
   nestVault: '0x81537d879ACc8a290a1846635a0cAA908f8ca3a6',
 };
-const liquidStone: LiquidStone = new LiquidStone(new CredbullClient(plumeMainnetOpsConfig));
+const liquidStone: LiquidStone = new LiquidStone(new CredbullClient(plumeLegacyMainnetOpsConfig));
 
 async function toAssets(shares: bigint, depositPeriod: bigint): Promise<bigint> {
   try {
@@ -24,7 +31,7 @@ async function toAssets(shares: bigint, depositPeriod: bigint): Promise<bigint> 
 }
 
 async function logBalances(depositPeriod: bigint, skipZeroBalance = false) {
-  const nestShares: bigint = await liquidStone.balanceOf(plumeMainnetOpsConfig.nestVault, depositPeriod);
+  const nestShares: bigint = await liquidStone.balanceOf(plumeLegacyMainnetOpsConfig.nestVault, depositPeriod);
   const totalShares: bigint = await liquidStone.totalSupplyById(depositPeriod);
 
   if (skipZeroBalance && nestShares == toBigInt(0) && totalShares == toBigInt(0)) {
@@ -46,12 +53,12 @@ async function logBalances(depositPeriod: bigint, skipZeroBalance = false) {
 }
 
 async function logRequestRedeems() {
-  const nestRequestReedemsArray = await liquidStone.unlockRequestsAll(plumeMainnetOpsConfig.nestVault);
+  const nestRequestReedemsArray = await liquidStone.unlockRequestsAll(plumeLegacyMainnetOpsConfig.nestVault);
   console.log(`-- nestVault redeem requests: ${JSON.stringify(nestRequestReedemsArray, stringifyWithBigint())}`);
 }
 
 async function logAmountToInvest(depositPeriod: bigint) {
-  const amountToInvest = await liquidStone.amountToInvest(plumeMainnetOpsConfig.nestVault, depositPeriod);
+  const amountToInvest = await liquidStone.amountToInvest(plumeLegacyMainnetOpsConfig.nestVault, depositPeriod);
   console.log(`-- id[${depositPeriod}] Amount to Invest(+)/Redeem(-): ${await toStrUSDC(amountToInvest)}`);
 }
 
