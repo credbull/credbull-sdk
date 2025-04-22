@@ -5,7 +5,7 @@ import {
   Address,
   ChainConfig,
   plumeLegacyMainetConfig,
-  // plumeMainetConfig,
+  plumeMainetConfig,
   stringifyWithBigint,
   toStrShares,
   toStrUSDC,
@@ -22,10 +22,10 @@ const plumeLegacyMainnetOpsConfig: OpsConfig = {
   nestVault: '0x81537d879ACc8a290a1846635a0cAA908f8ca3a6',
 };
 
-// const plumeMainnetOpsConfig: OpsConfig = {
-//   ...plumeMainetConfig,
-//   nestVault: '0x593cCcA4c4bf58b7526a4C164cEEf4003C6388db',
-// };
+const plumeMainnetOpsConfig: OpsConfig = {
+  ...plumeMainetConfig,
+  nestVault: '0x593cCcA4c4bf58b7526a4C164cEEf4003C6388db',
+};
 
 export class LiquidStoneOps {
   private _opsConfig: OpsConfig;
@@ -48,7 +48,7 @@ export class LiquidStoneOps {
   }
 
   async logBalances(depositPeriod: bigint, skipZeroBalance = false) {
-    const nestShares: bigint = await this._liquidStone.balanceOf(plumeLegacyMainnetOpsConfig.nestVault, depositPeriod);
+    const nestShares: bigint = await this._liquidStone.balanceOf(this._opsConfig.nestVault, depositPeriod);
     const totalShares: bigint = await this._liquidStone.totalSupplyById(depositPeriod);
 
     if (skipZeroBalance && nestShares == toBigInt(0) && totalShares == toBigInt(0)) {
@@ -70,8 +70,8 @@ export class LiquidStoneOps {
   }
 
   async logRequestRedeems() {
-    const nestRequestReedemsArray = await this._liquidStone.unlockRequestsAll(this._opsConfig.nestVault);
-    console.log(`-- nestVault redeem requests: ${JSON.stringify(nestRequestReedemsArray, stringifyWithBigint())}`);
+    const nestRequestRedeemsArray = await this._liquidStone.unlockRequestsAll(this._opsConfig.nestVault);
+    console.log(`-- nestVault redeem requests: ${JSON.stringify(nestRequestRedeemsArray, stringifyWithBigint())}`);
   }
 
   async logAmountToInvest(depositPeriod: bigint) {
@@ -100,12 +100,10 @@ export class LiquidStoneOps {
     console.log();
   }
 
-  async main(isVerbose = false) {
-    console.log('Starting LiquidStone Ops checks...');
-    console.log();
+  async runOps() {
+    console.log('Starting LiquidStone Ops checks...\n');
 
     const currentPeriod: bigint = await this._liquidStone.currentPeriod();
-
     const valuePadding = 25;
 
     console.log(`Current Period: id[${currentPeriod}]`);
@@ -118,10 +116,9 @@ export class LiquidStoneOps {
     console.log(
       `Asset Balance     : ${(await toStrUSDC(await this._liquidStone.assetBalance())).padStart(valuePadding)}`,
     );
-
     console.log();
 
-    if (isVerbose) {
+    if (this._isVerbose) {
       await this.verboseLogging(toBigInt(0), currentPeriod);
     }
 
@@ -132,17 +129,17 @@ export class LiquidStoneOps {
   }
 }
 
-async function main(isVerbose = false) {
-  const liquidStoneOps = new LiquidStoneOps(plumeLegacyMainnetOpsConfig, isVerbose);
+async function main() {
+  const isVerbose = process.argv.includes('--verbose');
+  const useLegacy = process.argv.includes('--legacy');
 
-  await liquidStoneOps.main(isVerbose);
+  const opsConfig: OpsConfig = useLegacy ? plumeLegacyMainnetOpsConfig : plumeMainnetOpsConfig;
+  const liquidStoneOps: LiquidStoneOps = new LiquidStoneOps(opsConfig, isVerbose);
+
+  await liquidStoneOps.runOps();
 }
 
-// Entry point: handle errors globally
-const verboseFlag = process.argv.includes('--verbose');
-
-// Entry point: handle errors globally
-main(verboseFlag).catch((err) => {
+main().catch((err) => {
   console.error('Error in LiquidStone Ops !!', err);
   process.exit(1);
 });
