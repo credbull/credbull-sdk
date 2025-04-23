@@ -1,26 +1,40 @@
 import { expect, test } from '@playwright/test';
-import fetch from 'node-fetch';
 import path from 'path';
+import { download, upload } from 'thirdweb/storage';
 
+import { ChainConfig, CredbullClient, testnetConfig } from '../../src';
 import fs from 'fs/promises';
 
-// make sure node-fetch is available in your test env
+const chainConfig: ChainConfig = testnetConfig;
+const credbullClient: CredbullClient = new CredbullClient(chainConfig);
 
+const sampleFile = path.resolve(__dirname, './sample_1.csv');
+
+// see: https://portal.thirdweb.com/typescript/v5/storage
 test.describe('Test IPFS', () => {
   test('Test IPFS download', async () => {
-    const ipfsUrl = 'https://ipfs.io/ipfs/QmVvzR7KqmXRKpEe62ooafhnknxSuZJ5YzgwoLpfaZzi4y';
+    const ipfsResponse = await download({
+      client: credbullClient.thirdWebClient,
+      uri: 'ipfs://QmVvzR7KqmXRKpEe62ooafhnknxSuZJ5YzgwoLpfaZzi4y',
+    });
 
-    const ipfsResponse = await fetch(ipfsUrl);
     expect(ipfsResponse.ok).toBeTruthy();
     const ipfsContent = await ipfsResponse.text();
 
-    const filePath = path.resolve(__dirname, './sample_1.csv');
-    const expectedContent = await fs.readFile(filePath, 'utf-8');
+    const expectedContent = await fs.readFile(sampleFile, 'utf-8');
 
-    // console.log('Fetched from IPFS:\n', ipfsContent.split('\n').slice(0, 5).join('\n'));
-    // console.log('Expected content:\n', expectedContent.split('\n').slice(0, 5).join('\n'));
-
-    // Compare
     expect(ipfsContent.trim()).toBe(expectedContent.trim());
+  });
+
+  // test skpped to preserve thirdweb IPFS storage usage
+  test.skip('Test IPFS upload', async () => {
+    const uri = await upload({
+      client: credbullClient.thirdWebClient,
+      files: [sampleFile],
+    });
+
+    console.log(uri);
+
+    expect(uri.startsWith('ipfs://')).toBeTruthy();
   });
 });

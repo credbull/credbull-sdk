@@ -122,7 +122,12 @@ export class LiquidStoneOps {
       await this.verboseLogging(toBigInt(0), currentPeriod);
     }
 
-    await this.logDepositPeriod(currentPeriod - toBigInt(1));
+    // log previous period (skip period -1, not valid)
+    if (currentPeriod > 0) {
+      await this.logDepositPeriod(currentPeriod - toBigInt(1));
+    }
+
+    // log current period
     await this.logDepositPeriod(currentPeriod);
 
     console.log('LiquidStone Ops checks completed!');
