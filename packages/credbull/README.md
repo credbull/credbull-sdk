@@ -43,3 +43,18 @@ Generates typescript for a deployed smart contract, see: https://portal.thirdweb
 # <chainid>/<contract-address>, e.g. for Arb Sepolia LiquidStone:
 yarn thirdweb generate 421614/0x111b6a3dbace7f0b32baad47027907765e88abd2
 ```
+
+### Upload File to IPFS
+
+Upload a file path to IPFS, see https://portal.thirdweb.com/cli/upload and https://www.youtube.com/watch?v=wyYkpMgEVxE
+
+```bash
+# first source the .env for the thirdweb secret
+source .env
+
+# upload a a file to IPFS, e.g.
+yarn thirdweb upload -k $THIRDWEB_SECRET_KEY tests/ipfs/resource/sample_1.csv
+
+# verify file uploaded at https://ipfs.io/ipfs/<IPFS_URI>, e.g.:
+curl https://ipfs.io/ipfs/QmVvzR7KqmXRKpEe62ooafhnknxSuZJ5YzgwoLpfaZzi4y
+```
