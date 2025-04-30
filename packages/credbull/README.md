@@ -45,7 +45,6 @@ yarn thirdweb generate 421614/0x111b6a3dbace7f0b32baad47027907765e88abd2
 ```
 
 ### Upload File to IPFS
-
 Upload a file path to IPFS, see https://portal.thirdweb.com/cli/upload and https://www.youtube.com/watch?v=wyYkpMgEVxE
 
 ```bash
@@ -53,8 +52,17 @@ Upload a file path to IPFS, see https://portal.thirdweb.com/cli/upload and https
 source .env
 
 # upload a a file to IPFS, e.g.
-yarn thirdweb upload -k $THIRDWEB_SECRET_KEY tests/ipfs/resource/sample_1.csv
+yarn thirdweb upload -k $THIRDWEB_SECRET_KEY tests/ipfs/sample_1.csv
 
 # verify file uploaded at https://ipfs.io/ipfs/<IPFS_URI>, e.g.:
 curl https://ipfs.io/ipfs/QmVvzR7KqmXRKpEe62ooafhnknxSuZJ5YzgwoLpfaZzi4y
+```
+
+Create hash of the file for verification:
+```bash
+# option 1: using shasum, .e.g:
+shasum -a 256 tests/ipfs/sample_1.csv
+
+# option 1: using openssl, .e.g:
+openssl dgst -sha256 tests/ipfs/sample_1.csv
 ```
