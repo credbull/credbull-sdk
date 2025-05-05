@@ -5,7 +5,7 @@ import { ChainConfig } from './utils';
 const plumeMainnet = defineChain({
   name: 'Plume ($PLUME)',
   id: 98866,
-  rpc: 'https://phoenix-rpc.plumenetwork.xyz',
+  rpc: 'https://rpc.plume.org',
   nativeCurrency: {
     name: 'Plume',
     symbol: '$PLUME',
@@ -14,8 +14,8 @@ const plumeMainnet = defineChain({
   blockExplorers: [
     {
       name: 'plume explorer (Blockscout)',
-      url: 'https://phoenix-explorer.plumenetwork.xyz',
-      apiUrl: 'https://phoenix-explorer.plumenetwork.xyz/api\\?',
+      url: 'https://explorer.plume.org',
+      apiUrl: 'https://explorer.plume.org/api\\?',
     },
   ],
 });
