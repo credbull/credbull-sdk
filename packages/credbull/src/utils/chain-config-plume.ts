@@ -1,80 +1,17 @@
 import { defineChain } from 'thirdweb';
+import * as chains from 'viem/chains';
 
 import { ChainConfig } from './utils';
 
-const plumeMainnet = defineChain({
-  name: 'Plume ($PLUME)',
-  id: 98866,
-  rpc: 'https://rpc.plume.org',
-  nativeCurrency: {
-    name: 'Plume',
-    symbol: '$PLUME',
-    decimals: 18,
-  },
-  blockExplorers: [
-    {
-      name: 'plume explorer (Blockscout)',
-      url: 'https://explorer.plume.org',
-      apiUrl: 'https://explorer.plume.org/api\\?',
-    },
-  ],
-});
+const plumeMainnet = defineChain(chains.plumeMainnet);
 
-const plumeTestnet = defineChain({
-  name: 'Plume Testnet ($PLUME)',
-  id: 98867,
-  rpc: 'https://testnet-rpc.plumenetwork.xyz',
-  nativeCurrency: {
-    name: 'Plume',
-    symbol: '$PLUME',
-    decimals: 18,
-  },
-  blockExplorers: [
-    {
-      name: 'plume testnet explorer (Blockscout)',
-      url: 'https://testnet-explorer.plumenetwork.xyz',
-      apiUrl: 'https://testnet-explorer.plumenetwork.xyz/api\\?',
-    },
-  ],
-});
+const plumeTestnet = defineChain(chains.plumeSepolia);
 
 /** @deprecated */
-const plumeLegacyMainnet = defineChain({
-  name: 'Plume Legacy (ETH)',
-  id: 98865,
-  rpc: 'https://rpc.plumenetwork.xyz',
-  nativeCurrency: {
-    name: 'Ether',
-    symbol: 'ETH',
-    decimals: 18,
-  },
-  blockExplorers: [
-    {
-      name: 'plume legacy explorer (Blockscout)',
-      url: 'https://explorer.plumenetwork.xyz',
-      apiUrl: 'https://explorer.plumenetwork.xyz/api\\?',
-    },
-  ],
-});
+const plumeLegacyMainnet = defineChain(chains.plume);
 
 /** @deprecated */
-const plumeLegacyTestnet = defineChain({
-  name: 'Plume Legacy Testnet (ETH)',
-  id: 98864,
-  rpc: 'https://test-rpc.plumenetwork.xyz',
-  nativeCurrency: {
-    name: 'Ether',
-    symbol: 'ETH',
-    decimals: 18,
-  },
-  blockExplorers: [
-    {
-      name: 'plume legacy testnet explorer (Blockscout)',
-      url: 'https://test-explorer.plumenetwork.xyz',
-      apiUrl: 'https://test-explorer.plumenetwork.xyz/api\\?',
-    },
-  ],
-});
+const plumeLegacyTestnet = defineChain(chains.plumeDevnet);
 
 export const plumeMainetConfig: ChainConfig = {
   chainName: plumeMainnet.name || 'plume',

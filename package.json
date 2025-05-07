@@ -31,6 +31,9 @@
     "prettier": "^3.4.2",
     "typescript-eslint": "^8.20.0"
   },
+  "resolutions": {
+    "viem": "2.29.0"
+  },
   "lint-staged": {
     "*.{ts,tsx}": [
       "yarn workspace @credbull-sdk/credbull lint",
