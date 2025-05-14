@@ -1,5 +1,4 @@
 import { expect, test } from '@playwright/test';
-import { SafeClientTxStatus } from '@safe-global/sdk-starter-kit/dist/src/constants';
 import { encode } from 'thirdweb';
 import { Hex } from 'thirdweb/src/utils/encoding/hex';
 
@@ -28,6 +27,6 @@ test.describe('Test ERC20 Approve with Safe using Thirdweb', () => {
     const usdcApproveTxn: Hex = await encode(erc20.approveTxn(envConfig.secret.userAddress, depositAmount));
 
     const safeTxnResult = await safeClient.call(usdcAddress, usdcApproveTxn);
-    expect(safeTxnResult.status).toBe(SafeClientTxStatus.EXECUTED);
+    expect(safeTxnResult.status).toBe('EXECUTED');
   });
 });

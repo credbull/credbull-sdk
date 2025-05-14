@@ -218,10 +218,10 @@ __metadata:
   resolution: "@credbull-sdk/credbull@workspace:packages/credbull"
   dependencies:
     "@playwright/test": "npm:^1.49.1"
-    "@safe-global/api-kit": "npm:^2.5.6"
+    "@safe-global/api-kit": "npm:^3.0.1"
     "@safe-global/protocol-kit": "npm:^5.1.1"
     "@safe-global/safe-core-sdk-types": "npm:^5.1.0"
-    "@safe-global/sdk-starter-kit": "npm:^1.1.1"
+    "@safe-global/sdk-starter-kit": "npm:^2.0.2"
     "@types/node": "npm:^22.10.2"
     dotenv: "npm:^16.4.7"
     eslint: "npm:^9.18.0"
@@ -750,15 +750,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gelatonetwork/relay-sdk@npm:^5.5.0":
-  version: 5.5.6
-  resolution: "@gelatonetwork/relay-sdk@npm:5.5.6"
+"@gelatonetwork/relay-sdk@npm:^5.6.0":
+  version: 5.6.0
+  resolution: "@gelatonetwork/relay-sdk@npm:5.6.0"
   dependencies:
-    axios: "npm:0.27.2"
+    axios: "npm:0.29.0"
     ethers: "npm:6.7.0"
     isomorphic-ws: "npm:^5.0.0"
-    ws: "npm:^8.5.0"
-  checksum: 10c0/333bd40ef3623006816a8ba55a76cc67731a46c2c25ec07563a3f55f0d9014dac385b5beed89e4dbb18ae61633f522196ef8aaf8cf114d8543c9030ac9569c1d
+    ws: "npm:^8.18.0"
+  checksum: 10c0/2fa21d6cb54c392715c946ea5b09f06eaa9ad9998898d2f1f68d42067b271204935784bddce8cd24f9e83f3783b50e5a47a4a72e8827072a71fd460b8909aedb
   languageName: node
   linkType: hard
 
@@ -2455,15 +2455,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/api-kit@npm:^2.5.6":
-  version: 2.5.6
-  resolution: "@safe-global/api-kit@npm:2.5.6"
+"@safe-global/api-kit@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "@safe-global/api-kit@npm:3.0.1"
   dependencies:
-    "@safe-global/protocol-kit": "npm:^5.1.1"
-    "@safe-global/types-kit": "npm:^1.0.1"
+    "@safe-global/protocol-kit": "npm:^6.0.1"
+    "@safe-global/types-kit": "npm:^2.0.0"
     node-fetch: "npm:^2.7.0"
     viem: "npm:^2.21.8"
-  checksum: 10c0/14e8e1fbe6ddf8f32dde84e446793f7ebf4eab4c22f100630abf5f11eee28c632d5d8a542304d68a9e52df53f1819a08ed1bbf3905cdb2d1df14d0441a8720d1
+  checksum: 10c0/c5408d9060dedb6246f02fe9d6a9322d1e83b8c3177f3366373596955241af99069b2c112cf85b93ba2904b61f741f95d25b55ecfcdcc1ad4c4350ea17f72ad5
   languageName: node
   linkType: hard
 
@@ -2488,16 +2488,38 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/relay-kit@npm:^3.3.1":
-  version: 3.3.1
-  resolution: "@safe-global/relay-kit@npm:3.3.1"
+"@safe-global/protocol-kit@npm:^6.0.1, @safe-global/protocol-kit@npm:^6.0.3, @safe-global/protocol-kit@npm:^6.0.4":
+  version: 6.0.4
+  resolution: "@safe-global/protocol-kit@npm:6.0.4"
   dependencies:
-    "@gelatonetwork/relay-sdk": "npm:^5.5.0"
-    "@safe-global/protocol-kit": "npm:^5.1.1"
-    "@safe-global/safe-modules-deployments": "npm:^2.2.4"
-    "@safe-global/types-kit": "npm:^1.0.1"
+    "@noble/curves": "npm:^1.6.0"
+    "@peculiar/asn1-schema": "npm:^2.3.13"
+    "@safe-global/safe-deployments": "npm:^1.37.32"
+    "@safe-global/safe-modules-deployments": "npm:^2.2.8"
+    "@safe-global/types-kit": "npm:^2.0.1"
+    abitype: "npm:^1.0.2"
+    semver: "npm:^7.7.1"
     viem: "npm:^2.21.8"
-  checksum: 10c0/094915084ac1b256df4418d464d4d766d1f20972c11ff59f7d8407db42c902e50f36f5b53c5ee594c3df0db4fc845f4940923ad8c5fd1854a03a39b71ed05d77
+  dependenciesMeta:
+    "@noble/curves":
+      optional: true
+    "@peculiar/asn1-schema":
+      optional: true
+  checksum: 10c0/cef329ac22a7aa5acb203c3ae24ac1edb1227d6488b16a84a7ba386b835b051a4bfa10c5f946c9d54b0c8fee8da4d230f4d5f885a3f432b76cc6633e81e36f04
+  languageName: node
+  linkType: hard
+
+"@safe-global/relay-kit@npm:^4.0.2":
+  version: 4.0.3
+  resolution: "@safe-global/relay-kit@npm:4.0.3"
+  dependencies:
+    "@gelatonetwork/relay-sdk": "npm:^5.6.0"
+    "@safe-global/protocol-kit": "npm:^6.0.4"
+    "@safe-global/safe-modules-deployments": "npm:^2.2.8"
+    "@safe-global/types-kit": "npm:^2.0.1"
+    semver: "npm:^7.7.1"
+    viem: "npm:^2.21.8"
+  checksum: 10c0/dadfefbb4ba3a38a7ec8965ff2e33dcc59072a947e0ad82450ed8cd39e58d031e054c0fffc64932b692785c652a9f6e94e9a1fb02858bc9032a2f105983db09d
   languageName: node
   linkType: hard
 
@@ -2519,6 +2541,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@safe-global/safe-deployments@npm:^1.37.32":
+  version: 1.37.32
+  resolution: "@safe-global/safe-deployments@npm:1.37.32"
+  dependencies:
+    semver: "npm:^7.6.2"
+  checksum: 10c0/22416c2d29653c621afb66002160b0c5a2556fea714ea33988a48e253ac02b5ef13a211d66c81107fc978ead5c72be927d16d163431477df34bf7fe1f2cfeb13
+  languageName: node
+  linkType: hard
+
 "@safe-global/safe-modules-deployments@npm:^2.2.4":
   version: 2.2.4
   resolution: "@safe-global/safe-modules-deployments@npm:2.2.4"
@@ -2526,16 +2557,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/sdk-starter-kit@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "@safe-global/sdk-starter-kit@npm:1.1.1"
+"@safe-global/safe-modules-deployments@npm:^2.2.8":
+  version: 2.2.8
+  resolution: "@safe-global/safe-modules-deployments@npm:2.2.8"
+  checksum: 10c0/86b4d3c39f388cac975b04b9f1f365705845372f6815af03309035f3605fbe2518af53f8feebe9637cc434561d2c4d0324f61f85b4381d0067f03584fc7efe67
+  languageName: node
+  linkType: hard
+
+"@safe-global/sdk-starter-kit@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "@safe-global/sdk-starter-kit@npm:2.0.2"
   dependencies:
-    "@safe-global/api-kit": "npm:^2.5.6"
-    "@safe-global/protocol-kit": "npm:^5.1.1"
-    "@safe-global/relay-kit": "npm:^3.3.1"
-    "@safe-global/types-kit": "npm:^1.0.1"
+    "@safe-global/api-kit": "npm:^3.0.1"
+    "@safe-global/protocol-kit": "npm:^6.0.3"
+    "@safe-global/relay-kit": "npm:^4.0.2"
+    "@safe-global/types-kit": "npm:^2.0.1"
     viem: "npm:^2.21.8"
-  checksum: 10c0/a45e0194de99b8b0d550a7ea7b9d520a4c8ed4600d2e49d229e1cbdd7501dd6f7d9d0ec15e651b1cb83fb6435f2fa94eba0e244c462ca304993a974b2f6d14b1
+  checksum: 10c0/25c4f86d51ceb6b434c008c0b8f8878db75203430942b939d79449e52190d76cdd83aa40375dbc2499332e2f4f4d0920def84b7e681733a5ea1a93929adb08ef
   languageName: node
   linkType: hard
 
@@ -2545,6 +2583,15 @@ __metadata:
   dependencies:
     abitype: "npm:^1.0.2"
   checksum: 10c0/557518c1695b527ad3b22d8693642fcbb6cfbd7f6eedb580939d55b79face97ccbd01dbf6f9fa28ea0ca2d0b80dd7e7046120ade4d365c9fc0cdc3330486a370
+  languageName: node
+  linkType: hard
+
+"@safe-global/types-kit@npm:^2.0.0, @safe-global/types-kit@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@safe-global/types-kit@npm:2.0.1"
+  dependencies:
+    abitype: "npm:^1.0.2"
+  checksum: 10c0/f93b4da50178d68429d60704aa5b9ae6094d88d16f6bd4f5d03bba662c2b694d56c937dfbd0111e287ec1f542804dad7bc569b78baabe1998c0fef1c2a3f895f
   languageName: node
   linkType: hard
 
@@ -4085,13 +4132,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:0.27.2":
-  version: 0.27.2
-  resolution: "axios@npm:0.27.2"
+"axios@npm:0.29.0":
+  version: 0.29.0
+  resolution: "axios@npm:0.29.0"
   dependencies:
-    follow-redirects: "npm:^1.14.9"
+    follow-redirects: "npm:^1.15.4"
     form-data: "npm:^4.0.0"
-  checksum: 10c0/76d673d2a90629944b44d6f345f01e58e9174690f635115d5ffd4aca495d99bcd8f95c590d5ccb473513f5ebc1d1a6e8934580d0c57cdd0498c3a101313ef771
+    proxy-from-env: "npm:^1.1.0"
+  checksum: 10c0/53763099fe46d8a43700401e18db112d53f1fa9fe6beb6909742644e388d31928fba920c9a218334684b1a4b587112c7819671e372395bd66120adae8c014736
   languageName: node
   linkType: hard
 
@@ -5823,7 +5871,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.14.9":
+"follow-redirects@npm:^1.15.4":
   version: 1.15.9
   resolution: "follow-redirects@npm:1.15.9"
   peerDependenciesMeta:
@@ -8366,6 +8414,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"proxy-from-env@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "proxy-from-env@npm:1.1.0"
+  checksum: 10c0/fe7dd8b1bdbbbea18d1459107729c3e4a2243ca870d26d34c2c1bcd3e4425b7bcc5112362df2d93cc7fb9746f6142b5e272fd1cc5c86ddf8580175186f6ad42b
+  languageName: node
+  linkType: hard
+
 "punycode@npm:^2.1.0":
   version: 2.3.1
   resolution: "punycode@npm:2.3.1"
@@ -10479,9 +10534,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ws@npm:^8.5.0":
-  version: 8.18.0
-  resolution: "ws@npm:8.18.0"
+"ws@npm:^8.18.0":
+  version: 8.18.2
+  resolution: "ws@npm:8.18.2"
   peerDependencies:
     bufferutil: ^4.0.1
     utf-8-validate: ">=5.0.2"
@@ -10490,7 +10545,7 @@ __metadata:
       optional: true
     utf-8-validate:
       optional: true
-  checksum: 10c0/25eb33aff17edcb90721ed6b0eb250976328533ad3cd1a28a274bd263682e7296a6591ff1436d6cbc50fa67463158b062f9d1122013b361cec99a05f84680e06
+  checksum: 10c0/4b50f67931b8c6943c893f59c524f0e4905bbd183016cfb0f2b8653aa7f28dad4e456b9d99d285bbb67cca4fedd9ce90dfdfaa82b898a11414ebd66ee99141e4
   languageName: node
   linkType: hard
 
