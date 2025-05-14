@@ -1,6 +1,4 @@
-import { polygon } from 'thirdweb/chains';
-
-import { Address, ChainConfig } from '../../utils/utils';
+import { Address, ChainConfig, polygonConfig } from '../../utils/utils';
 
 // Enzyme Polygon Deploys: https://github.com/enzymefinance/sdk/blob/main/packages/environment/src/deployments/polygon.ts#L157
 export interface EnzymeConfig extends ChainConfig {
@@ -29,14 +27,6 @@ export interface Approvers {
   blackOpalFundCustodianWrapper: Address; // Wraps the BitGo custodial wallet for interaction with DeFi protocols (e.g. Enzyme)
 }
 
-const enzymePolygonConfigBase = {
-  chainName: polygon.name || 'polygon',
-  chain: polygon, // chaind 137
-  usdc: '0x3c499c542cef5e3811e1192ce70d8cc03d5c3359', // see: https://developers.circle.com/stablecoins/usdc-on-main-networks
-  liquidStone: '', // liquidStone DeFi not deployed to polygon
-  fundValueCalculator: '0xcdf038dd3b66506d2e5378aee185b2f0084b7a33',
-};
-
 export const enzymePolygonApprovers: Approvers = {
   credbullDefiCustody: '0xD2071c01d243CED66521B14aC717B97a71b5a1B1',
   blackOpalFundOwner: '0x7E6A4Be1877c6298440aCBCCDC6fE862d97e1E51',
@@ -44,7 +34,8 @@ export const enzymePolygonApprovers: Approvers = {
 };
 
 export const enzymePolygonConfig: EnzymeConfig = {
-  ...enzymePolygonConfigBase,
+  ...polygonConfig,
+  fundValueCalculator: '0xcdf038dd3b66506d2e5378aee185b2f0084b7a33',
   liquidStoneFund: {
     fundName: 'BlackOpal - LiquidStone X Plume',
     fundAddress: '0x2eda17eb596858566be933b26fae6fa4ee8ccd6d', // see: https://app.enzyme.finance/vault/0x2eda17eb596858566be933b26fae6fa4ee8ccd6d?network=polygon
@@ -86,8 +77,8 @@ export const enzymePolygonConfig: EnzymeConfig = {
 };
 
 export const testEnzymePolygonConfig: EnzymeConfig = {
-  ...enzymePolygonConfigBase,
-
+  ...polygonConfig,
+  fundValueCalculator: '0xcdf038dd3b66506d2e5378aee185b2f0084b7a33',
   liquidStoneFund: {
     fundName: 'TEST - BlackOpal Test Vault Flexible Loan 20241218',
     fundAddress: '0xc6024bb5d1d3379943f0193aff7a2ca55f02ba21', // test / preview fund.  see: https://app.enzyme.finance/vault/0xc6024bb5d1d3379943f0193aff7a2ca55f02ba21?network=polygon

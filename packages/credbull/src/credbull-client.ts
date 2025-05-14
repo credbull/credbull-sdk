@@ -32,13 +32,8 @@ export class CredbullClient<T extends ChainConfig = ChainConfig> {
   }
 
   createThirdWebClient(): ThirdwebClient {
-    const thirdWebKey = envConfig.secret?.thirdwebSecretKey;
-    if (!thirdWebKey) {
-      throw Error('Third web key required.');
-    }
-
     const client: ThirdwebClient = createThirdwebClient({
-      secretKey: thirdWebKey.valueOf(),
+      clientId: envConfig.secret.thirdwebClientId.valueOf(),
     });
     console.log('Initialized ThirdWeb Client: ', client.clientId);
     return client;

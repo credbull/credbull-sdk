@@ -1,12 +1,15 @@
-import { ChainOptions, anvil, arbitrumSepolia, baseSepolia, polygonAmoy } from 'thirdweb/chains';
+import { ChainOptions, anvil, arbitrumSepolia, baseSepolia, polygon, polygonAmoy } from 'thirdweb/chains';
 
+import { loadConfiguration } from './config';
 import { Address } from './utils';
+
+const envConfig = loadConfiguration();
 
 export interface ChainConfig {
   chainName: string;
   chain: Readonly<ChainOptions & { rpc: string }>;
   usdc: Address;
-  liquidStone: Address; // LiquidStone product proxy contraact address
+  liquidStone: Address; // LiquidStone product proxy contract address
 }
 
 export const baseSepoliaConfig: ChainConfig = {
@@ -21,14 +24,30 @@ export const baseSepoliaConfig: ChainConfig = {
 
 export const arbitrumSepoliaConfig: ChainConfig = {
   chainName: arbitrumSepolia.name || 'arbitrumSepolia',
-  chain: arbitrumSepolia,
+  chain: {
+    ...arbitrumSepolia,
+    rpc: `https://arb-sepolia.g.alchemy.com/v2/${envConfig.secret.alchemyApiKey.valueOf()}`,
+  },
   usdc: '0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d', // see: https://developers.circle.com/stablecoins/usdc-on-test-networks
   liquidStone: '0x111B6a3dbacE7F0b32bAad47027907765e88ABd2',
 };
 
+export const polygonConfig: ChainConfig = {
+  chainName: polygon.name || 'polygon',
+  chain: {
+    ...polygon,
+    rpc: `https://polygon-mainnet.g.alchemy.com/v2/${envConfig.secret.alchemyApiKey.valueOf()}`,
+  },
+  usdc: '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359', // see: https://developers.circle.com/stablecoins/usdc-on-main-networks
+  liquidStone: '', // liquidStone not on Polygon
+};
+
 export const polygonAmoyConfig: ChainConfig = {
   chainName: polygonAmoy.name || 'polygonAmoy',
-  chain: polygonAmoy,
+  chain: {
+    ...polygonAmoy,
+    rpc: `https://polygon-amoy.g.alchemy.com/v2/${envConfig.secret.alchemyApiKey.valueOf()}`,
+  },
   usdc: '0x41e94eb019c0762f9bfcf9fb1e58725bfb0e7582', // see: https://developers.circle.com/stablecoins/usdc-on-test-networks
   liquidStone: '0xFbE87E74028389789948Ed009296198dB686da8A',
 };
