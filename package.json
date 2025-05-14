@@ -32,8 +32,10 @@
     "typescript-eslint": "^8.20.0"
   },
   "resolutions": {
+    "axios": "^0.30.0",
     "viem": "^2.29.0",
-    "elliptic": "^6.6.1"
+    "elliptic": "^6.6.1",
+    "ws": "^8.17.1"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
