@@ -45,8 +45,8 @@ jobs:
         run: yarn run-liquid-stone-legacy-ops --verbose
         working-directory: packages/credbull
         env:
-          THIRDWEB_CLIENT_ID: ${{ secrets.CREDBULL_DEVOPS_THIRDWEB_CLIENT_ID }} // TODO ADD THIS
-          ALCHEMY_API_KEY: ${{ secrets.CREDBULL_DEVOPS_ALCHEMY_API_KEY }} // TODO ADD THIS
+          THIRDWEB_CLIENT_ID: ${{ secrets.CREDBULL_DEVOPS_THIRDWEB_CLIENT_ID }}
+          ALCHEMY_API_KEY: ${{ secrets.CREDBULL_DEVOPS_ALCHEMY_API_KEY }}
           DEPLOYER_PRIVATE_KEY: ${{ secrets.CREDBULL_DEVOPS_DEPLOYER_PRIVATE_KEY }}
           DEPLOYER_ALT_PRIVATE_KEY: ${{ secrets.CREDBULL_DEVOPS_DEPLOYER_ALT_PRIVATE_KEY }}
           USER_PRIVATE_KEY: ${{ secrets.CREDBULL_DEVOPS_CHARLIE_PRIVATE_KEY }}
