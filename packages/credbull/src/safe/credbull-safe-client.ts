@@ -28,7 +28,8 @@ export class CredbullSafeClient<T extends ChainConfig = ChainConfig> {
     });
   }
 
-  // decode transaction https://docs.safe.global/core-api/transaction-service-guides/data-decoder
+  // see https://docs.safe.global/core-api/transaction-service-guides/data-decoder
+  // API reference see https://docs.safe.global/core-api/transaction-service-reference/mainnet
   async decodeData(data: string, to?: string) {
     const safeClient = await this._safeClient;
 

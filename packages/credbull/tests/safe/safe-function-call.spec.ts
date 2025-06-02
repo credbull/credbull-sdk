@@ -16,8 +16,9 @@ const envConfig = loadConfiguration();
 const chainConfig: ChainConfig = baseSepoliaConfig;
 
 test.describe('Test decode txn with Safe', () => {
+  // see https://docs.safe.global/core-api/transaction-service-guides/data-decoder
+  // API reference see https://docs.safe.global/core-api/transaction-service-reference/mainnet
   test('Test decode txn with Safe', async () => {
-    // const safeClient: CredbullSafeClient = safeClientSingleSigner(envConfig.secret.deployerPrivateKey.valueOf());
     const safeClient = new CredbullSafeClient(
       safeTestConfig.chainConfig,
       safeTestConfig.safeWithSingleSigner,
