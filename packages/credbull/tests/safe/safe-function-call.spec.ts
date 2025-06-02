@@ -9,11 +9,27 @@ import { ChainConfig, baseSepoliaConfig, loadConfiguration } from '../../src/uti
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Suppress error about file not being under rootDir
-import { safeClientSingleSigner } from './safe-test-config';
+import { safeClientSingleSigner, safeTestConfig } from './safe-test-config';
 
 const envConfig = loadConfiguration();
 
 const chainConfig: ChainConfig = baseSepoliaConfig;
+
+test.describe('Test decode txn with Safe', () => {
+  test('Test decode txn with Safe', async () => {
+    // const safeClient: CredbullSafeClient = safeClientSingleSigner(envConfig.secret.deployerPrivateKey.valueOf());
+    const safeClient = new CredbullSafeClient(
+      safeTestConfig.chainConfig,
+      safeTestConfig.safeWithSingleSigner,
+      undefined, // signer not required - decode doesn't need it
+    );
+
+    const data =
+      '0x095ea7b3000000000000000000000000e6fc577e87f7c977c4393300417dcc592d90acf8ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
+    const dataDecoded = await safeClient.decodeData(data);
+    expect(dataDecoded.method).toBe('approve');
+  });
+});
 
 test.describe('Test ERC20 Approve with Safe using Thirdweb', () => {
   const depositAmount = 1.1; // 1.1 tokens (human-readable)

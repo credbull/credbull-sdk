@@ -28,6 +28,13 @@ export class CredbullSafeClient<T extends ChainConfig = ChainConfig> {
     });
   }
 
+  // decode transaction https://docs.safe.global/core-api/transaction-service-guides/data-decoder
+  async decodeData(data: string, to?: string) {
+    const safeClient = await this._safeClient;
+
+    return safeClient.apiKit.decodeData(data, to);
+  }
+
   // send 1 signer txn https://docs.safe.global/sdk/starter-kit/guides/send-transactions
   deposit(to: Address, amountInWei: string): Promise<SafeClientResult> {
     return this.sendTxn(to, amountInWei, '0x');
