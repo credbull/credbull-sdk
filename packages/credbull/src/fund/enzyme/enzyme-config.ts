@@ -3,6 +3,7 @@ import { Address, ChainConfig, polygonConfig } from '../../utils/utils';
 // Enzyme Polygon Deploys: https://github.com/enzymefinance/sdk/blob/main/packages/environment/src/deployments/polygon.ts#L157
 export interface EnzymeConfig extends ChainConfig {
   liquidStoneFund: EnzymeFundConfig;
+  liquidStonePlumeLegacyFund?: EnzymeFundConfig; //  deposits from "old" Plume Legacy mainnet
   pureStoneFundUSDC?: EnzymeFundConfig;
   pureStoneFundUSDT?: EnzymeFundConfig;
   fundValueCalculator: Address;
@@ -36,8 +37,22 @@ export const enzymePolygonApprovers: Approvers = {
 export const enzymePolygonConfig: EnzymeConfig = {
   ...polygonConfig,
   fundValueCalculator: '0xcdf038dd3b66506d2e5378aee185b2f0084b7a33',
+
   liquidStoneFund: {
-    fundName: 'BlackOpal - LiquidStone X Plume',
+    fundName: 'BlackOpal - LiquidStone X Plume ($PLUME) 2025', // SYMBOL BOLSPT25
+    fundAddress: '0xd54bce9ce3e0d38b1776c1c66d43bae1abc152af', // see:https://app.enzyme.finance/vault/0xd54bce9ce3e0d38b1776c1c66d43bae1abc152af?network=polygon
+    fundApprovers: enzymePolygonApprovers,
+    fundFlexibleLoans: [
+      {
+        name: 'BlackOpal - LiquidStone X Plume ($PLUME) 2025',
+        flexibleLoan: '0xa3c943adf9e8b4add86586e2037cfdc14d124363',
+        manualValueOracleProxy: '0x7e9BaDb9339f6461bdd128cdD98F61ceE67dd772',
+      },
+    ],
+  },
+
+  liquidStonePlumeLegacyFund: {
+    fundName: 'BlackOpal - LiquidStone X Plume Legacy (ETH) 2024', // SYMBOL BOLSPT24
     fundAddress: '0x2eda17eb596858566be933b26fae6fa4ee8ccd6d', // see: https://app.enzyme.finance/vault/0x2eda17eb596858566be933b26fae6fa4ee8ccd6d?network=polygon
     fundApprovers: enzymePolygonApprovers,
     fundFlexibleLoans: [
