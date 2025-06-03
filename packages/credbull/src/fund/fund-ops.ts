@@ -56,6 +56,9 @@ export class FundOps {
 
   // TODO - add the required actions, rather than just logging.  e.g. Specify which Safe has balances or pending txns.
   async runOps() {
+    console.log(`Starting ${this._fundConfig.fundName} Fund Ops checks...`);
+    console.log();
+
     await this.logFundNav();
 
     console.log();
@@ -94,22 +97,19 @@ export class FundOps {
 
     console.log();
 
-    console.log('BlackOpal Fund Ops checks completed!');
+    console.log(`${this._fundConfig.fundName} Fund Ops checks completed!`);
   }
 }
 
 async function main() {
   if (enzymeConfig.liquidStonePlumeLegacyFund) {
-    console.log('Starting BlackOpal LiquidStone x Plume LEGACY (ETH) Fund Ops checks...');
-    console.log();
     const legacyPlumeFund: FundOps = new FundOps(enzymeConfig, enzymeConfig.liquidStonePlumeLegacyFund);
     await legacyPlumeFund.runOps();
+    console.log();
     console.log('=======================================================================');
     console.log();
   }
 
-  console.log('Starting BlackOpal LiquidStone x Plume Fund Ops checks...');
-  console.log();
   const liquidStoneFund: FundOps = new FundOps(enzymeConfig, enzymeConfig.liquidStoneFund);
   await liquidStoneFund.runOps();
 }
