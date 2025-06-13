@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { toBigInt } from 'ethers';
 import { Account } from 'thirdweb/wallets';
+import { encodePacked, pad } from 'viem';
 
 import { loadConfiguration } from '../../../src';
 import { CredbullClient } from '../../../src/credbull-client';
@@ -80,9 +81,20 @@ test.describe('Test BlackOpal Fund Manual Value Oracle', () => {
     console.log(`owner: ${owner}`);
     expect(owner).toBeDefined();
   });
+
+  test('Encode oracle description', async () => {
+    const description = 'credbull testing - 20241209';
+
+    const packed = encodePacked(['string'], [description]);
+    const padded = pad(packed, { size: 32, dir: 'right' }); // right pad to 32 bytes
+
+    const expectedBytes32 = '0x6372656462756c6c2074657374696e67202d2032303234313230390000000000';
+
+    expect(padded).toEqual(expectedBytes32);
+  });
 });
 
-test.describe.skip('Test BlackOpal Fund Manual Value Oracle - Write', () => {
+test.describe('Test BlackOpal Fund Manual Value Oracle - Write', () => {
   const flexibleLoan: FlexibleLoan = enzymeFundConfig.fundFlexibleLoans[0];
   const manualValueOracle = new ManualValueOracle(credbullClient, flexibleLoan.manualValueOracleProxy);
   const deployer: Account = credbullClient.createAccount(envConfig.secret.deployerPrivateKey);
@@ -107,7 +119,6 @@ test.describe.skip('Test BlackOpal Fund Manual Value Oracle - Write', () => {
 
     const newUpdater = deployer.address; // need to keep the updater as deployer.  but txn should succeed.
     const txnReceipt = await manualValueOracle.setUpdater(owner, newUpdater);
-
     expect(txnReceipt.status).toBe('success');
   });
 });
