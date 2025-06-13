@@ -113,6 +113,11 @@ export const testEnzymePolygonConfig: EnzymeConfig = {
         flexibleLoan: '0x9144066ddff9ae04aa3ef3af766c8c774781f01b',
         manualValueOracleProxy: '0x5eAe7fcA6Bb5bA22cdEAEfCB08a3d351B6DCC4C1',
       },
+      {
+        name: 'TEST - BlackOpal Test Vault Flexible Loan 20250613',
+        flexibleLoan: '0x3179e50984e153de6162dd2efa0acf3f202b5805',
+        manualValueOracleProxy: '0xdE0E43850AbFb98F549CfC2ec571FDC02E8C053a',
+      },
     ],
   },
 };
