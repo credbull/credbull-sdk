@@ -44,14 +44,19 @@ export const enzymePolygonConfig: EnzymeConfig = {
     fundApprovers: enzymePolygonApprovers,
     fundFlexibleLoans: [
       {
-        name: 'BlackOpal - LiquidStone X Plume ($PLUME) 2025 (PrimeVault)',
+        name: 'BlackOpal - LiquidStone X Plume ($PLUME) 2025 (PrimeVault Loan Borrower)',
         flexibleLoan: '0xb8802f76ecf747a51b6dccc5215ba793097f9014',
         manualValueOracleProxy: '0xb2b9CABB04c8C795FbAC81EAFe9D618c0c2F31c7',
       },
       {
-        name: 'BlackOpal - LiquidStone X Plume ($PLUME) 2025 (Safe)',
+        name: 'BlackOpal - LiquidStone X Plume ($PLUME) 2025 (Safe Loan Borrower)',
         flexibleLoan: '0xa3c943adf9e8b4add86586e2037cfdc14d124363',
         manualValueOracleProxy: '0x7e9BaDb9339f6461bdd128cdD98F61ceE67dd772',
+      },
+      {
+        name: 'BlackOpal - LiquidStone X Plume ($PLUME) 2025 (Bank Account NAV)',
+        flexibleLoan: '', // TODO - create flex loan and connect oracle
+        manualValueOracleProxy: '0xc2643ff7b097093801fE2B13b41F8D71fea5ca31',
       },
     ],
   },
